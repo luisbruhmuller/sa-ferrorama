@@ -23,3 +23,15 @@
   .app-sidebar nav [aria-disabled="true"] { display: none; }
   .app-main { width: 100%; }
 }
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 50%;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.brand-logo-form {
+  width: 96px;
+  height: 96px;
+}

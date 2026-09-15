@@ -24,8 +24,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <span class="navbar-brand fw-bold"><i
-                    class="bi bi-train-front-fill me-2 text-warning"></i>GordoSensores</span>
+            <span class="navbar-brand fw-bold"><img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
 
         </div>
     </nav>

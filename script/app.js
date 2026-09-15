@@ -17,8 +17,8 @@
   sidebar.className = "app-sidebar bg-dark text-white";
   sidebar.innerHTML = `
     <div class="p-3 border-bottom border-secondary">
-      <a class="text-white text-decoration-none fw-bold fs-5" href="${url(items[0][2])}">
-        <i class="bi bi-train-front-fill text-warning me-2"></i>GordoSensores
+      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="${url(items[0][2])}">
+        <img src="${url("assets/images/gordo_holding_icon.png")}" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
     </div>

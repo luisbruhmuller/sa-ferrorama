@@ -28,8 +28,7 @@
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
                 <div class="container-fluid">
-                    <span class="navbar-brand fw-bold"><i
-                            class="bi bi-train-front-fill me-2 text-warning"></i>GordoSensores</span>
+                    <span class="navbar-brand fw-bold"><img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
 
                 </div>
             </nav>
@@ -46,7 +45,7 @@
                                 <div class="card shadow">
                                     <div class="card-body p-4 d-inline" id="conteiner-cadastro">
                                         <div class="text-center mb-4">
-                                            <i class="bi bi-train-front-fill display-4 text-warning"></i>
+                                            <img src="../../assets/images/gordo_holding_icon.png" class="brand-logo brand-logo-form" alt="Gordo Holding">
                                             <h4 class="fw-bold mt-2">GordoSensores</h4>
                                             <p class="text-muted small">Cadastrar novo usuário</p>
                                         </div>
