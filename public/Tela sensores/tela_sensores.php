@@ -9,18 +9,19 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela Visualização de Usuários</title>
+    <title>GordoSensores — Sensores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/styles/style.css">
+    <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
 
-<body>
+<body class="app-layout bg-light">
+<main id="conteudo" class="app-main">
 
     <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
         <div class="col bg-light">
@@ -37,7 +38,7 @@
             <div class="p-4 bg-light flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="mb-0 text-secondary fw-normal">Lista de Sensores Cadastrados</h5>
-                    <a href="tela_cadastro_sensores.html" class="btn btn-primary"><i
+                    <a href="tela_cadastro_sensores.php" class="btn btn-primary"><i
                             class="bi bi-person-plus-fill me-2"></i>Novo Sensor</a>
                 </div>
 
@@ -116,7 +117,10 @@
 
 
 
-            <script src="../script/validacao.js"></script>
+            </div>
+</div>
+</main>
+<script src="../../script/app.js"></script>
 </body>
 
 </html>

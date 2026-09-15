@@ -17,19 +17,17 @@
     <title>GordoSensores — Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/styles/style.css">
+    <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
 
 <body class="bg-light">
+<main id="conteudo" class="app-main">
 
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <span class="navbar-brand fw-bold"><i
                     class="bi bi-train-front-fill me-2 text-warning"></i>GordoSensores</span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mockupNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
         </div>
     </nav>
@@ -94,19 +92,22 @@
 
                     </div>
                 </div>
-        </section>
+        </div>
+</section>
 
         <div class="card" style="width: 7rem;">
-            
-            <div class="card-body" class="gordo-holding-card">
-                <img src="../assets/images/gordo_holding_icon.png" class="card-img-top" alt="...">
+
+            <div class="card-body gordo-holding-card">
+                <img src="../../assets/images/gordo_holding_icon.png" class="card-img-top" alt="...">
             </div>
         </div>
 
 
     </div>
-    <script src="../script/login.js"></script>
+    <script src="../../script/login.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</main>
+
 </body>
 
 </html>
