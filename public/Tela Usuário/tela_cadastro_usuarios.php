@@ -8,28 +8,27 @@
 
 ?>
 
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GordoSensores — Cadastro de usuário</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
 
-<body class="bg-light">
-<div class="modal">
-    <div class="modal-content">
+<body class="app-layout bg-light">
+<main id="conteudo" class="app-main">
+<div class="cadastro-page">
+    <div class="cadastro-content">
 
-        
+
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
                 <div class="container-fluid">
-                    <span class="navbar-brand fw-bold"><i
-                            class="bi bi-train-front-fill me-2 text-warning"></i>GordoSensores</span>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mockupNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    <span class="navbar-brand fw-bold"><img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
 
                 </div>
             </nav>
@@ -46,7 +45,7 @@
                                 <div class="card shadow">
                                     <div class="card-body p-4 d-inline" id="conteiner-cadastro">
                                         <div class="text-center mb-4">
-                                            <i class="bi bi-train-front-fill display-4 text-warning"></i>
+                                            <img src="../../assets/images/gordo_holding_icon.png" class="brand-logo brand-logo-form" alt="Gordo Holding">
                                             <h4 class="fw-bold mt-2">GordoSensores</h4>
                                             <p class="text-muted small">Cadastrar novo usuário</p>
                                         </div>
@@ -91,7 +90,7 @@
                                         <br>
                                         <br>
                                         <div class="d-flex justify-content-center">
-                                            <a href="tela_usuarios.html" class="btn btn-secondary"><i
+                                            <a href="tela_usuarios.php" class="btn btn-secondary"><i
                                                     class="bi bi-arrow-left me-2"></i>Voltar</a>
                                         </div>
                                     </div>
@@ -101,15 +100,18 @@
                                 </div>
                             </div>
                         </div>
-                </section>
+                </div>
+</section>
 
             </div>
 
 
 
-            <script src="../script/login.js"></script>
+            <script src="../../script/login.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         </div>
     </div>
+</main>
+<script src="../../script/app.js"></script>
 </body>
 </html>

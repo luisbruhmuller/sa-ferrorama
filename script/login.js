@@ -1,4 +1,4 @@
-document.getElementById("enviar_login").addEventListener("click", function () {
+document.getElementById("enviar_login")?.addEventListener("click", function () {
 
     const login = document.getElementById("login-login").value;
     const senha = document.getElementById("login-senha").value;
@@ -19,10 +19,7 @@ document.getElementById("enviar_login").addEventListener("click", function () {
 
         sucesso.classList.remove("d-none");
 
-        setTimeout(() => {
-            
-        }, 800);
-        window.location.href = '../public/tela_geral_home.html'
+        setTimeout(() => { window.location.href = '../Tela Home/tela_geral_home.php'; }, 800);
 
     } else {
 
@@ -30,7 +27,7 @@ document.getElementById("enviar_login").addEventListener("click", function () {
     }
 });
 
-document.getElementById("enviar_cadastro").addEventListener("click", function () {
+document.getElementById("enviar_cadastro")?.addEventListener("click", function () {
 
     const login = document.getElementById("login").value;
     const senha = document.getElementById("senha").value;
