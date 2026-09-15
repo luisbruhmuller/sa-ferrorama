@@ -16,12 +16,10 @@
   <title>GordoSensores — Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
-<body class="bg-light">
-
-
-
-
+<body class="app-layout bg-light">
+<main id="conteudo" class="app-main">
     <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
 
 
@@ -125,7 +123,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <span class="fw-semibold"><i class="bi bi-geo-alt me-2 text-danger"></i>Localização em Tempo Real</span>
-                  <a href="" class="btn btn-sm btn-outline-primary">Ver mapa completo</a>
+                  <a aria-disabled="true" title="Em breve" class="btn btn-sm btn-outline-primary disabled">Ver mapa completo</a>
                 </div>
                 <div class="card-body p-0">
                   <div class="bg-secondary bg-opacity-10 d-flex flex-column align-items-center justify-content-center" style="height:220px">
@@ -149,7 +147,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <span class="fw-semibold"><i class="bi bi-bell me-2 text-warning"></i>Alertas Recentes</span>
-                  <a href="" class="btn btn-sm btn-outline-warning">Ver todos</a>
+                  <a aria-disabled="true" title="Em breve" class="btn btn-sm btn-outline-warning disabled">Ver todos</a>
                 </div>
                 <div class="card-body p-0">
                   <ul class="list-group list-group-flush">
@@ -202,10 +200,8 @@
         </div>
       </div>
     </div>
-  </section>
-
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</main>
+<script src="../../script/app.js"></script>
 </body>
 </html>
