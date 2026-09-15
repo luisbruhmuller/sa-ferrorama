@@ -2,18 +2,9 @@
 
 Descreva de forma objetiva as alterações.
 
-## Por que essa mudança é necessária?
-
-Explique o problema ou necessidade atendida.
-
 ## issues relacionadas
+
 coloque o numero da issues relacionadas a essa PR
-
-## Como testar?
-
-1. 
-2. 
-3. 
 
 ## Checklist
 
@@ -22,7 +13,3 @@ coloque o numero da issues relacionadas a essa PR
 - [ ] Não incluí senhas ou dados sensíveis
 - [ ] Atualizei a documentação, se necessário
 - [ ] O PR contém apenas mudanças relacionadas à tarefa
-
-## Evidências
-
-Adicione imagens, vídeos ou logs quando necessário.
