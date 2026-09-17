@@ -1,19 +1,29 @@
 <?php
+/**
+ * Dashboard ferroviário. Indicadores, localização e alertas são exemplos fixos no HTML;
+ * esta página não consulta o banco nem recebe leituras de sensores.
+ */
+// Carrega o menu; o template atual também imprime sua própria estrutura HTML.
 include '../templates/sidebar.php';
 
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GordoSensores — Dashboard</title>
+  <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Ícones fornecidos pelas classes bi e bi-*. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
   <link rel="stylesheet" href="../../styles/style.css">
 </head>
 <body class="app-layout bg-light">
+<!-- Área principal da tela, posicionada pela classe app-main. -->
 <main id="conteudo" class="app-main">
     <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
 
@@ -22,6 +32,7 @@ include '../templates/sidebar.php';
       <div class="col bg-light">
         <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
           <h6 class="mb-0 fw-bold"><i class="bi bi-speedometer2 me-2 text-warning"></i>Dashboard Principal</h6>
+<!-- Seletor demonstrativo: não há evento que atualize o dashboard ao trocar o trem. -->
           <form>
             <div class="input-group input-group-sm">
               <select class="form-select form-select-sm" aria-label="Selecionar trem">
@@ -41,6 +52,8 @@ include '../templates/sidebar.php';
         </div>
 
         <div class="p-4">
+<!-- Quatro indicadores: velocidade, consumo, saúde e alertas.
+Valores e larguras das barras são definidos manualmente, sem cálculo dinâmico. -->
           <div class="row g-3 mb-4">
             <div class="col-sm-6 col-xl-3">
               <div class="card border-start border-5 border-primary shadow-sm h-100">
@@ -125,6 +138,7 @@ include '../templates/sidebar.php';
           </div>
 
           <div class="row g-3">
+<!-- Ilustração do mapa com localização fixa; não existe integração com serviço de mapas. -->
             <div class="col-lg-5">
               <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -149,6 +163,7 @@ include '../templates/sidebar.php';
               </div>
             </div>
 
+<!-- Alertas recentes com severidade, sensor de origem e situação demonstrativos. -->
             <div class="col-lg-7">
               <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -187,6 +202,7 @@ include '../templates/sidebar.php';
             </div>
 
 
+<!-- Resumo dos seis subsistemas; textos e cores representam estados fixos. -->
             <div class="col-12">
               <div class="card shadow-sm">
                 <div class="card-header fw-semibold"><i class="bi bi-grid me-2"></i>Status dos Subsistemas</div>
@@ -206,6 +222,7 @@ include '../templates/sidebar.php';
         </div>
       </div>
     </div>
+<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </main>
 

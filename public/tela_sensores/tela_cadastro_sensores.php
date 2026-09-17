@@ -1,4 +1,8 @@
 <?php
+/**
+ * Cadastro independente de sensores, ainda apenas visual. Não possui rotina de envio.
+ * A listagem de sensores contém outro cadastro, em modal.
+ */
 
 
 
@@ -10,16 +14,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GordoSensores — Cadastro de Sensor</title>
+    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
   <link rel="stylesheet" href="../../styles/style.css">
 </head>
 
 <body class="app-layout bg-light">
+<!-- Menu lateral: links abrem telas; itens em span são informativos.
+O destaque da página atual está fixo no HTML. -->
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
       <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
@@ -34,6 +44,7 @@
     <div class="p-3 border-top border-secondary">
       <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
     </div></aside>
+<!-- Área principal da tela, posicionada pela classe app-main. -->
 <main id="conteudo" class="app-main">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -60,6 +71,7 @@
                                     <p class="text-muted small">Cadastrar Novo Sensor IoT</p>
                                 </div>
                                 <div class="mb-3">
+                                    <!-- Identificação do sensor, separada da grandeza que ele mede. -->
                                     <label class="form-label fw-semibold">Nome / Código do Sensor</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-tag"></i></span>
@@ -68,6 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
+                                    <!-- Grandeza monitorada; a opção inicial vazia representa ausência de seleção. -->
                                     <label class="form-label fw-semibold">Tipo de Sensor</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-activity"></i></span>
@@ -82,6 +95,7 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <!-- Parte do trem à qual o sensor será associado. -->
                                     <label class="form-label fw-semibold">Subsistema Vinculado</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-gear"></i></span>
@@ -97,6 +111,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
+                                    <!-- Posição física do sensor dentro do trem. -->
                                     <label class="form-label fw-semibold">Local de Instalação</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
@@ -106,6 +121,7 @@
                                 </div>
 
                                 <div class="mb-4">
+                                    <!-- Referência pretendida para alertas; esta tela não compara leituras com esse limite. -->
                                     <label class="form-label fw-semibold">Limite Crítico Máximo</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-exclamation-triangle"></i></span>
@@ -114,10 +130,13 @@
                                     </div>
                                 </div>
 
+<!-- Ainda sem rotina de envio. required não dispara validação automática
+com este botão type=button fora de um formulário. -->
                                 <button id="enviar_cadastro" class="btn btn-warning w-100 fw-semibold mb-3" type="button">
                                     <i class="bi bi-plus-circle-fill me-2"></i>
                                     Cadastrar Sensor
                                 </button>
+<!-- Mensagens preparadas para integração futura; nenhum script desta página remove d-none. -->
                                 <div id="alert-sucesso" class="alert alert-success d-none" role="alert">
                                     Sensor cadastrado com sucesso!
                                 </div>
@@ -137,6 +156,7 @@
 </section>
 
     </div>
+    <!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </main>
 

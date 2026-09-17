@@ -1,17 +1,27 @@
 <?php
+/**
+ * Menu compartilhado pelo dashboard e pelos sensores. Também imprime DOCTYPE, html e head,
+ * estrutura repetida pelas páginas que o incluem. URLs HTML são relativas à página acessada.
+ */
 
         ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GordoSensores — Dashboard</title>
+  <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Ícones fornecidos pelas classes bi e bi-*. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
   <link rel="stylesheet" href="../../styles/style.css">
 </head>
+<!-- Menu lateral: links abrem telas; itens em span são informativos.
+O destaque da página atual está fixo no HTML. -->
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
       <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
@@ -19,6 +29,7 @@
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
     </div>
+<!-- Os itens Em breve não têm destino. Alguns links ainda usam nomes antigos de pastas. -->
 <nav
     class="nav flex-column p-2 gap-1 flex-grow-1"
     aria-label="Menu principal"

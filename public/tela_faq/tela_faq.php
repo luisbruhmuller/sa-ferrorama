@@ -1,21 +1,50 @@
 <?php
 include '../templates/sidebar.php';
+/**
+ * Perguntas e respostas fixas. A expansão das respostas depende do JavaScript do Bootstrap.
+ */
+?>
 
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GordoSensores — FAQ</title>
+    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
 
 <body class="app-layout bg-light">
+<!-- Menu lateral: links abrem telas; itens em span são informativos.
+O destaque da página atual está fixo no HTML. -->
+<aside class="app-sidebar bg-dark text-white">
+    <div class="p-3 border-bottom border-secondary">
+      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../tela_home/tela_geral_home.php">
+        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
+      </a>
+      <br>
+      <div class="small text-white-50">Monitoramento ferroviário</div>
+    </div>
+    <nav class="nav flex-column p-2 gap-1 flex-grow-1" aria-label="Menu principal">
+      <a href="../tela_home/tela_geral_home.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+      <a href="../tela_sensores/tela_sensores.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-cpu me-2"></i>Sensores IoT</a>
+      <a href="../tela_usuario/tela_usuarios.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-people me-2"></i>Gerenciar usuários</a>
+      <a href="tela_faq.php" class="nav-link text-white rounded px-3 py-2 bg-warning bg-opacity-25" aria-current="page"><i class="bi bi-question-circle me-2"></i>FAQ</a>
+    </nav>
+    <div class="p-3 border-top border-secondary">
+      <a class="text-warning text-decoration-none" href="../tela_usuario/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
+    </div>
+</aside>
 
+<!-- Área principal da tela, posicionada pela classe app-main. -->
 <main id="conteudo" class="app-main">
 
     <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
@@ -26,6 +55,8 @@ include '../templates/sidebar.php';
     <div class="p-4">
         <h5 class="text-secondary fw-normal mb-4">Perguntas Frequentes</h5>
 
+<!-- data-bs-target liga cada botão ao ID da resposta.
+data-bs-parent agrupa as respostas; show deixa a primeira aberta inicialmente. -->
         <div class="accordion shadow-sm" id="faq">
 
             <div class="accordion-item">
@@ -121,6 +152,7 @@ include '../templates/sidebar.php';
 
         </div>
 
+<!-- Contato fixo de suporte para dúvidas não respondidas acima. -->
         <div class="card shadow-sm border-0 mt-4">
             <div class="card-body text-center">
                 <h6 class="fw-bold">Não encontrou sua resposta?</h6>
@@ -131,6 +163,7 @@ include '../templates/sidebar.php';
 
 </main>
 
+<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
