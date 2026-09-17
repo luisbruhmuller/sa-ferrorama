@@ -21,7 +21,7 @@
       href="../../public/Tela%20Home/tela_geral_home.php"
     >
       <img
-        src="../../assets/images/gordo_holding_icon.png"
+        src="../../assets/images/logo.ico"
         class="brand-logo me-2"
         alt="Gordo Holding"
       >
