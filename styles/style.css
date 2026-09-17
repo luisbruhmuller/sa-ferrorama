@@ -35,3 +35,31 @@
   width: 96px;
   height: 96px;
 }
+
+.trilho {
+    width: 500px;
+    height: 500px;
+
+    border: 8px solid #333;
+
+    border-radius: 50%;
+
+    position: relative;
+
+    margin: 50px auto;
+}
+
+/* Segundo trilho */
+.trilho-interno {
+    width: 450px;
+    height: 450px;
+
+    border: 8px solid #333;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    top: 17px;
+    left: 17px;
+}
