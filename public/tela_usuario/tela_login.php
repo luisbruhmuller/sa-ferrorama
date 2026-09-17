@@ -94,12 +94,7 @@
         </div>
 </section>
 
-        <div class="card" style="width: 7rem;">
 
-            <div class="card-body gordo-holding-card">
-                <img src="../../assets/images/logo.ico" class="card-img-top" alt="Gordo Holding">
-            </div>
-        </div>
 
 
     </div>
