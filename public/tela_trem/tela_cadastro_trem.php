@@ -1,5 +1,6 @@
 <?php
+include '../templates/sidebar.php';
 /**
- * Reservado para o cadastro de trens. Antes vazio; ainda não implementa
- * interface, validação ou persistência.
+ * Perguntas e respostas fixas. A expansão das respostas depende do JavaScript do Bootstrap.
  */
+?>
