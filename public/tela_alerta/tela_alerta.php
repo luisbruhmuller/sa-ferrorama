@@ -1,9 +1,8 @@
 <?php
+include '../templates/sidebar.php';
 /**
- * Central de alertas demonstrativa. Registros, filtros, busca e paginação são estáticos;
- * os botões ainda não executam operações sobre os alertas.
+ * Perguntas e respostas fixas. A expansão das respostas depende do JavaScript do Bootstrap.
  */
-
 ?>
 
 <!DOCTYPE html>

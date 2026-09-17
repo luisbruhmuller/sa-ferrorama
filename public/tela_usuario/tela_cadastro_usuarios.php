@@ -1,14 +1,4 @@
 <?php
-/**
- * Cadastro controlado por ../../script/login.js. Verifica confirmação de senha e e-mail
- * duplicado antes de gravar no localStorage; não utiliza a conexão MySQL.
- */
-
-
-
-
-
-
 
 ?>
 
