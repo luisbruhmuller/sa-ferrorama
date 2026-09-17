@@ -13,6 +13,8 @@ CREATE TABLE sensor (
     localizacao VARCHAR(100) NOT NULL,
     tipo_dado VARCHAR(50) NOT NULL ,
     id_trem INT NOT NULL,
+    tipo VARCHAR (200),
+    conjunto VARCHAR(200),
     FOREIGN KEY (id_trem) REFERENCES trem(id_trem)
 );
 

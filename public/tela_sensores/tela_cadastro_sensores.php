@@ -23,8 +23,9 @@
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
       <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
-        <img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
+        <img src="../../assets/images/Imagem do Codex 17 de set. de 2026, 08_28_05.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
       </a>
+      <br>
       <div class="small text-white-50">Monitoramento ferroviário</div>
     </div>
     <nav class="nav flex-column p-2 gap-1 flex-grow-1" aria-label="Menu principal">
