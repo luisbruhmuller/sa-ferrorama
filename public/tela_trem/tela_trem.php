@@ -1,4 +1,7 @@
 <?php
+/**
+ * Listagem demonstrativa de trens. Os registros são fixos e as ações não estão implementadas.
+ */
 
 
 
@@ -11,16 +14,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GordoSensores — Trens</title>
+    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
 
 <body class="app-layout bg-light">
+    <!-- Menu lateral: links abrem telas; itens em span são informativos.
+O destaque da página atual está fixo no HTML. -->
     <aside class="app-sidebar bg-dark text-white">
         <div class="p-3 border-bottom border-secondary">
             <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
@@ -38,6 +47,7 @@
             <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
         </div>
     </aside>
+    <!-- Área principal da tela, posicionada pela classe app-main. -->
     <main id="conteudo" class="app-main">
 
         <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
@@ -55,6 +65,8 @@
                 <div class="p-4 bg-light flex-grow-1">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h5 class="mb-0 text-secondary fw-normal">Lista de Trens Cadastrados</h5>
+<!-- Pendência: Novo Trem aponta para um arquivo de sensores inexistente nesta pasta.
+A tela tela_cadastro_trem.php ainda não foi implementada. -->
                         <a href="tela_cadastro_sensores.php" class="btn text-white"
                             style="background-color: #0b3d91;">
                             <i class="bi bi-person-plus-fill me-2"></i>Novo Trem</a>
@@ -62,8 +74,10 @@
 
                     <div class="card shadow-sm border-0 rounded-3">
                         <div class="card-body p-0">
+                            <!-- Contêiner que permite rolagem horizontal da tabela em telas estreitas. -->
                             <div class="table-responsive">
                                 <table class="table table-hover table-striped mb-0 align-middle">
+                                    <!-- Cabeçalho que define o significado e a ordem das colunas. -->
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col" class="ps-4 py-3 rounded-top-start">ID</th>
@@ -74,6 +88,8 @@
                                             <th scope="col" class="text-end pe-4 py-3 rounded-top-end">Ações</th>
                                         </tr>
                                     </thead>
+                                    <!-- Registros de exemplo escritos diretamente no HTML, sem consulta ao banco.
+Os botões das linhas ainda não executam alterações nos registros. -->
                                     <tbody>
                                         <tr>
                                             <th scope="row" class="ps-4">01</th>

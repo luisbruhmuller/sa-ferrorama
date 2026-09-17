@@ -1,4 +1,8 @@
 <?php
+/**
+ * Cadastro controlado por ../../script/login.js. Verifica confirmação de senha e e-mail
+ * duplicado antes de gravar no localStorage; não utiliza a conexão MySQL.
+ */
 
 
 
@@ -10,16 +14,22 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GordoSensores — Cadastro de usuário</title>
+    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Ícones fornecidos pelas classes bi e bi-*. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
   <link rel="stylesheet" href="../../styles/style.css">
 </head>
 
 <body class="app-layout bg-light">
+<!-- Menu lateral: links abrem telas; itens em span são informativos.
+O destaque da página atual está fixo no HTML. -->
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
       <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
@@ -33,6 +43,7 @@
     <div class="p-3 border-top border-secondary">
       <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
     </div></aside>
+<!-- Área principal da tela, posicionada pela classe app-main. -->
 <main id="conteudo" class="app-main">
 <div class="cadastro-page">
     <div class="cadastro-content">
@@ -62,6 +73,8 @@
                                             <h4 class="fw-bold mt-2">GordoSensores</h4>
                                             <p class="text-muted small">Cadastrar novo usuário</p>
                                         </div>
+<!-- Campos lidos por login.js: login, senha e confirmar-senha.
+A confirmação permite comparar as duas senhas digitadas. -->
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">E-mail do usuário</label>
                                             <div class="input-group">
@@ -70,6 +83,8 @@
                                                     placeholder="usuario@empresa.com" id="login" />
                                             </div>
                                         </div>
+<!-- Campos lidos por login.js: login, senha e confirmar-senha.
+A confirmação permite comparar as duas senhas digitadas. -->
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Senha do usuário</label>
                                             <div class="input-group">
@@ -79,6 +94,8 @@
                                             </div>
                                         </div>
 
+<!-- Campos lidos por login.js: login, senha e confirmar-senha.
+A confirmação permite comparar as duas senhas digitadas. -->
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Repetir senha</label>
                                             <div class="input-group">
@@ -88,11 +105,13 @@
                                             </div>
                                         </div>
 
+<!-- O clique aciona o cadastro no localStorage pelo script compartilhado. -->
                                         <button id="enviar_cadastro" class="btn btn-warning w-100 fw-semibold"
                                             type="button">
                                             <i class="bi bi-box-arrow-in-right me-2"></i>
                                             Cadastrar usuário
                                         </button>
+<!-- O script alterna d-none e pode substituir o texto da mensagem de erro. -->
                                         <div id="alert-sucesso" class="alert alert-success d-none" role="alert">
                                             Usuário cadastrado com sucesso!
                                         </div>
@@ -120,7 +139,9 @@
 
 
 
+<!-- Integração pelo ID dos campos e do botão; os dados são armazenados no navegador. -->
             <script src="../../script/login.js"></script>
+            <!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         </div>
     </div>
