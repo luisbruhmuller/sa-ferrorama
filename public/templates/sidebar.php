@@ -69,10 +69,12 @@ O destaque da página atual está fixo no HTML. -->
       <small class="d-block ms-4">Em breve</small>
     </span>
 
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-train-front me-2"></i>Detalhes Trem
-      <small class="d-block ms-4">Em breve</small>
-    </span>
+    <a
+      href="../../public/tela_trem/tela_trem.php"
+      class="nav-link text-white rounded px-3 py-2"
+    >
+      <i class="bi bi-cpu me-2"></i>Detalhes Trem
+    </a>
 
     <a
       href="../../public/tela_sensores/tela_sensores.php"
@@ -87,6 +89,15 @@ O destaque da página atual está fixo no HTML. -->
     >
       <i class="bi bi-people me-2"></i>Gerenciar usuários
     </a>
+
+    <a
+      href="../../public/tela_faq/tela_faq.php"
+      class="nav-link text-white rounded px-3 py-2"
+    >
+      <i class="bi bi-question-circle me-2"></i>FAQ
+    </a>
+
+
   </nav>
     <div class="p-3 border-top border-secondary">
       <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
