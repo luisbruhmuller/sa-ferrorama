@@ -22,10 +22,22 @@ include '../templates/sidebar.php';
 </head>
 
 <body class="app-layout bg-light">
-    <!-- Menu lateral: links abrem telas; itens em span são informativos.
-O destaque da página atual está fixo no HTML. -->
-    
-    <!-- Área principal da tela, posicionada pela classe app-main. -->
+    <aside class="app-sidebar bg-dark text-white">
+        <div class="p-3 border-bottom border-secondary">
+            <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
+                <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
+            </a>
+            <br>
+            <div class="small text-white-50">Monitoramento ferroviário</div>
+        </div>
+        <nav class="nav flex-column p-2 gap-1 flex-grow-1" aria-label="Menu principal">
+            <a href="../../public/Tela%20Home/tela_geral_home.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-map me-2"></i>Mapa<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-graph-up me-2"></i>Métricas<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-exclamation-triangle me-2"></i>Alertas<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-tools me-2"></i>Manutenção<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-file-earmark-bar-graph me-2"></i>Relatórios<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white rounded px-3 py-2" aria-disabled="true"><i class="bi bi-train-front me-2"></i>Detalhes Trem
+</span><a href="../../public/Tela%20sensores/tela_sensores.php" class="nav-link text-white rounded px-3 py-2 bg-warning bg-opacity-25" aria-current="page"><i class="bi bi-cpu me-2"></i>Sensores IoT</a><a href="../../public/Tela%20Usu%C3%A1rio/tela_usuarios.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-people me-2"></i>Gerenciar usuários</a>
+        </nav>
+        <div class="p-3 border-top border-secondary">
+            <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
+        </div>
+    </aside>
     <main id="conteudo" class="app-main">
 
         <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
