@@ -26,7 +26,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <span class="navbar-brand fw-bold"><img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
+            <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
 
         </div>
     </nav>
@@ -43,7 +43,7 @@
                         <div class="card shadow">
                             <div class="card-body p-4">
                                 <div class="text-center mb-4">
-                                    <img src="../../assets/images/gordo_holding_icon.png" class="brand-logo brand-logo-form" alt="Gordo Holding">
+                                    <img src="../../assets/images/logo.ico" class="brand-logo brand-logo-form" alt="Gordo Holding">
                                     <h4 class="fw-bold mt-2">GordoSensores</h4>
                                     <p class="text-muted small">Sistema de Monitoramento Ferroviário</p>
                                 </div>
@@ -94,12 +94,7 @@
         </div>
 </section>
 
-        <div class="card" style="width: 7rem;">
 
-            <div class="card-body gordo-holding-card">
-                <img src="../../assets/images/gordo_holding_icon.png" class="card-img-top" alt="Gordo Holding">
-            </div>
-        </div>
 
 
     </div>
