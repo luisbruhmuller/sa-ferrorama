@@ -1,6 +1,7 @@
 <?php
-?>
+include '../templates/sidebar.php';
 
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -14,24 +15,6 @@
 </head>
 
 <body class="app-layout bg-light">
-<aside class="app-sidebar bg-dark text-white">
-    <div class="p-3 border-bottom border-secondary">
-      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../tela_home/tela_geral_home.php">
-        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
-      </a>
-      <br>
-      <div class="small text-white-50">Monitoramento ferroviário</div>
-    </div>
-    <nav class="nav flex-column p-2 gap-1 flex-grow-1" aria-label="Menu principal">
-      <a href="../tela_home/tela_geral_home.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
-      <a href="../tela_sensores/tela_sensores.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-cpu me-2"></i>Sensores IoT</a>
-      <a href="../tela_usuario/tela_usuarios.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-people me-2"></i>Gerenciar usuários</a>
-      <a href="tela_faq.php" class="nav-link text-white rounded px-3 py-2 bg-warning bg-opacity-25" aria-current="page"><i class="bi bi-question-circle me-2"></i>FAQ</a>
-    </nav>
-    <div class="p-3 border-top border-secondary">
-      <a class="text-warning text-decoration-none" href="../tela_usuario/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
-    </div>
-</aside>
 
 <main id="conteudo" class="app-main">
 
