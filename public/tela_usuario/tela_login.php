@@ -1,14 +1,4 @@
 <?php
-/**
- * Login controlado por ../../script/login.js. Compara dados do localStorage do navegador;
- * não autentica pelo MySQL nem cria uma sessão PHP.
- */
-
-
-
-
-
-
 
 ?>
 
