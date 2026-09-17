@@ -23,7 +23,7 @@
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
       <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
-        <img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
+        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
     </div>
@@ -41,7 +41,7 @@
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
                 <div class="container-fluid">
-                    <span class="navbar-brand fw-bold"><img src="../../assets/images/gordo_holding_icon.png" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
+                    <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
 
                 </div>
             </nav>
@@ -58,7 +58,7 @@
                                 <div class="card shadow">
                                     <div class="card-body p-4 d-inline" id="conteiner-cadastro">
                                         <div class="text-center mb-4">
-                                            <img src="../../assets/images/gordo_holding_icon.png" class="brand-logo brand-logo-form" alt="Gordo Holding">
+                                            <img src="../../assets/images/logo.ico" class="brand-logo brand-logo-form" alt="Gordo Holding">
                                             <h4 class="fw-bold mt-2">GordoSensores</h4>
                                             <p class="text-muted small">Cadastrar novo usuário</p>
                                         </div>
