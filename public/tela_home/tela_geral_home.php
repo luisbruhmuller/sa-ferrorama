@@ -1,37 +1,29 @@
 <?php
-
-
-
-
-
-
+/**
+ * Dashboard ferroviário. Indicadores, localização e alertas são exemplos fixos no HTML;
+ * esta página não consulta o banco nem recebe leituras de sensores.
+ */
+// Carrega o menu; o template atual também imprime sua própria estrutura HTML.
+include '../templates/sidebar.php';
 
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GordoSensores — Dashboard</title>
+  <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Ícones fornecidos pelas classes bi e bi-*. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
   <link rel="stylesheet" href="../../styles/style.css">
 </head>
 <body class="app-layout bg-light">
-<aside class="app-sidebar bg-dark text-white">
-    <div class="p-3 border-bottom border-secondary">
-      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
-        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
-      </a>
-      <div class="small text-white-50">Monitoramento ferroviário</div>
-    </div>
-    <nav class="nav flex-column p-2 gap-1 flex-grow-1" aria-label="Menu principal">
-      <a href="../../public/Tela%20Home/tela_geral_home.php" class="nav-link text-white rounded px-3 py-2 bg-warning bg-opacity-25" aria-current="page"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-map me-2"></i>Mapa<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-graph-up me-2"></i>Métricas<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-exclamation-triangle me-2"></i>Alertas<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-tools me-2"></i>Manutenção<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-file-earmark-bar-graph me-2"></i>Relatórios<small class="d-block ms-4">Em breve</small></span><span class="nav-link text-white-50 px-3 py-2" aria-disabled="true"><i class="bi bi-train-front me-2"></i>Detalhes Trem<small class="d-block ms-4">Em breve</small></span><a href="../../public/Tela%20sensores/tela_sensores.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-cpu me-2"></i>Sensores IoT</a><a href="../../public/Tela%20Usu%C3%A1rio/tela_usuarios.php" class="nav-link text-white rounded px-3 py-2"><i class="bi bi-people me-2"></i>Gerenciar usuários</a>
-    </nav>
-    <div class="p-3 border-top border-secondary">
-      <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
-    </div></aside>
+<!-- Área principal da tela, posicionada pela classe app-main. -->
 <main id="conteudo" class="app-main">
     <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
 
@@ -40,6 +32,18 @@
       <div class="col bg-light">
         <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
           <h6 class="mb-0 fw-bold"><i class="bi bi-speedometer2 me-2 text-warning"></i>Dashboard Principal</h6>
+<!-- Seletor demonstrativo: não há evento que atualize o dashboard ao trocar o trem. -->
+          <form>
+            <div class="input-group input-group-sm">
+              <select class="form-select form-select-sm" aria-label="Selecionar trem">
+                <option selected>Selecionar trem</option>
+                <option value="1">TRN-01</option>
+                <option value="2">TRN-02</option>
+                <option value="3">TRN-03</option>
+                <option value="4">TRN-04</option>
+              </select>
+  </form>
+        </div>
           <div class="d-flex align-items-center gap-3">
             <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:8px"></i>Sistema Online</span>
             <span class="text-muted small"><i class="bi bi-clock me-1"></i>Atualizado: 14:32:07</span>
@@ -48,6 +52,8 @@
         </div>
 
         <div class="p-4">
+<!-- Quatro indicadores: velocidade, consumo, saúde e alertas.
+Valores e larguras das barras são definidos manualmente, sem cálculo dinâmico. -->
           <div class="row g-3 mb-4">
             <div class="col-sm-6 col-xl-3">
               <div class="card border-start border-5 border-primary shadow-sm h-100">
@@ -132,6 +138,7 @@
           </div>
 
           <div class="row g-3">
+<!-- Ilustração do mapa com localização fixa; não existe integração com serviço de mapas. -->
             <div class="col-lg-5">
               <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -156,6 +163,7 @@
               </div>
             </div>
 
+<!-- Alertas recentes com severidade, sensor de origem e situação demonstrativos. -->
             <div class="col-lg-7">
               <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -194,6 +202,7 @@
             </div>
 
 
+<!-- Resumo dos seis subsistemas; textos e cores representam estados fixos. -->
             <div class="col-12">
               <div class="card shadow-sm">
                 <div class="card-header fw-semibold"><i class="bi bi-grid me-2"></i>Status dos Subsistemas</div>
@@ -213,6 +222,7 @@
         </div>
       </div>
     </div>
+<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </main>
 

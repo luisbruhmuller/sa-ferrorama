@@ -1,19 +1,28 @@
 <?php
-
+include '../templates/sidebar.php';
+/**
+ * Perguntas e respostas fixas. A expansão das respostas depende do JavaScript do Bootstrap.
+ */
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RailSense — Alertas</title>
+  <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Ícones fornecidos pelas classes bi e bi-*. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
 <body class="app-layout bg-light">
 
+<!-- Menu lateral: links abrem telas; itens em span são informativos.
+O destaque da página atual está fixo no HTML. -->
 <aside class="app-sidebar bg-dark text-white">
   <div class="p-3 border-bottom border-secondary">
     <a
@@ -113,6 +122,7 @@
         <button class="btn btn-sm btn-outline-danger"><i class="bi bi-check-all me-1"></i>Marcar todos como lidos</button>
       </div>
       <div class="card-body">
+<!-- Busca e contagens são demonstrativas; os controles não filtram a tabela. -->
         <!-- Filtros -->
         <div class="row g-2 mb-3">
           <div class="col-auto"><button class="btn btn-danger btn-sm active">Crítico <span class="badge bg-white text-danger">1</span></button></div>
@@ -125,8 +135,10 @@
         </div>
 
         <!-- Tabela de alertas -->
+        <!-- Contêiner que permite rolagem horizontal da tabela em telas estreitas. -->
         <div class="table-responsive">
           <table class="table table-hover align-middle">
+            <!-- Cabeçalho que define o significado e a ordem das colunas. -->
             <thead class="table-dark">
               <tr>
                 <th></th>
@@ -140,6 +152,8 @@
                 <th>Ações</th>
               </tr>
             </thead>
+            <!-- Registros de exemplo escritos diretamente no HTML, sem consulta ao banco.
+Os botões das linhas ainda não executam alterações nos registros. -->
             <tbody>
               <tr class="table-danger">
                 <td><input type="checkbox"/></td>
@@ -201,6 +215,7 @@
           </table>
         </div>
 
+<!-- Navegação visual: os links não carregam novas páginas de registros. -->
         <!-- Paginação -->
         <nav>
           <ul class="pagination pagination-sm justify-content-end">
@@ -217,6 +232,7 @@
 
 </div><!-- /container -->
 
+<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

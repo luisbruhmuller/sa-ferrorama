@@ -1,22 +1,26 @@
 <?php
-
-
-
-
-
-
+/**
+ * Lista fixa de sensores e modal de cadastro. cadastrarSensor() verifica campos vazios,
+ * mas não persiste dados nem acrescenta registros à tabela.
+ */
+// Carrega o menu; o template atual também imprime sua própria estrutura HTML.
+include '../templates/sidebar.php';
 
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GordoSensores — Sensores</title>
+    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
 
@@ -53,14 +57,17 @@
             <div class="p-4 bg-light flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="mb-0 text-secondary fw-normal">Lista de Sensores Cadastrados</h5>
+<!-- data-bs-target indica o ID do modal que o Bootstrap deve abrir. -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSensor"><i
                             class="bi bi-person-plus-fill me-2"></i>Novo Sensor</button>
                 </div>
 
                     <div class="card shadow-sm border-0 rounded-3">
                         <div class="card-body p-0">
+                            <!-- Contêiner que permite rolagem horizontal da tabela em telas estreitas. -->
                             <div class="table-responsive">
                                 <table class="table table-hover table-striped mb-0 align-middle">
+                                    <!-- Cabeçalho que define o significado e a ordem das colunas. -->
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col" class="ps-4 py-3 rounded-top-start">ID</th>
@@ -71,6 +78,8 @@
                                             <th scope="col" class="text-end pe-4 py-3 rounded-top-end">Ações</th>
                                         </tr>
                                     </thead>
+                                    <!-- Registros de exemplo escritos diretamente no HTML, sem consulta ao banco.
+Os botões das linhas ainda não executam alterações nos registros. -->
                                     <tbody>
                                         <tr>
                                             <th scope="row" class="ps-4">01</th>
@@ -137,6 +146,7 @@
     </main>
 
 <!-- popup de cadastro de sensor -->
+<!-- Janela de cadastro; data-bs-dismiss fecha o modal sem salvar os campos. -->
 <div class="modal fade" id="modalSensor" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -146,10 +156,12 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
+                    <!-- Identificação do sensor, separada da grandeza que ele mede. -->
                     <label class="form-label fw-semibold">Nome / Código do Sensor</label>
                     <input type="text" class="form-control" placeholder="Ex: Sensor TMP-01" id="nome_sensor" />
                 </div>
                 <div class="mb-3">
+                    <!-- Grandeza monitorada; a opção inicial vazia representa ausência de seleção. -->
                     <label class="form-label fw-semibold">Tipo de Sensor</label>
                     <select class="form-select" id="tipo_sensor">
                         <option value="" selected disabled>Selecione o tipo...</option>
@@ -160,6 +172,7 @@
                     </select>
                 </div>
                 <div class="mb-3">
+                    <!-- Parte do trem à qual o sensor será associado. -->
                     <label class="form-label fw-semibold">Subsistema Vinculado</label>
                     <select class="form-select" id="subsistema">
                         <option value="" selected disabled>Selecione o subsistema...</option>
@@ -172,14 +185,17 @@
                     </select>
                 </div>
                 <div class="mb-3">
+                    <!-- Posição física do sensor dentro do trem. -->
                     <label class="form-label fw-semibold">Local de Instalação</label>
                     <input type="text" class="form-control" placeholder="Ex: Vagão 1 / Roda Dianteira" id="localizacao" />
                 </div>
                 <div class="mb-3">
+                    <!-- Referência pretendida para alertas; esta tela não compara leituras com esse limite. -->
                     <label class="form-label fw-semibold">Limite Crítico Máximo</label>
                     <input type="number" class="form-control" placeholder="Ex: 85" id="limite_maximo" />
                 </div>
 
+<!-- Mensagens alternadas pela função cadastrarSensor() abaixo. -->
                 <div id="alert-sucesso" class="alert alert-success d-none">Sensor cadastrado com sucesso!</div>
                 <div id="alert-erro" class="alert alert-danger d-none">Erro ao cadastrar o sensor! Verifique os dados.</div>
             </div>
@@ -191,21 +207,27 @@
     </div>
 </div>
 
+<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// Validação visual: não envia requisições nem salva no navegador ou banco.
     function cadastrarSensor() {
+// Lê os cinco campos do modal; .value retorna texto, inclusive no input numérico.
         var nome = document.getElementById("nome_sensor").value;
         var tipo = document.getElementById("tipo_sensor").value;
         var subsistema = document.getElementById("subsistema").value;
         var local = document.getElementById("localizacao").value;
         var limite = document.getElementById("limite_maximo").value;
 
+// Oculta o resultado anterior antes de avaliar a nova tentativa.
         document.getElementById("alert-sucesso").classList.add("d-none");
         document.getElementById("alert-erro").classList.add("d-none");
 
+// Rejeita campos vazios; não valida espaços, faixa numérica ou duplicidade.
         if (nome == "" || tipo == "" || subsistema == "" || local == "" || limite == "") {
             document.getElementById("alert-erro").classList.remove("d-none");
         } else {
+// Sucesso significa apenas campos preenchidos; nenhum registro é persistido.
             document.getElementById("alert-sucesso").classList.remove("d-none");
         }
     }
