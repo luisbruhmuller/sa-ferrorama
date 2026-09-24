@@ -1,10 +1,12 @@
-CREATE DATABASE sa_ferrorama 
-USE sa_ferrorama
+CREATE DATABASE sa_ferrorama;
+USE sa_ferrorama;
 
 CREATE TABLE trem (
     id_trem INT PRIMARY KEY AUTO_INCREMENT,
-    modelo VARCHAR(100), 
-    status VARCHAR(50)
+    nome VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    conjunto VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE sensor (
