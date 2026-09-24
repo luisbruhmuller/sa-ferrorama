@@ -25,9 +25,8 @@ include '../templates/sidebar.php';
 </head>
 
 <body class="app-layout bg-light">
-    
-    <main id="conteudo" class="app-main">
 
+    <main id="conteudo" class="app-main">
         <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
             <div class="col bg-light">
                 <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
