@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Encaminha URLs inexistentes para a tela 404, relativamente a esta pasta.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ public/tela_erro/tela_404.php [END]

@@ -1,146 +1,471 @@
 <?php
-include '../templates/sidebar.php';
-/**
- * Perguntas e respostas fixas. A expansão das respostas depende do JavaScript do Bootstrap.
- */
-?>
+
+session_start();
+
+require_once __DIR__ . '/../../infra/conexao.php';
+
+
+// Verifica se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $nome = trim($_POST['nome_sensor'] ?? '');
+    $tipo = trim($_POST['tipo_sensor'] ?? '');
+    $localizacao = trim($_POST['localizacao'] ?? '');
+    $id_trem = (int) ($_POST['id_trem'] ?? 0);
+
+
+    // Verifica se os campos foram preenchidos
+    if ($nome === '' || $tipo === '' || $localizacao === '' || $id_trem <= 0) {
+
+        $erro = "Preencha todos os campos.";
+
+    } else {
+
+        // Insere o sensor no banco
+        $sql = "
+            INSERT INTO sensor
+            (
+                nome,
+                localizacao,
+                tipo_dado,
+                id_trem
+            )
+            VALUES (?, ?, ?, ?)
+        ";
+
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+
+            $stmt->bind_param(
+                "sssi",
+                $nome,
+                $localizacao,
+                $tipo,
+                $id_trem
+            );
+
+            if ($stmt->execute()) {
+
+                $_SESSION['flash'] = [
+                    'tipo' => 'success',
+                    'mensagem' => 'Sensor cadastrado com sucesso!'
+                ];
+
+                $stmt->close();
+
+                header("Location: tela_sensores.php");
+                exit;
+
+            } else {
+
+                $erro = "Erro ao cadastrar o sensor: " . $stmt->error;
+
+            }
+
+            $stmt->close();
+
+        } else {
+
+            $erro = "Erro ao preparar o cadastro: " . $conn->error;
+
+        }
+    }
+}
+
+
+// Busca os trens cadastrados
+$sqlTrens = "
+    SELECT id_trem, modelo
+    FROM trem
+    ORDER BY id_trem ASC
+";
+
+$resultadoTrens = $conn->query($sqlTrens);
+
 ?>
 
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
-<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>GordoSensores — Cadastro de Sensor</title>
-    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-  <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
-  <link rel="stylesheet" href="../../styles/style.css">
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS do projeto -->
+
+    <link
+        rel="stylesheet"
+        href="../../styles/style.css"
+    >
+
 </head>
 
-<body class="app-layout bg-light">
-<!-- Menu lateral: links abrem telas; itens em span são informativos.
-O destaque da página atual está fixo no HTML. -->
 
-<!-- Área principal da tela, posicionada pela classe app-main. -->
-<main id="conteudo" class="app-main">
+<body class="app-layout bg-light">
+
+
+<?php include '../templates/sidebar.php'; ?>
+
+
+<main
+    id="conteudo"
+    class="app-main"
+>
+
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+
         <div class="container-fluid">
-            <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
+
+            <span class="navbar-brand fw-bold">
+
+                <img
+                    src="../../assets/images/logo.ico"
+                    class="brand-logo me-2"
+                    alt="Gordo Holding"
+                >
+
+                GordoSensores
+
+            </span>
 
         </div>
+
     </nav>
+
 
     <div class="container-fluid py-4 px-3">
 
-        <section id="screen-login" class="mb-5">
 
-            <div class="container-fluid py-4 px-3">
+        <div class="row justify-content-center">
+
+            <div class="col-md-6 col-lg-5">
 
 
-                <div class="row justify-content-center">
-                    <div class="col-md-5 col-lg-4">
-                        <div class="card shadow">
-                            <div class="card-body p-4">
-                                <div class="text-center mb-4">
-                                    <i class="bi bi-cpu display-4 text-warning"></i>
-                                    <h4 class="fw-bold mt-2">GordoSensores</h4>
-                                    <p class="text-muted small">Cadastrar Novo Sensor IoT</p>
-                                </div>
-                                <div class="mb-3">
-                                    <!-- Identificação do sensor, separada da grandeza que ele mede. -->
-                                    <label class="form-label fw-semibold">Nome / Código do Sensor</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-tag"></i></span>
-                                        <input type="text" class="form-control" placeholder="Ex: Sensor TMP-01"
-                                            id="nome_sensor" required />
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <!-- Grandeza monitorada; a opção inicial vazia representa ausência de seleção. -->
-                                    <label class="form-label fw-semibold">Tipo de Sensor</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-activity"></i></span>
-                                        <select class="form-select" id="tipo_sensor" required>
-                                            <option value="" selected disabled>Selecione o tipo...</option>
-                                            <option value="Temperatura">Temperatura</option>
-                                            <option value="Vibração">Vibração</option>
-                                            <option value="Consumo de Energia">Consumo de Energia</option>
-                                            <option value="Velocidade">Velocidade</option>
-                                        </select>
-                                    </div>
-                                </div>
+                <div class="card shadow">
 
-                                <div class="mb-3">
-                                    <!-- Parte do trem à qual o sensor será associado. -->
-                                    <label class="form-label fw-semibold">Subsistema Vinculado</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-gear"></i></span>
-                                        <select class="form-select" id="subsistema" required>
-                                            <option value="" selected disabled>Selecione o subsistema...</option>
-                                            <option value="Motor">Motor</option>
-                                            <option value="Elétrico">Elétrico</option>
-                                            <option value="Freios">Freios</option>
-                                            <option value="Comunicação">Comunicação</option>
-                                            <option value="Refrigeração">Refrigeração</option>
-                                            <option value="Câmeras">Câmeras</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <!-- Posição física do sensor dentro do trem. -->
-                                    <label class="form-label fw-semibold">Local de Instalação</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                        <input type="text" class="form-control" placeholder="Ex: Vagão 1 / Roda Dianteira"
-                                            id="localizacao" required />
-                                    </div>
-                                </div>
 
-                                <div class="mb-4">
-                                    <!-- Referência pretendida para alertas; esta tela não compara leituras com esse limite. -->
-                                    <label class="form-label fw-semibold">Limite Crítico Máximo</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-exclamation-triangle"></i></span>
-                                        <input type="number" class="form-control" placeholder="Ex: 85"
-                                            id="limite_maximo" required />
-                                    </div>
-                                </div>
+                    <div class="card-body p-4">
 
-<!-- Ainda sem rotina de envio. required não dispara validação automática
-com este botão type=button fora de um formulário. -->
-                                <button id="enviar_cadastro" class="btn btn-warning w-100 fw-semibold mb-3" type="button">
-                                    <i class="bi bi-plus-circle-fill me-2"></i>
-                                    Cadastrar Sensor
-                                </button>
-<!-- Mensagens preparadas para integração futura; nenhum script desta página remove d-none. -->
-                                <div id="alert-sucesso" class="alert alert-success d-none" role="alert">
-                                    Sensor cadastrado com sucesso!
-                                </div>
 
-                                <div id="alert-erro" class="alert alert-danger d-none" role="alert">
-                                    Erro ao cadastrar o sensor! Verifique os dados.
-                                </div>
+                        <!-- Título -->
+
+                        <div class="text-center mb-4">
+
+                            <i class="bi bi-cpu display-4 text-warning"></i>
+
+                            <h4 class="fw-bold mt-2">
+                                GordoSensores
+                            </h4>
+
+                            <p class="text-muted small">
+                                Cadastrar Novo Sensor IoT
+                            </p>
+
+                        </div>
+
+
+                        <!-- Mensagem de erro -->
+
+                        <?php if (isset($erro)): ?>
+
+                            <div
+                                class="alert alert-danger"
+                                role="alert"
+                            >
+
+                                <?= htmlspecialchars($erro) ?>
+
                             </div>
-                        </div>
-                        <br>
-                        <div class="text-center">
-                            <a href="tela_sensores.php" class="btn btn-secondary"><i class="bi bi-arrow-left me-2"></i>Voltar</a>
-                        </div>
+
+                        <?php endif; ?>
+
+
+                        <!-- FORMULÁRIO -->
+
+                        <form
+                            method="POST"
+                            action=""
+                        >
+
+
+                            <!-- Nome -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Nome / Código do Sensor
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i class="bi bi-tag"></i>
+
+                                    </span>
+
+
+                                    <input
+                                        type="text"
+                                        name="nome_sensor"
+                                        class="form-control"
+                                        placeholder="Ex: Sensor TMP-01"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Tipo -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Tipo de Sensor
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i class="bi bi-activity"></i>
+
+                                    </span>
+
+
+                                    <select
+                                        name="tipo_sensor"
+                                        class="form-select"
+                                        required
+                                    >
+
+                                        <option
+                                            value=""
+                                            selected
+                                            disabled
+                                        >
+                                            Selecione o tipo...
+                                        </option>
+
+
+                                        <option value="Temperatura">
+                                            Temperatura
+                                        </option>
+
+
+                                        <option value="Vibração">
+                                            Vibração
+                                        </option>
+
+
+                                        <option value="Consumo de Energia">
+                                            Consumo de Energia
+                                        </option>
+
+
+                                        <option value="Velocidade">
+                                            Velocidade
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Trem -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Trem Vinculado
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i class="bi bi-train-front"></i>
+
+                                    </span>
+
+
+                                    <select
+                                        name="id_trem"
+                                        class="form-select"
+                                        required
+                                    >
+
+                                        <option
+                                            value=""
+                                            selected
+                                            disabled
+                                        >
+                                            Selecione o trem...
+                                        </option>
+
+
+                                        <?php if ($resultadoTrens && $resultadoTrens->num_rows > 0): ?>
+
+
+                                            <?php while ($trem = $resultadoTrens->fetch_assoc()): ?>
+
+                                                <option
+                                                    value="<?= (int) $trem['id_trem'] ?>"
+                                                >
+
+                                                    <?= htmlspecialchars($trem['modelo']) ?>
+
+                                                </option>
+
+                                            <?php endwhile; ?>
+
+
+                                        <?php else: ?>
+
+                                            <option
+                                                value=""
+                                                disabled
+                                            >
+                                                Nenhum trem cadastrado
+                                            </option>
+
+                                        <?php endif; ?>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Localização -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Local de Instalação
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i class="bi bi-geo-alt"></i>
+
+                                    </span>
+
+
+                                    <input
+                                        type="text"
+                                        name="localizacao"
+                                        class="form-control"
+                                        placeholder="Ex: Vagão 1 / Roda Dianteira"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Botão -->
+
+                            <button
+                                type="submit"
+                                class="btn btn-warning w-100 fw-semibold mb-3"
+                            >
+
+                                <i class="bi bi-plus-circle-fill me-2"></i>
+
+                                Cadastrar Sensor
+
+                            </button>
+
+
+                        </form>
+
+
                     </div>
+
                 </div>
+
+
+                <!-- Voltar -->
+
+                <div class="text-center mt-3">
+
+                    <a
+                        href="tela_sensores.php"
+                        class="btn btn-secondary"
+                    >
+
+                        <i class="bi bi-arrow-left me-2"></i>
+
+                        Voltar
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
         </div>
-</section>
+
 
     </div>
-    <!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </main>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
 
 </body>
 
