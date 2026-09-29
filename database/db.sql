@@ -32,7 +32,7 @@ CREATE TABLE usuarios (
     email VARCHAR(200) NOT NULL,
     senha VARCHAR(100) NOT NULL,
     cpf VARCHAR(100) NOT NULL,
-    funcao ENUM('adm', 'funcionario', 'cliente'),
+    funcao ENUM('adm', 'tecnico', 'funcionario'),
     status ENUM('ativo', 'inativo', 'pendente')
 );
 
