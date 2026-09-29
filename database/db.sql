@@ -1,5 +1,5 @@
-CREATE DATABASE sa_ferrorama 
-USE sa_ferrorama
+CREATE DATABASE sa_ferrorama;
+USE sa_ferrorama;
 
 CREATE TABLE trem (
     id_trem INT PRIMARY KEY AUTO_INCREMENT,

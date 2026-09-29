@@ -57,30 +57,43 @@
   height: 96px;
 }
 
-.trilho {
-    width: 500px;
-    height: 500px;
-
-    border: 8px solid #333;
-
-    border-radius: 50%;
-
-    position: relative;
-
-    margin: 50px auto;
+.conteudo-ferrovia {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: var(--sidebar-w);
+    overflow: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
-/* Segundo trilho */
-.trilho-interno {
-    width: 450px;
-    height: 450px;
-
-    border: 8px solid #333;
-
-    border-radius: 50%;
-
-    position: absolute;
-
-    top: 17px;
-    left: 17px;
+ 
+.pista {
+    width: 100%;
+    max-width: 800px;
+    margin: 0;
 }
+ 
+.pista svg {
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 120px); /* a ferrovia cabe na tela sem rolar */
+    display: block;
+    background: #fff;
+}
+ 
+.controles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+ 
+.controles select {
+    width: auto;
+}
+ 
