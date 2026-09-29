@@ -1,105 +1,79 @@
 <?php
+require_once __DIR__ . '/trem_funcoes.php';
+include '../templates/sidebar.php';
+/**
+ * Cadastro de trem (Create): exibe o formulário; o envio é processado por trem_cadastrar.php.
+ * Se a validação falhar, os dados digitados e as mensagens de erro voltam pela sessão.
+ */
+$form = trem_pegar_formulario();
+$dados = $form['dados'];
+$erros = $form['erros'];
+$flash = trem_flash_pegar();
 
-
-$paginaAtual = basename($_SERVER['SCRIPT_NAME'] ?? '');
-
-$secoesPorPagina = [
-    'tela_geral_home.php' => 'dashboard',
-    'tela_alerta.php' => 'alertas',
-    'tela_sensores.php' => 'sensores',
-    'tela_cadastro_sensores.php' => 'sensores',
-    'tela_usuarios.php' => 'usuarios',
-    'tela_cadastro_usuarios.php' => 'usuarios',
-    'tela_trem.php' => 'trens',
-    'tela_cadastro_trem.php' => 'trens',
-    'tela_editar_trem.php' => 'trens',
-];
-$secaoAtual = $secoesPorPagina[$paginaAtual] ?? '';
-
-
-$atributosItemSidebar = static function ($secao) use ($secaoAtual) {
-    $ativo = $secaoAtual === $secao;
-    return 'class="nav-link text-white rounded px-3 py-2'
-        . ($ativo ? ' bg-warning bg-opacity-25' : '') . '"'
-        . ($ativo ? ' aria-current="page"' : '');
-};
+$acaoForm = 'trem_cadastrar.php';
+$textoBotao = 'Cadastrar Trem';
 ?>
-<aside class="app-sidebar bg-dark text-white">
-    <div class="p-3 border-bottom border-secondary">
-      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
-        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
-      </a>
-      <div class="small text-white-50">Monitoramento ferroviário</div>
-    </div>
 
-<nav
-    class="nav flex-column p-2 gap-1 flex-grow-1"
-    aria-label="Menu principal"
-  >
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    <a
-      href="../../public/tela_home/tela_geral_home.php"
-      <?php echo $atributosItemSidebar('dashboard'); ?>
-    >
-      <i class="bi bi-people me-2"></i>Dashboard
-    </a>
+<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GordoSensores — Cadastro de Trem</title>
+    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
 
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-map me-2"></i>Mapa
-      <small class="d-block ms-4">Em breve</small>
-    </span>
+<body class="app-layout bg-light">
 
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-graph-up me-2"></i>Métricas
-      <small class="d-block ms-4">Em breve</small>
-    </span>
+    <!-- Área principal da tela, posicionada pela classe app-main. -->
+    <main id="conteudo" class="app-main">
 
-    <a
-      href="../../public/tela_alerta/tela_alerta.php"
-      <?php echo $atributosItemSidebar('alertas'); ?>
-    >
-      <i class="bi bi-speedometer2 me-2"></i>Alertas
-    </a>
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-tools me-2"></i>Manutenção
-      <small class="d-block ms-4">Em breve</small>
-    </span>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container-fluid">
+                <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2"
+                        alt="Gordo Holding">GordoSensores</span>
+            </div>
+        </nav>
 
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-file-earmark-bar-graph me-2"></i>Relatórios
-      <small class="d-block ms-4">Em breve</small>
-    </span>
+        <div class="container-fluid py-4 px-3">
+            <div class="row justify-content-center">
+                <div class="col-md-5 col-lg-4">
+                    <div class="card shadow">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <i class="bi bi-train-front display-4 text-warning"></i>
+                                <h4 class="fw-bold mt-2">GordoSensores</h4>
+                                <p class="text-muted small">Cadastrar Novo Trem</p>
+                            </div>
 
-    <a
-      href="../../public/tela_trem/tela_trem.php"
-      <?php echo $atributosItemSidebar('trens'); ?>
-    >
-      <i class="bi bi-cpu me-2"></i>Detalhes Trem
-    </a>
+                            <?php if ($flash): ?>
+                                <div class="alert alert-<?= trem_h($flash['tipo']) ?>" role="alert">
+                                    <?= trem_h($flash['mensagem']) ?></div>
+                            <?php endif; ?>
 
-    <a
-      href="../../public/tela_sensores/tela_sensores.php"
-      <?php echo $atributosItemSidebar('sensores'); ?>
-    >
-      <i class="bi bi-cpu me-2"></i>Sensores IoT
-    </a>
+                            <?php include __DIR__ . '/trem_form.php'; ?>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <a href="tela_trem.php" class="btn btn-secondary"><i
+                                class="bi bi-arrow-left me-2"></i>Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <a
-      href="../../public/tela_usuario/tela_usuarios.php"
-      <?php echo $atributosItemSidebar('usuarios'); ?>
-    >
-      <i class="bi bi-people me-2"></i>Gerenciar usuários
-    </a>
+        <!-- Habilita componentes interativos do Bootstrap. -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </main>
 
-    <a
-      href="../../public/tela_faq/tela_faq.php"
-      class="nav-link text-white rounded px-3 py-2"
-    >
-      <i class="bi bi-question-circle me-2"></i>FAQ
-    </a>
+</body>
 
-
-  </nav>
-    <div class="p-3 border-top border-secondary">
-      <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
-    </div></aside>
+</html>

@@ -6,7 +6,7 @@
 // Configuração do servidor local: endereço, usuário, senha e nome do banco.
 $host = "localhost";
 $usuario = "root";
-$senha = "root";
+$senha = "";
 $banco = "sa_ferrorama";
 
 // O construtor mysqli tenta abrir a conexão imediatamente.

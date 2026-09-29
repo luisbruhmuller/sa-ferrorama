@@ -1,12 +1,12 @@
 CREATE DATABASE sa_ferrorama;
 USE sa_ferrorama;
 
-CREATE TABLE trem (
-    id_trem INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
-    conjunto VARCHAR(100) NOT NULL,
-    status VARCHAR(50) NOT NULL
+CREATE TABLE trens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_trem VARCHAR(100) NOT NULL,
+    tipo_trem VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    conjunto VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE sensor (
@@ -17,7 +17,7 @@ CREATE TABLE sensor (
     id_trem INT NOT NULL,
     tipo VARCHAR (200),
     conjunto VARCHAR(200),
-    FOREIGN KEY (id_trem) REFERENCES trem(id_trem)
+    FOREIGN KEY (id_trem) REFERENCES trens(id)
 );
 
 CREATE TABLE dados_sensor (

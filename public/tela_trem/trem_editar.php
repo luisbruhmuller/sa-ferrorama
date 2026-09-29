@@ -1,73 +1,48 @@
 <?php
+/**
+ * Processa a edição de trem (Update). Recebe apenas POST e sempre termina com redirecionamento.
+ */
+require_once __DIR__ . '/trem_funcoes.php';
 
-?>
-<form method="post" action="<?= trem_h($acaoForm) ?>">
-    <input type="hidden" name="csrf_token" value="<?= trem_h(trem_csrf_token()) ?>">
-    <?php if (isset($idTrem)): ?>
-        <input type="hidden" name="id_trem" value="<?= (int) $idTrem ?>">
-    <?php endif; ?>
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    trem_redirecionar('tela_trem.php');
+}
 
-    <div class="mb-3">
-        <label class="form-label fw-semibold" for="nome">Nome do Trem</label>
-        <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-tag"></i></span>
-            <input type="text" class="form-control <?= isset($erros['nome']) ? 'is-invalid' : '' ?>" id="nome" name="nome"
-                placeholder="Ex: Union Pacific" maxlength="100" required
-                value="<?= trem_h($dados['nome'] ?? '') ?>">
-        </div>
-        <?php if (isset($erros['nome'])): ?>
-            <div class="invalid-feedback d-block"><?= trem_h($erros['nome']) ?></div>
-        <?php endif; ?>
-    </div>
+if (!trem_csrf_valido($_POST['csrf_token'] ?? null)) {
+    trem_flash('danger', 'Sessão inválida. Recarregue a página e tente novamente.');
+    trem_redirecionar('tela_trem.php');
+}
 
-    <div class="mb-3">
-        <label class="form-label fw-semibold" for="tipo">Tipo de Trem</label>
-        <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-train-front"></i></span>
-            <select class="form-select <?= isset($erros['tipo']) ? 'is-invalid' : '' ?>" id="tipo" name="tipo" required>
-                <option value="" disabled <?= empty($dados['tipo']) ? 'selected' : '' ?>>Selecione o tipo...</option>
-                <?php foreach (TREM_TIPOS as $opcao): ?>
-                    <option value="<?= trem_h($opcao) ?>" <?= ($dados['tipo'] ?? '') === $opcao ? 'selected' : '' ?>>
-                        <?= trem_h($opcao) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <?php if (isset($erros['tipo'])): ?>
-            <div class="invalid-feedback d-block"><?= trem_h($erros['tipo']) ?></div>
-        <?php endif; ?>
-    </div>
+// O id também vem do formulário, então também precisa ser validado.
+$idTrem = trem_id_valido($_POST['id_trem'] ?? null);
+if ($idTrem === null) {
+    trem_flash('danger', 'Trem inválido.');
+    trem_redirecionar('tela_trem.php');
+}
 
-    <div class="mb-3">
-        <label class="form-label fw-semibold" for="status">Status</label>
-        <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-activity"></i></span>
-            <select class="form-select <?= isset($erros['status']) ? 'is-invalid' : '' ?>" id="status" name="status" required>
-                <option value="" disabled <?= empty($dados['status']) ? 'selected' : '' ?>>Selecione o status...</option>
-                <?php foreach (TREM_STATUS as $opcao): ?>
-                    <option value="<?= trem_h($opcao) ?>" <?= ($dados['status'] ?? '') === $opcao ? 'selected' : '' ?>>
-                        <?= trem_h($opcao) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <?php if (isset($erros['status'])): ?>
-            <div class="invalid-feedback d-block"><?= trem_h($erros['status']) ?></div>
-        <?php endif; ?>
-    </div>
+[$dados, $erros] = trem_validar($_POST);
+if ($erros) {
+    trem_guardar_formulario($dados, $erros);
+    trem_redirecionar('tela_editar_trem.php?id=' . $idTrem);
+}
 
-    <div class="mb-4">
-        <label class="form-label fw-semibold" for="conjunto">Conjunto</label>
-        <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-diagram-3"></i></span>
-            <input type="text" class="form-control <?= isset($erros['conjunto']) ? 'is-invalid' : '' ?>" id="conjunto"
-                name="conjunto" placeholder="Ex: TRN-04-group" maxlength="100" required
-                value="<?= trem_h($dados['conjunto'] ?? '') ?>">
-        </div>
-        <?php if (isset($erros['conjunto'])): ?>
-            <div class="invalid-feedback d-block"><?= trem_h($erros['conjunto']) ?></div>
-        <?php endif; ?>
-    </div>
+try {
+    // Verifica se o trem existe (UPDATE sem mudanças reais retorna 0 linhas afetadas, então não serve para isso).
+    if (trem_buscar($conexao, $idTrem) === null) {
+        trem_flash('danger', 'Trem não encontrado.');
+        trem_redirecionar('tela_trem.php');
+    }
 
-    <button class="btn btn-warning w-100 fw-semibold mb-3" type="submit">
-        <i class="bi bi-check-circle-fill me-2"></i><?= trem_h($textoBotao) ?>
-    </button>
-</form>
+    $stmt = $conexao->prepare('UPDATE trem SET nome = ?, tipo = ?, status = ?, conjunto = ? WHERE id_trem = ?');
+    $stmt->bind_param('ssssi', $dados['nome'], $dados['tipo'], $dados['status'], $dados['conjunto'], $idTrem);
+    $stmt->execute();
+    $stmt->close();
+
+    trem_flash('success', 'Trem atualizado com sucesso!');
+    trem_redirecionar('tela_trem.php');
+} catch (mysqli_sql_exception $ex) {
+    error_log('Erro ao editar trem: ' . $ex->getMessage());
+    trem_guardar_formulario($dados, []);
+    trem_flash('danger', 'Não foi possível atualizar o trem. Tente novamente.');
+    trem_redirecionar('tela_editar_trem.php?id=' . $idTrem);
+}
