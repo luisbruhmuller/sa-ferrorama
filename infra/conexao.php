@@ -5,7 +5,7 @@ $usuario = "root";
 $senha = "";
 $banco = "sa_ferrorama";
 
-$conn = new mysqli($host,$usuario,$senha,$banco);
+$conn = new mysqli($host,$usuario,$senha,$banco,3306);
 
 if ($conn->connect_error) {
     die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
