@@ -1,4 +1,16 @@
 <?php
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+
+$usuarioSidebar = null;
+if (!empty($_SESSION['usuario_id'])) {
+    $usuarioSidebar = consulta(
+        "SELECT nome, funcao FROM usuarios WHERE id = ? AND status = 'ativo'",
+        'i',
+        [$_SESSION['usuario_id']]
+    )->get_result()->fetch_assoc();
+}
+$cargosSidebar = ['adm' => 'Administrador', 'tecnico' => 'Técnico', 'funcionario' => 'Funcionário / Operador'];
+
 /**
  * Menu compartilhado: identifica a tela principal mesmo quando este arquivo é incluído.
  * SCRIPT_NAME aponta para a página acessada, enquanto __FILE__ apontaria para o template.
@@ -101,5 +113,15 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
 
   </nav>
     <div class="p-3 border-top border-secondary">
-      <a class="text-warning text-decoration-none" href="../../public/Tela%20Usu%C3%A1rio/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
+      <?php if ($usuarioSidebar): ?>
+      <div class="d-flex align-items-center text-warning">
+        <i class="bi bi-person-circle me-2 fs-4" aria-hidden="true"></i>
+        <div class="text-break">
+          <div class="fw-semibold"><?= escapar($usuarioSidebar['nome']) ?></div>
+          <div class="small text-white-50"><?= escapar($cargosSidebar[$usuarioSidebar['funcao']] ?? 'Não definido') ?></div>
+        </div>
+      </div>
+      <?php else: ?>
+      <a class="text-warning text-decoration-none" href="../../public/tela_usuario/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
+      <?php endif; ?>
     </div></aside>
