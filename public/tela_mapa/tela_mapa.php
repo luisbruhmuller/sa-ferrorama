@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../styles/style.css?v=<?= @filemtime(__DIR__ . '/../../styles/style.css') ?>">
 </head>
  
+<div class="mapaferrorama">
 <body>
     <?php include '../templates/sidebar.php'; ?>
  
@@ -57,25 +58,6 @@
                     <use href="#r3" fill="none" stroke="#bfc4c9" stroke-width="8" mask="url(#corte-preto)" />
                 </g>
  
-                <!-- Montanhas -->
-                <use href="#rocha" x="145" y="45" />
-                <use href="#rocha" x="211" y="20" />
-                <use href="#rocha" x="262" y="42" />
-                <use href="#rocha" x="128" y="78" />
-                <use href="#rocha" x="272" y="192" />
-                <use href="#rocha" x="250" y="250" />
-                <use href="#rocha" x="410" y="318" />
-                <use href="#rocha" x="388" y="382" />
-                <use href="#rocha" x="320" y="408" />
-                <use href="#rocha" x="238" y="388" />
- 
-                <!-- Ponte (passagem elevada) -->
-                <g transform="translate(274 152) rotate(-4)">
-                    <rect x="-11" y="-48" width="22" height="96" fill="#dfe3e6" stroke="#777" />
-                    <path d="M-11 -48 L11 -30 M-11 -30 L11 -12 M-11 -12 L11 6 M-11 6 L11 24 M-11 24 L11 42" stroke="#777" fill="none" />
-                    <rect x="-3" y="-48" width="6" height="96" fill="#555" />
-                </g>
- 
                 <!-- Estação / chave -->
                 <rect x="58" y="312" width="38" height="46" fill="#1d1d1d" />
                 <rect x="64" y="318" width="6" height="32" fill="#f2c200" />
@@ -95,13 +77,13 @@
  
             <div class="controles">
                 <button id="btn-pausa" class="btn btn-dark btn-sm">Pausar</button>
-                <button id="btn-inverter" class="btn btn-outline-dark btn-sm">Inverter sentido</button>
                 <select id="sel-rota" class="form-select form-select-sm">
                     <option value="r1">Circuito externo</option>
                     <option value="r2">Circuito direito</option>
                     <option value="r3">Ramal interno (vai e volta)</option>
                 </select>
-                <label class="small"><input type="checkbox" id="chk-foto"> Foto de referência</label>
+
+            </div>
             </div>
  
             <script>

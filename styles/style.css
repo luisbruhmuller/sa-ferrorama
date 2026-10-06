@@ -71,6 +71,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: rgb(33, 37, 41);
+  
 }
 
 .pista {
@@ -111,5 +113,10 @@
     position: static;
     height: calc(100vh - 80px);
   }
+}
+
+.mapaferrorama {
+  background-color: rgb(33, 37, 41);
+
 }
  
