@@ -56,10 +56,12 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       <i class="bi bi-people me-2"></i>Dashboard
     </a>
 
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-map me-2"></i>Mapa
-      <small class="d-block ms-4">Em breve</small>
-    </span>
+        <a
+      href="../../public/tela_mapa/tela_mapa.php"
+      class="nav-link text-white rounded px-3 py-2"
+    >
+      <i class="bi bi-cpu me-2"></i>Mapa
+    </a>
 
     <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
       <i class="bi bi-graph-up me-2"></i>Métricas
