@@ -7,7 +7,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
     // Conexão do módulo com o MySQL usado pelo phpMyAdmin deste XAMPP.
-    $conexao = new mysqli('127.0.0.1', 'root', '', 'sa_ferrorama', 3307);
+    $conexao = new mysqli('127.0.0.1', 'root', '', 'sa_ferrorama', 3306);
     $conexao->set_charset('utf8mb4');
 } catch (mysqli_sql_exception $e) {
     error_log($e->getMessage());
@@ -91,7 +91,7 @@ function validar_usuario($edicao = false) {
         }
     }
     if (!$cpfValido) $erros[] = 'Informe um CPF válido.';
-    if (!in_array($dados['funcao'], ['adm', 'funcionario', 'cliente'], true)) $erros[] = 'Selecione um cargo válido.';
+    if (!in_array($dados['funcao'], ['adm', 'tecnico', 'funcionario'], true)) $erros[] = 'Selecione um cargo válido.';
     if (!in_array($dados['status'], ['ativo', 'inativo', 'pendente'], true)) $erros[] = 'Selecione um status válido.';
     if (!$edicao || $senha !== '' || $confirmacao !== '') {
         if (strlen($senha) < 8 || strlen($senha) > 72) $erros[] = 'A senha deve ter entre 8 e 72 bytes.';

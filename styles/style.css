@@ -57,66 +57,43 @@
   height: 96px;
 }
 
-:root {
-  --sidebar-w: 240px;   /* mesma largura do .app-sidebar */
-}
-
 .conteudo-ferrovia {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: var(--sidebar-w);
-  padding: 16px 24px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background-color: rgb(33, 37, 41);
-  
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: var(--sidebar-w);
+    overflow: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
+ 
 .pista {
-  flex: 1;
-  min-height: 0;          /* permite o svg encolher/crescer dentro do flex */
-  width: 100%;
-  max-width: none;        /* remove o limite de 800px */
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    margin: 0;
 }
-
+ 
 .pista svg {
-  flex: 1;                /* ocupa toda a altura que sobra acima dos controles */
-  min-height: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  background: #fff;
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 120px); /* a ferrovia cabe na tela sem rolar */
+    display: block;
+    background: #fff;
 }
-
+ 
 .controles {
-  flex: 0 0 auto;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
 }
-
+ 
 .controles select {
-  width: auto;
-}
-
-@media (max-width: 767.98px) {
-  .conteudo-ferrovia {
-    position: static;
-    height: calc(100vh - 80px);
-  }
-}
-
-.mapaferrorama {
-  background-color: rgb(33, 37, 41);
-
+    width: auto;
 }
  

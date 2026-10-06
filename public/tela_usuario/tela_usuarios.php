@@ -2,7 +2,7 @@
 require __DIR__ . '/usuarios_comum.php';
 exigir_admin();
 $usuarios = consulta('SELECT id, nome, email, funcao, status FROM usuarios ORDER BY nome, id')->get_result();
-$cargos = ['adm' => 'Administrador', 'funcionario' => 'Funcionário', 'cliente' => 'Cliente'];
+$cargos = ['adm' => 'Administrador', 'tecnico' => 'Técnico', 'funcionario' => 'Funcionário / Operador'];
 $mensagem = $_SESSION['mensagem'] ?? null;
 unset($_SESSION['mensagem']);
 ?>
