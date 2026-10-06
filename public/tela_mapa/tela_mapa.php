@@ -1,17 +1,14 @@
-<?php
-include '../templates/sidebar.php';
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
  
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Sensores</title>
+    <title>GordoSensores — Mapa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../../styles/style.css">
-    <link rel="stylesheet" href="../../styles/ferrovia.css">
+    <!-- filemtime força o navegador a recarregar o CSS sempre que ele for alterado -->
+    <link rel="stylesheet" href="../../styles/style.css?v=<?= @filemtime(__DIR__ . '/../../styles/style.css') ?>">
 </head>
  
 <body>
@@ -20,7 +17,7 @@ include '../templates/sidebar.php';
     <div class="conteudo-ferrovia">
         <div class="pista">
  
-            <svg id="ferrorama" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ferrovia Ferrorama XP 500">
+            <svg id="ferrorama" viewBox="0 0 480 480" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ferrovia Ferrorama XP 500">
                 <defs>
                     <!-- Percursos (mesmo sistema de coordenadas da foto: 480x480) -->
                     <path id="r1" d="M80 335 C80 290 102 250 104 200 C106 140 112 90 145 48 C172 15 225 8 258 32 C285 12 340 12 372 45 C398 75 396 120 388 160 C380 205 355 240 335 265 C305 300 285 325 283 370 C282 415 240 445 190 462 C130 478 70 440 70 380 C70 360 76 348 80 335Z" />
