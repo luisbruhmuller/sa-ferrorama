@@ -1,5 +1,7 @@
 <?php
 // Funções compartilhadas exclusivamente pelo módulo de usuários.
+require_once __DIR__ . '/../../infra/criptografia.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start(['cookie_httponly' => true, 'cookie_samesite' => 'Lax',
         'cookie_secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off']);

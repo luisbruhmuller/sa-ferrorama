@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$erros && duplicado($dados, $id)) $erros[] = 'Já existe um usuário com esse e-mail ou CPF.';
         if (!$erros) {
             if ($senha !== '') {
-                consulta('UPDATE usuarios SET nome = ?, email = ?, cpf = ?, funcao = ?, status = ?, senha = ? WHERE id = ?', 'ssssssi', [$dados['nome'], $dados['email'], $dados['cpf'], $dados['funcao'], $dados['status'], password_hash($senha, PASSWORD_BCRYPT), $id]);
+                consulta('UPDATE usuarios SET nome = ?, email = ?, cpf = ?, funcao = ?, status = ?, senha = ? WHERE id = ?', 'ssssssi', [$dados['nome'], $dados['email'], $dados['cpf'], $dados['funcao'], $dados['status'], gerar_hash_senha($senha), $id]);
             } else {
                 consulta('UPDATE usuarios SET nome = ?, email = ?, cpf = ?, funcao = ?, status = ? WHERE id = ?', 'sssssi', [$dados['nome'], $dados['email'], $dados['cpf'], $dados['funcao'], $dados['status'], $id]);
             }
