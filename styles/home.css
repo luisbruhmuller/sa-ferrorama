@@ -1,0 +1,70 @@
+/* Estilos exclusivos da home. Layout com Flexbox e Grid, sem Bootstrap. */
+* { box-sizing: border-box; }
+body { margin: 0; background: #f5f6f8; color: #242b37; font-family: Arial, sans-serif; font-size: 14px; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: 27px; font-weight: 600; }
+h2 { font-size: 17px; font-weight: 600; }
+h3 { font-size: 14px; font-weight: 600; }
+p { color: #667085; line-height: 1.6; }
+/* O template do menu continua compartilhado com as outras páginas. */
+.app-sidebar { display: flex; align-items: center; gap: 28px; padding: 18px 32px; background: #fff; border-bottom: 1px solid #e7eaf0; }
+.app-sidebar > div:first-child > a { display: flex; align-items: center; gap: 9px; color: #242b37; font-size: 17px; font-weight: bold; }
+.brand-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 50%; }
+.app-sidebar > div:first-child > div { display: none; }
+.app-sidebar nav { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+.app-sidebar nav a { display: flex; align-items: center; gap: 7px; padding: 10px; color: #667085; font-size: 12px; border-radius: 6px; }
+.app-sidebar nav a:hover, .app-sidebar nav a[aria-current] { background: #edf3ff; color: #2563eb; text-decoration: none; }
+.app-sidebar nav [aria-disabled] { display: none; }
+.app-sidebar > div:last-child { font-size: 12px; }
+.app-sidebar > div:last-child > div { display: flex; align-items: center; gap: 8px; }
+.app-sidebar > div:last-child .small { color: #667085; margin-top: 4px; }
+.home { max-width: 1440px; margin: auto; padding: 34px; }
+.home-cabecalho, .titulo-secao, .linha, .titulo-indicador { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.home-cabecalho { margin-bottom: 28px; }
+.home-cabecalho h1 { margin: 7px 0; }
+.legenda { display: block; font-size: 10px; color: #667085; letter-spacing: 1px; line-height: 1.5; }
+.home-colunas { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 26px; }
+.resumo, .detalhes { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.card { background: #fff; border: 1px solid #e5e8ee; border-radius: 10px; padding: 22px; }
+.trem-selecionado { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid #b9cef8; border-radius: 10px; padding: 18px; }
+.trem-selecionado h2 { margin: 4px 0; }
+.trem-selecionado p { font-size: 12px; }
+.icone { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #2563eb; color: #fff; font-size: 22px; flex-shrink: 0; }
+.botao { margin-left: auto; padding: 10px 12px; border: 1px solid #e5e8ee; border-radius: 6px; font-size: 12px; white-space: nowrap; }
+.indicadores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.indicador { padding: 18px; }
+.titulo-indicador h3 { color: #667085; font-size: 12px; font-weight: normal; }
+.titulo-indicador i { color: #2563eb; font-size: 18px; }
+.valor { font-size: 32px; color: #242b37; margin: 16px 0; line-height: 1; }
+.valor span { font-size: 12px; color: #667085; }
+.linha { font-size: 11px; color: #667085; flex-wrap: wrap; }
+.etiqueta { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 5px; font-size: 11px; line-height: 1.3; white-space: nowrap; }
+.azul { background: #edf3ff; color: #245ac2; }
+.verde { background: #eaf7ef; color: #24714a; }
+.amarelo { background: #fff5e4; color: #946009; }
+.vermelho { background: #fff0ef; color: #b63d35; }
+meter { width: 100%; height: 6px; display: block; margin-top: 12px; }
+.titulo-secao { margin-bottom: 20px; }
+.titulo-secao a { font-size: 12px; }
+.titulo-secao .legenda { margin-bottom: 5px; }
+.lista-alertas { list-style: none; margin: 0; padding: 0; }
+.lista-alertas li { padding: 16px 0; border-bottom: 1px solid #edf0f4; }
+.lista-alertas li:first-child { padding-top: 0; }
+.lista-alertas li:last-child { border-bottom: 0; padding-bottom: 0; }
+.lista-alertas h3 { margin: 9px 0 3px; }
+.lista-alertas p { font-size: 12px; margin-bottom: 9px; }
+.mapa { position: relative; overflow: hidden; border-radius: 7px; background: #e9ede7; }
+.mapa svg { display: block; width: 100%; height: auto; }
+.mapa-legenda { position: absolute; bottom: 12px; left: 12px; background: #fff; color: #667085; padding: 6px 9px; border-radius: 4px; font-size: 10px; }
+.rota { display: flex; align-items: center; gap: 22px; padding: 20px 0 16px; }
+.rota strong { display: block; font-size: 13px; margin-top: 5px; }
+.rota > i { color: #98a2b3; }
+.rota > .etiqueta { margin-left: auto; }
+.coordenadas { font-size: 11px; border-top: 1px solid #edf0f4; padding-top: 12px; }
+.lista-sistemas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.lista-sistemas > div { display: flex; align-items: center; gap: 10px; padding: 14px 10px; border: 1px solid #edf0f4; border-radius: 6px; font-size: 12px; }
+.lista-sistemas i { font-size: 18px; color: #667085; }
+.lista-sistemas .etiqueta { margin-left: auto; }
+.home-rodape { display: flex; justify-content: space-between; gap: 12px; color: #667085; font-size: 11px; padding-top: 28px; }
