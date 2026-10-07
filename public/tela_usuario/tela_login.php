@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_SESSION['login_bloqueado_ate'])) unset($_SESSION['login_bloqueado_ate'], $_SESSION['login_tentativas']);
         $usuario = consulta('SELECT id, senha, funcao, status FROM usuarios WHERE email = ? LIMIT 1', 's', [campo('email')])->get_result()->fetch_assoc();
         $senha = isset($_POST['senha']) && is_string($_POST['senha']) ? $_POST['senha'] : '';
-        if ($usuario && $usuario['status'] === 'ativo' && password_verify($senha, $usuario['senha'])) {
+        if ($usuario && $usuario['status'] === 'ativo' && verificar_senha($senha, $usuario['senha'])) {
             session_regenerate_id(true);
             $_SESSION['usuario_id'] = (int) $usuario['id'];
             unset($_SESSION['login_tentativas'], $_SESSION['login_bloqueado_ate'], $_SESSION['csrf']);
