@@ -7,7 +7,7 @@ $edicao = false;
 try {
     if (!$erros && duplicado($dados)) $erros[] = 'Já existe um usuário com esse e-mail ou CPF.';
     if (!$erros) {
-        $hash = password_hash($senha, PASSWORD_BCRYPT);
+        $hash = gerar_hash_senha($senha);
         consulta('INSERT INTO usuarios (nome, email, senha, cpf, funcao, status) VALUES (?, ?, ?, ?, ?, ?)', 'ssssss', [$dados['nome'], $dados['email'], $hash, $dados['cpf'], $dados['funcao'], $dados['status']]);
         mensagem('Usuário cadastrado com sucesso.');
         redirecionar('tela_usuarios.php');
