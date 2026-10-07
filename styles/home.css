@@ -68,3 +68,37 @@ meter { width: 100%; height: 6px; display: block; margin-top: 12px; }
 .lista-sistemas i { font-size: 18px; color: #667085; }
 .lista-sistemas .etiqueta { margin-left: auto; }
 .home-rodape { display: flex; justify-content: space-between; gap: 12px; color: #667085; font-size: 11px; padding-top: 28px; }
+/* Em telas menores, o menu quebra em linhas e os painéis ficam empilhados. */
+@media (max-width: 1100px) {
+  .app-sidebar { flex-wrap: wrap; gap: 14px; padding: 18px 24px; }
+  .app-sidebar nav { order: 3; flex-basis: 100%; }
+  .app-sidebar > div:last-child { margin-left: auto; }
+  .home { padding: 26px 24px; }
+  .home-colunas { grid-template-columns: minmax(0, 1fr); }
+  .detalhes { order: -1; }
+  .mapa svg { max-height: 380px; }
+}
+@media (max-width: 600px) {
+  .app-sidebar { padding: 14px 16px; }
+  .app-sidebar nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-sidebar nav a { padding: 9px 6px; }
+  .home { padding: 24px 16px; }
+  .home-cabecalho { align-items: flex-start; flex-direction: column; gap: 14px; }
+  h1 { font-size: 23px; }
+  .card { padding: 16px; }
+  .indicadores { gap: 10px; }
+  .indicador { padding: 14px; }
+  .titulo-indicador { gap: 6px; }
+  .titulo-indicador i { font-size: 16px; }
+  .valor { font-size: 28px; }
+  .trem-selecionado { flex-wrap: wrap; padding: 16px; }
+  .lista-sistemas { grid-template-columns: minmax(0, 1fr); }
+  .titulo-secao { flex-wrap: wrap; }
+  .rota { gap: 14px; flex-wrap: wrap; }
+  .home-rodape { flex-direction: column; line-height: 1.6; }
+}
+@media (max-width: 360px) {
+  .indicadores { grid-template-columns: minmax(0, 1fr); }
+}
+/* Destaque visível para quem navega usando o teclado. */
+a:focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; border-radius: 4px; }

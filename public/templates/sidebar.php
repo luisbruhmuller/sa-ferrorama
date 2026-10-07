@@ -38,7 +38,7 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
 ?>
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
-      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
+      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/tela_home/tela_geral_home.php">
         <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
