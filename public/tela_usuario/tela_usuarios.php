@@ -1,7 +1,32 @@
 <?php
 require __DIR__ . '/usuarios_comum.php';
 exigir_admin();
-$usuarios = consulta('SELECT id, nome, email, funcao, status FROM usuarios ORDER BY nome, id')->get_result();
+$busca = isset($_GET['busca']) && is_string($_GET['busca']) ? trim($_GET['busca']) : '';
+$funcao = isset($_GET['funcao']) && is_string($_GET['funcao']) ? $_GET['funcao'] : '';
+$statusFiltro = isset($_GET['status']) && is_string($_GET['status']) ? $_GET['status'] : '';
+
+$sql = 'SELECT id, nome, email, funcao, status FROM usuarios WHERE 1 = 1';
+$tipos = '';
+$valores = [];
+
+if ($busca !== '') {
+    $sql .= ' AND (nome LIKE ? OR email LIKE ?)';
+    $tipos .= 'ss';
+    $valores[] = "%{$busca}%";
+    $valores[] = "%{$busca}%";
+}
+if (in_array($funcao, ['adm', 'tecnico', 'funcionario'], true)) {
+    $sql .= ' AND funcao = ?';
+    $tipos .= 's';
+    $valores[] = $funcao;
+}
+if (in_array($statusFiltro, ['ativo', 'inativo', 'pendente'], true)) {
+    $sql .= ' AND status = ?';
+    $tipos .= 's';
+    $valores[] = $statusFiltro;
+}
+
+$usuarios = consulta($sql . ' ORDER BY nome, id', $tipos, $valores)->get_result();
 $cargos = ['adm' => 'Administrador', 'tecnico' => 'Técnico', 'funcionario' => 'Funcionário / Operador'];
 $mensagem = $_SESSION['mensagem'] ?? null;
 unset($_SESSION['mensagem']);
@@ -45,6 +70,35 @@ unset($_SESSION['mensagem']);
                             class="bi bi-person-plus-fill me-2"></i>Novo Usuário</a>
                 </div>
 
+                <form method="get" class="row g-2 mb-4">
+                    <div class="col-md-5">
+                        <label for="busca" class="form-label">Nome ou e-mail</label>
+                        <input type="search" class="form-control" id="busca" name="busca" value="<?= escapar($busca) ?>" placeholder="Buscar usuário">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="funcao" class="form-label">Cargo</label>
+                        <select class="form-select" id="funcao" name="funcao">
+                            <option value="">Todos</option>
+                            <?php foreach ($cargos as $valor => $rotulo): ?>
+                                <option value="<?= escapar($valor) ?>" <?= $funcao === $valor ? 'selected' : '' ?>><?= escapar($rotulo) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="">Todos</option>
+                            <option value="ativo" <?= $statusFiltro === 'ativo' ? 'selected' : '' ?>>Ativo</option>
+                            <option value="inativo" <?= $statusFiltro === 'inativo' ? 'selected' : '' ?>>Inativo</option>
+                            <option value="pendente" <?= $statusFiltro === 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-warning">Filtrar</button>
+                        <a href="tela_usuarios.php" class="btn btn-outline-secondary">Limpar</a>
+                    </div>
+                </form>
+
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-body p-0">
 
@@ -64,7 +118,7 @@ unset($_SESSION['mensagem']);
 
                                 <tbody>
     <?php if ($usuarios->num_rows === 0): ?>
-        <tr><td colspan="6" class="text-center p-4">Nenhum usuário cadastrado.</td></tr>
+        <tr><td colspan="6" class="text-center p-4">Nenhum usuário encontrado.</td></tr>
     <?php endif; ?>
     <?php foreach ($usuarios as $usuario): ?>
         <tr>
