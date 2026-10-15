@@ -10,18 +10,18 @@ CREATE TABLE trens (
 );
 
 CREATE TABLE sensor (
-    id_sensor INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL, 
+    id_sensor INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
     localizacao VARCHAR(100) NOT NULL,
-    tipo_dado VARCHAR(50) NOT NULL ,
+    tipo_dado VARCHAR(50) NOT NULL,
     id_trem INT NOT NULL,
-    tipo VARCHAR (200),
+    tipo VARCHAR(200),
     conjunto VARCHAR(200),
     FOREIGN KEY (id_trem) REFERENCES trens(id)
 );
 
 CREATE TABLE dados_sensor (
-    id_dado INT PRIMARY KEY AUTO_INCREMENT,
+    id_dado INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10,2),
     data_hora DATETIME,
     id_sensor INT,
@@ -39,7 +39,7 @@ CREATE TABLE usuarios (
 );
 
 CREATE TABLE relatorio (
-    id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
+    id_relatorio INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100),
     data_geracao DATE,
     id_usuario INT,
@@ -53,7 +53,7 @@ CREATE TABLE rotas (
     tempo TIME,
     origem VARCHAR(200) NOT NULL,
     destino VARCHAR(200) NOT NULL,
-    status ENUM('disponível','indisponível'),
+    status ENUM('disponível', 'indisponível'),
     id_trem INT,
-    FOREIGN KEY (id_trem) REFERENCES trem(id_trem)
+    FOREIGN KEY (id_trem) REFERENCES trens(id)
 );
