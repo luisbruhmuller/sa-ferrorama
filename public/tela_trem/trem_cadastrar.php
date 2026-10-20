@@ -1,4 +1,5 @@
 <?php
+include '../../infra\conexao.php'
 /**
  * Processa o cadastro de trem (Create). Recebe apenas POST e sempre termina com redirecionamento.
  */
