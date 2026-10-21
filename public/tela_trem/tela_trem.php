@@ -11,7 +11,13 @@ $erroConsulta = false;
 
 try {
     // Consulta fixa, sem dados vindos do usuário.
-    $resultado = $conexao->query('SELECT id_trem, nome, tipo, status, conjunto FROM trem ORDER BY id_trem');
+    $resultado = $conexao->query(
+        'SELECT t.id_trem, t.nome, t.tipo, t.status, t.conjunto, t.id_responsavel,
+                u.nome AS responsavel_nome, u.email AS responsavel_email
+         FROM trens AS t
+         LEFT JOIN usuarios AS u ON u.id = t.id_responsavel
+         ORDER BY t.id_trem'
+    );
     $trens = $resultado->fetch_all(MYSQLI_ASSOC);
 } catch (mysqli_sql_exception $ex) {
     error_log('Erro ao listar trens: ' . $ex->getMessage());
@@ -82,6 +88,7 @@ try {
                                             <th scope="col" class="py-3">Tipo de Trem</th>
                                             <th scope="col" class="py-3">Status</th>
                                             <th scope="col" class="py-3">Conjunto</th>
+                                            <th scope="col" class="py-3">Responsável</th>
                                             <th scope="col" class="text-end pe-4 py-3 rounded-top-end">Ações</th>
                                         </tr>
                                     </thead>
@@ -89,7 +96,7 @@ try {
                                     <tbody>
                                         <?php if (!$trens): ?>
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted py-4">Nenhum trem cadastrado.</td>
+                                                <td colspan="7" class="text-center text-muted py-4">Nenhum trem cadastrado.</td>
                                             </tr>
                                         <?php endif; ?>
 
@@ -103,6 +110,14 @@ try {
                                                         <?= trem_h($trem['status']) ?></span>
                                                 </td>
                                                 <td class="text-muted"><?= trem_h($trem['conjunto']) ?></td>
+                                                <td>
+                                                    <?php if ($trem['responsavel_nome'] !== null): ?>
+                                                        <span class="fw-medium"><?= trem_h($trem['responsavel_nome']) ?></span>
+                                                        <small class="d-block text-muted"><?= trem_h($trem['responsavel_email']) ?></small>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-warning text-dark">Sem responsável</span>
+                                                    <?php endif; ?>
+                                                </td>
                                                 <td class="text-end pe-4">
                                                     <a href="tela_editar_trem.php?id=<?= (int) $trem['id_trem'] ?>"
                                                         class="btn btn-sm btn-outline-secondary me-1" title="Editar">

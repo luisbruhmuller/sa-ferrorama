@@ -21,6 +21,9 @@ if ($idTrem === null) {
 }
 
 [$dados, $erros] = trem_validar($_POST);
+if (!$erros && !trem_responsavel_existe($conexao, $dados['id_responsavel'])) {
+    $erros['id_responsavel'] = 'Usuário responsável não encontrado.';
+}
 if ($erros) {
     trem_guardar_formulario($dados, $erros);
     trem_redirecionar('tela_editar_trem.php?id=' . $idTrem);
@@ -33,8 +36,18 @@ try {
         trem_redirecionar('tela_trem.php');
     }
 
-    $stmt = $conexao->prepare('UPDATE trem SET nome = ?, tipo = ?, status = ?, conjunto = ? WHERE id_trem = ?');
-    $stmt->bind_param('ssssi', $dados['nome'], $dados['tipo'], $dados['status'], $dados['conjunto'], $idTrem);
+    $stmt = $conexao->prepare(
+        'UPDATE trens SET nome = ?, tipo = ?, status = ?, conjunto = ?, id_responsavel = ? WHERE id_trem = ?'
+    );
+    $stmt->bind_param(
+        'ssssii',
+        $dados['nome'],
+        $dados['tipo'],
+        $dados['status'],
+        $dados['conjunto'],
+        $dados['id_responsavel'],
+        $idTrem
+    );
     $stmt->execute();
     $stmt->close();
 
@@ -42,7 +55,12 @@ try {
     trem_redirecionar('tela_trem.php');
 } catch (mysqli_sql_exception $ex) {
     error_log('Erro ao editar trem: ' . $ex->getMessage());
-    trem_guardar_formulario($dados, []);
-    trem_flash('danger', 'Não foi possível atualizar o trem. Tente novamente.');
+    if ($ex->getCode() === 1452) {
+        $erros['id_responsavel'] = 'Usuário responsável não encontrado.';
+    }
+    trem_guardar_formulario($dados, $erros);
+    trem_flash('danger', $ex->getCode() === 1452
+        ? 'O responsável selecionado não existe mais.'
+        : 'Não foi possível atualizar o trem. Tente novamente.');
     trem_redirecionar('tela_editar_trem.php?id=' . $idTrem);
 }

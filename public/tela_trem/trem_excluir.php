@@ -21,7 +21,7 @@ if ($idTrem === null) {
 }
 
 try {
-    $stmt = $conexao->prepare('DELETE FROM trem WHERE id_trem = ?');
+    $stmt = $conexao->prepare('DELETE FROM trens WHERE id_trem = ?');
     $stmt->bind_param('i', $idTrem);
     $stmt->execute();
     $removidos = $stmt->affected_rows;
