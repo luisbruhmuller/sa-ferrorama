@@ -25,6 +25,9 @@ $secoesPorPagina = [
     'tela_cadastro_sensores.php' => 'sensores',
     'tela_usuarios.php' => 'usuarios',
     'tela_cadastro_usuarios.php' => 'usuarios',
+    'tela_rota.php' => 'rotas',
+    'tela_cadastro_rota.php' => 'rotas',
+    'tela_editar_rota.php' => 'rotas',
 ];
 $secaoAtual = $secoesPorPagina[$paginaAtual] ?? '';
 
@@ -89,6 +92,13 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       class="nav-link text-white rounded px-3 py-2"
     >
       <i class="bi bi-cpu me-2"></i>Detalhes Trem
+    </a>
+
+    <a
+      href="../../public/tela_rota/tela_rota.php"
+      <?php echo $atributosItemSidebar('rotas'); ?>
+    >
+      <i class="bi bi-signpost-split me-2"></i>Rotas
     </a>
 
     <a
