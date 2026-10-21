@@ -33,9 +33,11 @@ CREATE TABLE usuarios (
     nome VARCHAR(200) NOT NULL,
     email VARCHAR(200) NOT NULL,
     senha VARCHAR(255) NOT NULL,
-    cpf VARCHAR(100) NOT NULL,
-    funcao ENUM('adm', 'tecnico', 'funcionario'),
-    status ENUM('ativo', 'inativo', 'pendente')
+    cpf CHAR(11) NOT NULL,
+    funcao ENUM('adm', 'tecnico', 'funcionario') NOT NULL,
+    status ENUM('ativo', 'inativo', 'pendente') NOT NULL,
+    UNIQUE KEY uq_usuarios_email (email),
+    UNIQUE KEY uq_usuarios_cpf (cpf)
 );
 
 CREATE TABLE relatorio (

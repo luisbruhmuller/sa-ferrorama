@@ -22,7 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (mysqli_sql_exception $e) {
         error_log($e->getMessage());
-        $erros[] = 'Não foi possível atualizar o usuário. Tente novamente.';
+        $erros[] = $e->getCode() === 1062
+            ? 'Já existe um usuário com esse e-mail ou CPF.'
+            : 'Não foi possível atualizar o usuário. Tente novamente.';
     }
     http_response_code(422);
 }
