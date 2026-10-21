@@ -9,15 +9,14 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/../../infra/conexao.php';
+require_once __DIR__ . '/../../infra/validacao_trem.php';
+
+// infra/conexao.php expõe $conn; o módulo usa um nome mais descritivo.
+$conexao = $conn;
 
 // A partir daqui, erros de SQL viram exceções (mysqli_sql_exception) tratadas com try/catch,
 // evitando que mensagens técnicas do banco apareçam para o usuário.
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-// Valores aceitos pelo backend. Qualquer valor fora destas listas é rejeitado,
-// mesmo que alguém altere o formulário pelo navegador.
-const TREM_STATUS = ['Ativo', 'Desativado', 'Parado no Caminho'];
-const TREM_TIPOS = ['Locomotiva', 'Vagão Gôndola', 'Vagão Hopper', 'Vagão Plataforma'];
 
 /** Escapa texto antes de imprimir no HTML (proteção contra XSS). */
 function trem_h($valor): string
@@ -86,68 +85,32 @@ function trem_redirecionar(string $destino): void
     exit;
 }
 
-/* ---------- Validação (executada no servidor) ---------- */
-
-function trem_texto(array $entrada, string $campo): string
-{
-    $valor = $entrada[$campo] ?? '';
-    return is_string($valor) ? trim($valor) : '';
-}
-
-/**
- * Valida e limpa os dados do formulário.
- * Retorna [dados_limpos, erros]; se $erros estiver vazio, os dados podem ser gravados.
- */
-function trem_validar(array $entrada): array
-{
-    $dados = [
-        'nome' => trem_texto($entrada, 'nome'),
-        'tipo' => trem_texto($entrada, 'tipo'),
-        'status' => trem_texto($entrada, 'status'),
-        'conjunto' => trem_texto($entrada, 'conjunto'),
-    ];
-    $erros = [];
-
-    if ($dados['nome'] === '') {
-        $erros['nome'] = 'Informe o nome do trem.';
-    } elseif (mb_strlen($dados['nome']) < 2 || mb_strlen($dados['nome']) > 100) {
-        $erros['nome'] = 'O nome deve ter entre 2 e 100 caracteres.';
-    }
-
-    if (!in_array($dados['tipo'], TREM_TIPOS, true)) {
-        $erros['tipo'] = 'Selecione um tipo de trem válido.';
-    }
-
-    if (!in_array($dados['status'], TREM_STATUS, true)) {
-        $erros['status'] = 'Selecione um status válido.';
-    }
-
-    if ($dados['conjunto'] === '') {
-        $erros['conjunto'] = 'Informe o conjunto do trem.';
-    } elseif (mb_strlen($dados['conjunto']) > 100) {
-        $erros['conjunto'] = 'O conjunto deve ter no máximo 100 caracteres.';
-    } elseif (!preg_match('/^[\p{L}\p{N} _.\-]+$/u', $dados['conjunto'])) {
-        $erros['conjunto'] = 'Use apenas letras, números, espaço, ponto, hífen ou sublinhado.';
-    }
-
-    return [$dados, $erros];
-}
-
-/** Lê um id enviado pelo usuário; retorna int positivo ou null se for inválido. */
-function trem_id_valido($valor): ?int
-{
-    $id = filter_var($valor, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-    return $id === false ? null : $id;
-}
-
 /* ---------- Acesso ao banco ---------- */
 
 function trem_buscar(mysqli $conexao, int $id): ?array
 {
-    $stmt = $conexao->prepare('SELECT id_trem, nome, tipo, status, conjunto FROM trem WHERE id_trem = ?');
+    $stmt = $conexao->prepare(
+        'SELECT id_trem, nome, tipo, status, conjunto, id_responsavel FROM trens WHERE id_trem = ?'
+    );
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $trem = $stmt->get_result()->fetch_assoc();
     $stmt->close();
     return $trem ?: null;
+}
+
+function trem_responsavel_existe(mysqli $conexao, int $idResponsavel): bool
+{
+    $stmt = $conexao->prepare('SELECT 1 FROM usuarios WHERE id = ? LIMIT 1');
+    $stmt->bind_param('i', $idResponsavel);
+    $stmt->execute();
+    $existe = $stmt->get_result()->num_rows > 0;
+    $stmt->close();
+    return $existe;
+}
+
+function trem_listar_responsaveis(mysqli $conexao): array
+{
+    $resultado = $conexao->query('SELECT id, nome, email, status FROM usuarios ORDER BY nome, id');
+    return $resultado->fetch_all(MYSQLI_ASSOC);
 }

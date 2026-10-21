@@ -18,6 +18,14 @@ $form = trem_pegar_formulario();
 $dados = $form['dados'] ?: $trem;
 $erros = $form['erros'];
 $flash = trem_flash_pegar();
+$responsaveis = [];
+
+try {
+    $responsaveis = trem_listar_responsaveis($conexao);
+} catch (mysqli_sql_exception $ex) {
+    error_log('Erro ao listar responsáveis: ' . $ex->getMessage());
+    $flash = ['tipo' => 'danger', 'mensagem' => 'Não foi possível carregar os usuários responsáveis.'];
+}
 
 $acaoForm = 'trem_editar.php';
 $textoBotao = 'Salvar Alterações';

@@ -2,11 +2,12 @@ CREATE DATABASE sa_ferrorama;
 USE sa_ferrorama;
 
 CREATE TABLE trens (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome_trem VARCHAR(100) NOT NULL,
-    tipo_trem VARCHAR(100) NOT NULL,
+    id_trem INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
     status VARCHAR(50) NOT NULL,
-    conjunto VARCHAR(100) NOT NULL
+    conjunto VARCHAR(100) NOT NULL,
+    id_responsavel INT NULL
 );
 
 CREATE TABLE sensor (
@@ -17,7 +18,7 @@ CREATE TABLE sensor (
     id_trem INT NOT NULL,
     tipo VARCHAR(200),
     conjunto VARCHAR(200),
-    FOREIGN KEY (id_trem) REFERENCES trens(id)
+    FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
 );
 
 CREATE TABLE dados_sensor (
@@ -37,6 +38,12 @@ CREATE TABLE usuarios (
     funcao ENUM('adm', 'tecnico', 'funcionario'),
     status ENUM('ativo', 'inativo', 'pendente')
 );
+
+ALTER TABLE trens
+    ADD CONSTRAINT fk_trens_responsavel
+    FOREIGN KEY (id_responsavel) REFERENCES usuarios(id)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL;
 
 CREATE TABLE relatorio (
     id_relatorio INT AUTO_INCREMENT PRIMARY KEY,
