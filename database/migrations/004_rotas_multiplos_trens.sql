@@ -1,7 +1,18 @@
 -- Permite associar uma rota a mais de um trem sem perder os vínculos existentes.
 -- Execute este arquivo uma vez em bancos criados antes desta revisão.
+-- A criação condicional também atende instalações antigas que ainda não possuem rotas.
 
-START TRANSACTION;
+CREATE TABLE IF NOT EXISTS rotas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
+    distancia VARCHAR(200) NOT NULL,
+    tempo TIME,
+    origem VARCHAR(200) NOT NULL,
+    destino VARCHAR(200) NOT NULL,
+    status ENUM('disponível','indisponível'),
+    id_trem INT,
+    CONSTRAINT rotas_ibfk_1 FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+);
 
 CREATE TABLE IF NOT EXISTS rota_trens (
     id_rota INT NOT NULL,
@@ -25,5 +36,3 @@ ALTER TABLE rotas DROP COLUMN id_trem;
 ALTER TABLE rotas MODIFY distancia DECIMAL(10,2) NOT NULL;
 ALTER TABLE rotas MODIFY tempo TIME NOT NULL;
 ALTER TABLE rotas MODIFY status ENUM('disponível','indisponível') NOT NULL DEFAULT 'disponível';
-
-COMMIT;
