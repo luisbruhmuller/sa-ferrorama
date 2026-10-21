@@ -15,6 +15,9 @@ if (!trem_csrf_valido($_POST['csrf_token'] ?? null)) {
 
 // Validação no servidor: o HTML do formulário não é confiável, pois pode ser alterado no navegador.
 [$dados, $erros] = trem_validar($_POST);
+if (!$erros && !trem_responsavel_existe($conexao, $dados['id_responsavel'])) {
+    $erros['id_responsavel'] = 'Usuário responsável não encontrado.';
+}
 if ($erros) {
     trem_guardar_formulario($dados, $erros);
     trem_redirecionar('tela_cadastro_trem.php');
@@ -22,8 +25,17 @@ if ($erros) {
 
 try {
     // Consulta parametrizada: os valores nunca são concatenados ao SQL (proteção contra SQL Injection).
-    $stmt = $conexao->prepare('INSERT INTO trem (nome, tipo, status, conjunto) VALUES (?, ?, ?, ?)');
-    $stmt->bind_param('ssss', $dados['nome'], $dados['tipo'], $dados['status'], $dados['conjunto']);
+    $stmt = $conexao->prepare(
+        'INSERT INTO trens (nome, tipo, status, conjunto, id_responsavel) VALUES (?, ?, ?, ?, ?)'
+    );
+    $stmt->bind_param(
+        'ssssi',
+        $dados['nome'],
+        $dados['tipo'],
+        $dados['status'],
+        $dados['conjunto'],
+        $dados['id_responsavel']
+    );
     $stmt->execute();
     $stmt->close();
 
@@ -32,7 +44,12 @@ try {
 } catch (mysqli_sql_exception $ex) {
     // O detalhe técnico vai para o log do servidor; o usuário recebe uma mensagem genérica.
     error_log('Erro ao cadastrar trem: ' . $ex->getMessage());
-    trem_guardar_formulario($dados, []);
-    trem_flash('danger', 'Não foi possível cadastrar o trem. Tente novamente.');
+    if ($ex->getCode() === 1452) {
+        $erros['id_responsavel'] = 'Usuário responsável não encontrado.';
+    }
+    trem_guardar_formulario($dados, $erros);
+    trem_flash('danger', $ex->getCode() === 1452
+        ? 'O responsável selecionado não existe mais.'
+        : 'Não foi possível cadastrar o trem. Tente novamente.');
     trem_redirecionar('tela_cadastro_trem.php');
 }
