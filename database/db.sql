@@ -11,20 +11,18 @@ CREATE TABLE trens (
 );
 
 CREATE TABLE sensor (
-    id_sensor INT PRIMARY KEY AUTO_INCREMENT,
+    id_sensor INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     localizacao VARCHAR(100) NOT NULL,
     tipo_dado VARCHAR(50) NOT NULL,
     id_trem INT NOT NULL,
-    tipo ENUM('Ativo','Inativo','Com falha') NOT NULL DEFAULT 'Ativo',
-    conjunto VARCHAR(100) NOT NULL,
-    CONSTRAINT uq_sensor_nome UNIQUE (nome),
-    CONSTRAINT fk_sensor_trem FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
-        ON UPDATE CASCADE ON DELETE RESTRICT
+    tipo VARCHAR(200),
+    conjunto VARCHAR(200),
+    FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
 );
 
 CREATE TABLE dados_sensor (
-    id_dado INT PRIMARY KEY AUTO_INCREMENT,
+    id_dado INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10,2),
     data_hora DATETIME,
     id_sensor INT NOT NULL,
@@ -49,7 +47,7 @@ ALTER TABLE trens
     ON DELETE SET NULL;
 
 CREATE TABLE relatorio (
-    id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
+    id_relatorio INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100),
     data_geracao DATE,
     id_usuario INT,
@@ -63,17 +61,7 @@ CREATE TABLE rotas (
     tempo TIME NOT NULL,
     origem VARCHAR(200) NOT NULL,
     destino VARCHAR(200) NOT NULL,
-    status ENUM('disponível','indisponível') NOT NULL DEFAULT 'disponível'
-);
-
-CREATE TABLE rota_trens (
-    id_rota INT NOT NULL,
-    id_trem INT NOT NULL,
-    PRIMARY KEY (id_rota, id_trem),
-    CONSTRAINT fk_rota_trens_rota
-        FOREIGN KEY (id_rota) REFERENCES rotas(id)
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_rota_trens_trem
-        FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
-        ON UPDATE CASCADE ON DELETE RESTRICT
+    status ENUM('disponível', 'indisponível'),
+    id_trem INT,
+    FOREIGN KEY (id_trem) REFERENCES trens(id)
 );
