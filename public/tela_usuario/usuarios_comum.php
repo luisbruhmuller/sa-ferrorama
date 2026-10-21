@@ -1,6 +1,7 @@
 <?php
 // Funções compartilhadas exclusivamente pelo módulo de usuários.
 require_once __DIR__ . '/../../infra/criptografia.php';
+require_once __DIR__ . '/../../infra/validacao_usuario.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start(['cookie_httponly' => true, 'cookie_samesite' => 'Lax',
@@ -75,31 +76,7 @@ function buscar_usuario($id) {
     return $usuario;
 }
 function validar_usuario($edicao = false) {
-    $dados = ['nome' => campo('nome'), 'email' => campo('email'), 'cpf' => preg_replace('/[^0-9]/', '', campo('cpf')), 'funcao' => campo('funcao'), 'status' => campo('status')];
-    $senha = isset($_POST['senha']) && is_string($_POST['senha']) ? $_POST['senha'] : '';
-    $confirmacao = isset($_POST['confirmar_senha']) && is_string($_POST['confirmar_senha']) ? $_POST['confirmar_senha'] : '';
-    $erros = [];
-    if ($dados['nome'] === '' || mb_strlen($dados['nome']) > 200) $erros[] = 'Informe um nome com até 200 caracteres.';
-    if (!filter_var($dados['email'], FILTER_VALIDATE_EMAIL) || strlen($dados['email']) > 200) $erros[] = 'Informe um e-mail válido com até 200 caracteres.';
-    $cpf = $dados['cpf'];
-    $cpfValido = strlen($cpf) === 11 && !preg_match('/^(\d)\1{10}$/', $cpf);
-    if ($cpfValido) {
-        for ($t = 9; $t < 11; $t++) {
-            $soma = 0;
-            for ($i = 0; $i < $t; $i++) $soma += (int) $cpf[$i] * ($t + 1 - $i);
-            $digito = (10 * $soma) % 11;
-            if ($digito === 10) $digito = 0;
-            if ((int) $cpf[$t] !== $digito) $cpfValido = false;
-        }
-    }
-    if (!$cpfValido) $erros[] = 'Informe um CPF válido.';
-    if (!in_array($dados['funcao'], ['adm', 'tecnico', 'funcionario'], true)) $erros[] = 'Selecione um cargo válido.';
-    if (!in_array($dados['status'], ['ativo', 'inativo', 'pendente'], true)) $erros[] = 'Selecione um status válido.';
-    if (!$edicao || $senha !== '' || $confirmacao !== '') {
-        if (strlen($senha) < 8 || strlen($senha) > 72) $erros[] = 'A senha deve ter entre 8 e 72 bytes.';
-        if ($senha !== $confirmacao) $erros[] = 'As senhas não coincidem.';
-    }
-    return [$dados, $senha, $erros];
+    return validar_dados_usuario($_POST, $edicao);
 }
 function duplicado($dados, $id = 0) {
     return consulta("SELECT id FROM usuarios WHERE id <> ? AND (email = ? OR REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', '') = ?) LIMIT 1", 'iss', [$id, $dados['email'], $dados['cpf']])->get_result()->num_rows > 0;
