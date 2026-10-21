@@ -12,21 +12,24 @@ CREATE TABLE trens (
 
 CREATE TABLE sensor (
     id_sensor INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL, 
+    nome VARCHAR(100) NOT NULL,
     localizacao VARCHAR(100) NOT NULL,
-    tipo_dado VARCHAR(50) NOT NULL ,
+    tipo_dado VARCHAR(50) NOT NULL,
     id_trem INT NOT NULL,
-    tipo VARCHAR (200),
-    conjunto VARCHAR(200),
-    FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+    tipo ENUM('Ativo','Inativo','Com falha') NOT NULL DEFAULT 'Ativo',
+    conjunto VARCHAR(100) NOT NULL,
+    CONSTRAINT uq_sensor_nome UNIQUE (nome),
+    CONSTRAINT fk_sensor_trem FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE dados_sensor (
     id_dado INT PRIMARY KEY AUTO_INCREMENT,
     valor DECIMAL(10,2),
     data_hora DATETIME,
-    id_sensor INT,
-    FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+    id_sensor INT NOT NULL,
+    CONSTRAINT fk_dados_sensor_sensor FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE usuarios (
