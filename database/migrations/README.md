@@ -1,9 +1,10 @@
-# Migração das senhas
+# Migrações do banco
 
-Faça um backup, inicie o MySQL no XAMPP e execute uma vez na raiz do projeto:
+Faça um backup, inicie o MySQL no XAMPP e execute cada migração uma vez, na ordem indicada, a partir da raiz do projeto:
 
 ```powershell
 C:\xampp\php\php.exe database\migrations\001_hash_senhas_existentes.php
+C:\xampp\php\php.exe database\migrations\002_restricoes_usuarios.php
 ```
 
 ## Rotas associadas a vários trens
