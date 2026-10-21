@@ -1,223 +1,148 @@
 <?php
-/**
- * Lista fixa de sensores e modal de cadastro. cadastrarSensor() verifica campos vazios,
- * mas não persiste dados nem acrescenta registros à tabela.
- */
-// Carrega o menu; o template atual também imprime sua própria estrutura HTML.
+require_once __DIR__ . '/sensor_funcoes.php';
 include '../templates/sidebar.php';
 
-?>
+$flash = sensor_flash_pegar();
+$sensores = [];
+$erroConsulta = false;
 
+try {
+    $resultado = $conexao->query(
+        'SELECT s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto,
+                t.id_trem, t.nome AS trem_nome, COUNT(ds.id_dado) AS total_leituras
+         FROM sensor AS s
+         INNER JOIN trens AS t ON t.id_trem = s.id_trem
+         LEFT JOIN dados_sensor AS ds ON ds.id_sensor = s.id_sensor
+         GROUP BY s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto,
+                  t.id_trem, t.nome
+         ORDER BY s.id_sensor'
+    );
+    $sensores = $resultado->fetch_all(MYSQLI_ASSOC);
+} catch (mysqli_sql_exception $ex) {
+    error_log('Erro ao listar sensores: ' . $ex->getMessage());
+    $erroConsulta = true;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GordoSensores — Sensores</title>
-    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
-
 <body class="app-layout bg-light">
-
-    <main id="conteudo" class="app-main">
-        <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
-            <div class="col bg-light">
-                <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
-                    <h6 class="mb-0 fw-bold"><i class="bi bi-people-fill me-2" style="color: #0b3d91;"></i>Sensores</h6>
-                    <div class="d-flex align-items-center gap-3">
-                        <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:8px"></i>Sistema
-                            Online</span>
-                        <span class="text-muted small"><i class="bi bi-clock me-1"></i>Atualizado: 14:32:07</span>
-                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-clockwise"></i></button>
-                    </div>
-                </div>
+<main id="conteudo" class="app-main">
+    <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
+        <div class="col bg-light">
+            <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
+                <h6 class="mb-0 fw-bold"><i class="bi bi-cpu me-2" style="color:#0b3d91"></i>Sensores</h6>
+                <a href="tela_sensores.php" class="btn btn-sm btn-outline-secondary" title="Atualizar lista">
+                    <i class="bi bi-arrow-clockwise"></i></a>
+            </div>
 
             <div class="p-4 bg-light flex-grow-1">
+                <?php if ($flash): ?>
+                    <div class="alert alert-<?= sensor_h($flash['tipo']) ?> alert-dismissible fade show" role="alert">
+                        <?= sensor_h($flash['mensagem']) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if ($erroConsulta): ?>
+                    <div class="alert alert-danger">Não foi possível carregar a lista de sensores.</div>
+                <?php endif; ?>
+
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="mb-0 text-secondary fw-normal">Lista de Sensores Cadastrados</h5>
-<!-- data-bs-target indica o ID do modal que o Bootstrap deve abrir. -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSensor"><i
-                            class="bi bi-person-plus-fill me-2"></i>Novo Sensor</button>
+                    <a href="tela_cadastro_sensores.php" class="btn text-white" style="background-color:#0b3d91">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Novo Sensor</a>
                 </div>
 
-                    <div class="card shadow-sm border-0 rounded-3">
-                        <div class="card-body p-0">
-                            <!-- Contêiner que permite rolagem horizontal da tabela em telas estreitas. -->
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped mb-0 align-middle">
-                                    <!-- Cabeçalho que define o significado e a ordem das colunas. -->
-                                    <thead class="table-dark">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped mb-0 align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="ps-4 py-3">ID</th>
+                                        <th class="py-3">Nome</th>
+                                        <th class="py-3">Tipo</th>
+                                        <th class="py-3">Status</th>
+                                        <th class="py-3">Trem</th>
+                                        <th class="py-3">Subsistema / Local</th>
+                                        <th class="py-3 text-center">Leituras</th>
+                                        <th class="text-end pe-4 py-3">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!$sensores): ?>
+                                        <tr><td colspan="8" class="text-center text-muted py-4">Nenhum sensor cadastrado.</td></tr>
+                                    <?php endif; ?>
+                                    <?php foreach ($sensores as $sensor): ?>
                                         <tr>
-                                            <th scope="col" class="ps-4 py-3 rounded-top-start">ID</th>
-                                            <th scope="col" class="py-3">Nome</th>
-                                            <th scope="col" class="py-3">Trem</th>
-                                            <th scope="col" class="py-3">Tipo</th>
-                                            <th scope="col" class="py-3">Conjunto</th>
-                                            <th scope="col" class="text-end pe-4 py-3 rounded-top-end">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <!-- Registros de exemplo escritos diretamente no HTML, sem consulta ao banco.
-Os botões das linhas ainda não executam alterações nos registros. -->
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row" class="ps-4">01</th>
-                                            <td class="fw-medium">Temperatura-wtrn-04</td>
-                                            <td>TRN-04</td>
-                                            <td><span
-                                                    class="badge bg-danger bg-opacity-75 fw-normal px-2 py-1 ">Temperatura</span>
-                                            </td>
-                                            <td class="text-muted">TRN-04-group</td>
-                                            <td class="text-end pe-4">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary me-1"
-                                                    title="Editar"><i class="bi bi-eye"></i></button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Excluir"><i class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="ps-4">02</th>
-                                            <td class="fw-medium">gps-gtrn-04</td>
-                                            <td>TRN-04</td>
-                                            <td><span
-                                                    class="badge bg-warning bg-opacity-75 fw-normal px-2 py-1">Localização</span>
-                                            </td>
-                                            <td class="text-muted">TRN-04-group</td>
-                                            <td class="text-end pe-4">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary me-1"
-                                                    title="Editar"><i class="bi bi-eye"></i></button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Excluir"><i class="bi bi-trash"></i></button>
+                                            <th scope="row" class="ps-4"><?= sensor_h(str_pad($sensor['id_sensor'], 2, '0', STR_PAD_LEFT)) ?></th>
+                                            <td class="fw-medium"><?= sensor_h($sensor['nome']) ?></td>
+                                            <td><?= sensor_h($sensor['tipo_dado']) ?></td>
+                                            <td><span class="badge <?= sensor_classe_status($sensor['tipo']) ?> bg-opacity-75">
+                                                <?= sensor_h($sensor['tipo']) ?></span></td>
+                                            <td><?= sensor_h($sensor['trem_nome']) ?> <small class="text-muted">#<?= (int) $sensor['id_trem'] ?></small></td>
+                                            <td><?= sensor_h($sensor['conjunto']) ?><small class="d-block text-muted"><?= sensor_h($sensor['localizacao']) ?></small></td>
+                                            <td class="text-center"><span class="badge bg-info text-dark"><?= (int) $sensor['total_leituras'] ?></span></td>
+                                            <td class="text-end pe-4 text-nowrap">
+                                                <a href="tela_editar_sensor.php?id=<?= (int) $sensor['id_sensor'] ?>"
+                                                    class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+                                                    <i class="bi bi-pencil"></i></a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                                    data-bs-toggle="modal" data-bs-target="#modalExcluir"
+                                                    data-id="<?= (int) $sensor['id_sensor'] ?>"
+                                                    data-nome="<?= sensor_h($sensor['nome']) ?>"
+                                                    data-leituras="<?= (int) $sensor['total_leituras'] ?>">
+                                                    <i class="bi bi-trash"></i></button>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row" class="ps-4">03</th>
-                                            <td class="fw-medium">Velocidade-vtrn-04</td>
-                                            <td>TRN-04</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-75 fw-normal px-2 py-1">Funcionário</span>
-                                            </td>
-                                            <td class="text-muted">TRN-04-group</td>
-                                            <td class="text-end pe-4">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary me-1"
-                                                    title="Editar"><i class="bi bi-eye"></i></button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Excluir"><i class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-            </div>
-        </div>
-    </main>
-
-<!-- popup de cadastro de sensor -->
-<!-- Janela de cadastro; data-bs-dismiss fecha o modal sem salvar os campos. -->
-<div class="modal fade" id="modalSensor" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-cpu me-2 text-warning"></i>Cadastrar Novo Sensor IoT</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <!-- Identificação do sensor, separada da grandeza que ele mede. -->
-                    <label class="form-label fw-semibold">Nome / Código do Sensor</label>
-                    <input type="text" class="form-control" placeholder="Ex: Sensor TMP-01" id="nome_sensor" />
-                </div>
-                <div class="mb-3">
-                    <!-- Grandeza monitorada; a opção inicial vazia representa ausência de seleção. -->
-                    <label class="form-label fw-semibold">Tipo de Sensor</label>
-                    <select class="form-select" id="tipo_sensor">
-                        <option value="" selected disabled>Selecione o tipo...</option>
-                        <option value="Temperatura">Temperatura</option>
-                        <option value="Vibração">Vibração</option>
-                        <option value="Consumo de Energia">Consumo de Energia</option>
-                        <option value="Velocidade">Velocidade</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <!-- Parte do trem à qual o sensor será associado. -->
-                    <label class="form-label fw-semibold">Subsistema Vinculado</label>
-                    <select class="form-select" id="subsistema">
-                        <option value="" selected disabled>Selecione o subsistema...</option>
-                        <option value="Motor">Motor</option>
-                        <option value="Elétrico">Elétrico</option>
-                        <option value="Freios">Freios</option>
-                        <option value="Comunicação">Comunicação</option>
-                        <option value="Refrigeração">Refrigeração</option>
-                        <option value="Câmeras">Câmeras</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <!-- Posição física do sensor dentro do trem. -->
-                    <label class="form-label fw-semibold">Local de Instalação</label>
-                    <input type="text" class="form-control" placeholder="Ex: Vagão 1 / Roda Dianteira" id="localizacao" />
-                </div>
-                <div class="mb-3">
-                    <!-- Referência pretendida para alertas; esta tela não compara leituras com esse limite. -->
-                    <label class="form-label fw-semibold">Limite Crítico Máximo</label>
-                    <input type="number" class="form-control" placeholder="Ex: 85" id="limite_maximo" />
-                </div>
-
-<!-- Mensagens alternadas pela função cadastrarSensor() abaixo. -->
-                <div id="alert-sucesso" class="alert alert-success d-none">Sensor cadastrado com sucesso!</div>
-                <div id="alert-erro" class="alert alert-danger d-none">Erro ao cadastrar o sensor! Verifique os dados.</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-warning fw-semibold" onclick="cadastrarSensor()">Cadastrar Sensor</button>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
+    <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="tituloModalExcluir" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" method="post" action="excluir_sensores.php">
+                <input type="hidden" name="csrf_token" value="<?= sensor_h(sensor_csrf_token()) ?>">
+                <input type="hidden" name="id_sensor" id="excluir_id" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalExcluir">Excluir sensor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir <strong id="excluir_nome"></strong>?</p>
+                    <div class="alert alert-warning d-none mb-0" id="aviso_leituras">
+                        Este sensor possui leituras associadas e sua exclusão será bloqueada.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Excluir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Validação visual: não envia requisições nem salva no navegador ou banco.
-    function cadastrarSensor() {
-// Lê os cinco campos do modal; .value retorna texto, inclusive no input numérico.
-        var nome = document.getElementById("nome_sensor").value;
-        var tipo = document.getElementById("tipo_sensor").value;
-        var subsistema = document.getElementById("subsistema").value;
-        var local = document.getElementById("localizacao").value;
-        var limite = document.getElementById("limite_maximo").value;
-
-// Oculta o resultado anterior antes de avaliar a nova tentativa.
-        document.getElementById("alert-sucesso").classList.add("d-none");
-        document.getElementById("alert-erro").classList.add("d-none");
-
-// Rejeita campos vazios; não valida espaços, faixa numérica ou duplicidade.
-        if (nome == "" || tipo == "" || subsistema == "" || local == "" || limite == "") {
-            document.getElementById("alert-erro").classList.remove("d-none");
-        } else {
-// Sucesso significa apenas campos preenchidos; nenhum registro é persistido.
-            document.getElementById("alert-sucesso").classList.remove("d-none");
-        }
-    }
+document.getElementById('modalExcluir').addEventListener('show.bs.modal', function (evento) {
+    var botao = evento.relatedTarget;
+    document.getElementById('excluir_id').value = botao.getAttribute('data-id');
+    document.getElementById('excluir_nome').textContent = botao.getAttribute('data-nome');
+    document.getElementById('aviso_leituras').classList.toggle('d-none', Number(botao.getAttribute('data-leituras')) === 0);
+});
 </script>
-
 </body>
-
 </html>

@@ -1,120 +1,53 @@
 <?php
-
-session_start();
-
-require_once __DIR__ . '/../../infra/conexao.php';
-
-
-/*
-|--------------------------------------------------------------------------
-| Verifica se recebeu POST
-|--------------------------------------------------------------------------
-*/
+/**
+ * Exclui um sensor sem remover suas leituras. Sensores com dados associados são
+ * preservados conforme a regra RN05 e a chave estrangeira do banco.
+ */
+require_once __DIR__ . '/sensor_funcoes.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-
-    header("Location: tela_sensores.php");
-    exit;
-
+    sensor_redirecionar('tela_sensores.php');
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| Pega o ID do sensor
-|--------------------------------------------------------------------------
-*/
-
-$id_sensor = (int) ($_POST['id_sensor'] ?? 0);
-
-
-if ($id_sensor <= 0) {
-
-    $_SESSION['flash'] = [
-        'tipo' => 'danger',
-        'mensagem' => 'Sensor inválido.'
-    ];
-
-    header("Location: tela_sensores.php");
-    exit;
-
+if (!sensor_csrf_valido($_POST['csrf_token'] ?? null)) {
+    sensor_flash('danger', 'Sessão inválida. Recarregue a página e tente novamente.');
+    sensor_redirecionar('tela_sensores.php');
 }
 
+$idSensor = sensor_id_valido($_POST['id_sensor'] ?? null);
+if ($idSensor === null) {
+    sensor_flash('danger', 'Sensor inválido.');
+    sensor_redirecionar('tela_sensores.php');
+}
 
 try {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Exclui os dados relacionados ao sensor
-    |--------------------------------------------------------------------------
-    */
-
-    $sql = "DELETE FROM dados_sensor WHERE id_sensor = ?";
-
-    $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param("i", $id_sensor);
-
-    $stmt->execute();
-
-    $stmt->close();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Exclui o sensor
-    |--------------------------------------------------------------------------
-    */
-
-    $sql = "DELETE FROM sensor WHERE id_sensor = ?";
-
-    $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param("i", $id_sensor);
-
-    $stmt->execute();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Verifica se realmente excluiu
-    |--------------------------------------------------------------------------
-    */
-
-    if ($stmt->affected_rows > 0) {
-
-        $_SESSION['flash'] = [
-            'tipo' => 'success',
-            'mensagem' => 'Sensor excluído com sucesso!'
-        ];
-
-    } else {
-
-        $_SESSION['flash'] = [
-            'tipo' => 'warning',
-            'mensagem' => 'Sensor não encontrado.'
-        ];
-
+    if (sensor_buscar($conexao, $idSensor) === null) {
+        sensor_flash('danger', 'Sensor não encontrado.');
+        sensor_redirecionar('tela_sensores.php');
     }
 
+    if (sensor_total_leituras($conexao, $idSensor) > 0) {
+        sensor_flash('warning', 'Não é possível excluir: este sensor possui leituras associadas.');
+        sensor_redirecionar('tela_sensores.php');
+    }
 
+    $stmt = $conexao->prepare('DELETE FROM sensor WHERE id_sensor = ?');
+    $stmt->bind_param('i', $idSensor);
+    $stmt->execute();
+    $removidos = $stmt->affected_rows;
     $stmt->close();
 
-
-} catch (Exception $e) {
-
-    $_SESSION['flash'] = [
-        'tipo' => 'danger',
-        'mensagem' => 'Erro ao excluir o sensor: ' . $e->getMessage()
-    ];
-
+    sensor_flash(
+        $removidos > 0 ? 'success' : 'danger',
+        $removidos > 0 ? 'Sensor excluído com sucesso!' : 'Sensor não encontrado.'
+    );
+} catch (mysqli_sql_exception $ex) {
+    if ($ex->getCode() === 1451) {
+        sensor_flash('warning', 'Não é possível excluir: este sensor possui dados associados.');
+    } else {
+        error_log('Erro ao excluir sensor: ' . $ex->getMessage());
+        sensor_flash('danger', 'Não foi possível excluir o sensor. Tente novamente.');
+    }
 }
 
-
-$conn->close();
-
-
-header("Location: tela_sensores.php");
-exit;
-
-?>
+sensor_redirecionar('tela_sensores.php');

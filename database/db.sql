@@ -25,8 +25,9 @@ CREATE TABLE dados_sensor (
     id_dado INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10,2),
     data_hora DATETIME,
-    id_sensor INT,
-    FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+    id_sensor INT NOT NULL,
+    CONSTRAINT fk_dados_sensor_sensor FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE usuarios (
@@ -56,8 +57,8 @@ CREATE TABLE relatorio (
 CREATE TABLE rotas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
-    distancia VARCHAR(200) NOT NULL,
-    tempo TIME,
+    distancia DECIMAL(10,2) NOT NULL,
+    tempo TIME NOT NULL,
     origem VARCHAR(200) NOT NULL,
     destino VARCHAR(200) NOT NULL,
     status ENUM('disponível', 'indisponível'),
