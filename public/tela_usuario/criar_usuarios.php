@@ -14,7 +14,9 @@ try {
     }
 } catch (mysqli_sql_exception $e) {
     error_log($e->getMessage());
-    $erros[] = 'Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.';
+    $erros[] = $e->getCode() === 1062
+        ? 'Já existe um usuário com esse e-mail ou CPF.'
+        : 'Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.';
 }
 http_response_code(422);
 require __DIR__ . '/tela_cadastro_usuarios.php';
