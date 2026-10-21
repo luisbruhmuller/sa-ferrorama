@@ -7,9 +7,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'Muitas tentativas inválidas. Aguarde 15 minutos para tentar novamente.';
     } else {
         if (isset($_SESSION['login_bloqueado_ate'])) unset($_SESSION['login_bloqueado_ate'], $_SESSION['login_tentativas']);
-        $usuario = consulta('SELECT id, senha, funcao, status FROM usuarios WHERE email = ? LIMIT 1', 's', [campo('email')])->get_result()->fetch_assoc();
+        $email = normalizar_email_usuario(campo('email'));
+        $usuario = consulta('SELECT id, senha, funcao, status FROM usuarios WHERE email = ? LIMIT 1', 's', [$email])->get_result()->fetch_assoc();
         $senha = isset($_POST['senha']) && is_string($_POST['senha']) ? $_POST['senha'] : '';
         if ($usuario && $usuario['status'] === 'ativo' && verificar_senha($senha, $usuario['senha'])) {
+            if (senha_precisa_novo_hash($usuario['senha'])) {
+                consulta(
+                    'UPDATE usuarios SET senha = ? WHERE id = ?',
+                    'si',
+                    [gerar_hash_senha($senha), (int) $usuario['id']]
+                );
+            }
             session_regenerate_id(true);
             $_SESSION['usuario_id'] = (int) $usuario['id'];
             unset($_SESSION['login_tentativas'], $_SESSION['login_bloqueado_ate'], $_SESSION['csrf']);
