@@ -56,11 +56,21 @@ CREATE TABLE relatorio (
 CREATE TABLE rotas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
-    distancia VARCHAR(200) NOT NULL,
-    tempo TIME,
+    distancia DECIMAL(10,2) NOT NULL,
+    tempo TIME NOT NULL,
     origem VARCHAR(200) NOT NULL,
     destino VARCHAR(200) NOT NULL,
-    status ENUM('disponível','indisponível'),
-    id_trem INT,
-    FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+    status ENUM('disponível','indisponível') NOT NULL DEFAULT 'disponível'
+);
+
+CREATE TABLE rota_trens (
+    id_rota INT NOT NULL,
+    id_trem INT NOT NULL,
+    PRIMARY KEY (id_rota, id_trem),
+    CONSTRAINT fk_rota_trens_rota
+        FOREIGN KEY (id_rota) REFERENCES rotas(id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_rota_trens_trem
+        FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
