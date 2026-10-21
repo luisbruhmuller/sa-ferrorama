@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Busca os trens cadastrados
 $sqlTrens = "
-    SELECT id_trem, modelo
-    FROM trem
+    SELECT id_trem, nome
+    FROM trens
     ORDER BY id_trem ASC
 ";
 
@@ -353,7 +353,7 @@ $resultadoTrens = $conn->query($sqlTrens);
                                                     value="<?= (int) $trem['id_trem'] ?>"
                                                 >
 
-                                                    <?= htmlspecialchars($trem['modelo']) ?>
+                                                    <?= htmlspecialchars($trem['nome'], ENT_QUOTES, 'UTF-8') ?>
 
                                                 </option>
 
