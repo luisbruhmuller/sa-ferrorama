@@ -71,7 +71,33 @@
         <?php endif; ?>
     </div>
 
-    <button class="btn btn-warning w-100 fw-semibold mb-3" type="submit">
+    <div class="mb-4">
+        <label class="form-label fw-semibold" for="id_responsavel">Usuário Responsável</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+            <select class="form-select <?= isset($erros['id_responsavel']) ? 'is-invalid' : '' ?>"
+                id="id_responsavel" name="id_responsavel" required>
+                <option value="" disabled <?= empty($dados['id_responsavel']) ? 'selected' : '' ?>>
+                    Selecione o responsável...
+                </option>
+                <?php foreach ($responsaveis as $responsavel): ?>
+                    <option value="<?= (int) $responsavel['id'] ?>"
+                        <?= (int) ($dados['id_responsavel'] ?? 0) === (int) $responsavel['id'] ? 'selected' : '' ?>>
+                        <?= trem_h($responsavel['nome']) ?> — <?= trem_h($responsavel['email']) ?>
+                        (<?= trem_h($responsavel['status']) ?>)
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <?php if (!$responsaveis): ?>
+            <div class="form-text text-warning">Cadastre um usuário antes de associar um trem.</div>
+        <?php endif; ?>
+        <?php if (isset($erros['id_responsavel'])): ?>
+            <div class="invalid-feedback d-block"><?= trem_h($erros['id_responsavel']) ?></div>
+        <?php endif; ?>
+    </div>
+
+    <button class="btn btn-warning w-100 fw-semibold mb-3" type="submit" <?= !$responsaveis ? 'disabled' : '' ?>>
         <i class="bi bi-check-circle-fill me-2"></i><?= trem_h($textoBotao) ?>
     </button>
 </form>
