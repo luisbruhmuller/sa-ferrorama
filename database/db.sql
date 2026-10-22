@@ -1,5 +1,10 @@
-CREATE DATABASE sa_ferrorama;
+-- Esquema completo do banco: importe este arquivo para uma instalação nova.
+-- Se as tabelas já existirem, este arquivo não altera nem substitui sua estrutura.
+CREATE DATABASE IF NOT EXISTS sa_ferrorama
+    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE sa_ferrorama;
+SET NAMES utf8mb4;
+SET default_storage_engine = InnoDB;
 
 CREATE TABLE trens (
     id_trem INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,9 +21,11 @@ CREATE TABLE sensor (
     localizacao VARCHAR(100) NOT NULL,
     tipo_dado VARCHAR(50) NOT NULL,
     id_trem INT NOT NULL,
-    tipo VARCHAR(200),
-    conjunto VARCHAR(200),
-    FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+    tipo ENUM('Ativo', 'Inativo', 'Com falha') NOT NULL DEFAULT 'Ativo',
+    conjunto VARCHAR(100) NOT NULL,
+    CONSTRAINT uq_sensor_nome UNIQUE (nome),
+    CONSTRAINT fk_sensor_trem FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE dados_sensor (
@@ -63,7 +70,17 @@ CREATE TABLE rotas (
     tempo TIME NOT NULL,
     origem VARCHAR(200) NOT NULL,
     destino VARCHAR(200) NOT NULL,
-    status ENUM('disponível', 'indisponível'),
-    id_trem INT,
-    FOREIGN KEY (id_trem) REFERENCES trens(id)
+    status ENUM('disponível', 'indisponível') NOT NULL DEFAULT 'disponível'
+);
+
+CREATE TABLE rota_trens (
+    id_rota INT NOT NULL,
+    id_trem INT NOT NULL,
+    PRIMARY KEY (id_rota, id_trem),
+    CONSTRAINT fk_rota_trens_rota
+        FOREIGN KEY (id_rota) REFERENCES rotas(id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_rota_trens_trem
+        FOREIGN KEY (id_trem) REFERENCES trens(id_trem)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
