@@ -4,9 +4,8 @@
  * Inclua este arquivo ANTES de qualquer saída HTML: ele inicia a sessão e abre a conexão.
  */
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+exigir_login();
 
 require_once __DIR__ . '/../../infra/conexao.php';
 require_once __DIR__ . '/../../infra/validacao_trem.php';

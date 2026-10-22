@@ -1,9 +1,8 @@
 <?php
 /** Funções compartilhadas pelo CRUD de sensores. Inclua antes de qualquer saída HTML. */
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+$usuarioSensor = exigir_login();
 
 require_once __DIR__ . '/../../infra/conexao.php';
 require_once __DIR__ . '/../../infra/validacao_sensor.php';

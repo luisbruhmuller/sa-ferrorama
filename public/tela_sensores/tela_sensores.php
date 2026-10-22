@@ -56,8 +56,10 @@ try {
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="mb-0 text-secondary fw-normal">Lista de Sensores Cadastrados</h5>
+                    <?php if ($usuarioSensor['funcao'] === 'adm'): ?>
                     <a href="tela_cadastro_sensores.php" class="btn text-white" style="background-color:#0b3d91">
                         <i class="bi bi-plus-circle-fill me-2"></i>Novo Sensor</a>
+                    <?php endif; ?>
                 </div>
 
                 <div class="card shadow-sm border-0 rounded-3">
@@ -91,6 +93,7 @@ try {
                                             <td><?= sensor_h($sensor['conjunto']) ?><small class="d-block text-muted"><?= sensor_h($sensor['localizacao']) ?></small></td>
                                             <td class="text-center"><span class="badge bg-info text-dark"><?= (int) $sensor['total_leituras'] ?></span></td>
                                             <td class="text-end pe-4 text-nowrap">
+                                                <?php if ($usuarioSensor['funcao'] === 'adm'): ?>
                                                 <a href="tela_editar_sensor.php?id=<?= (int) $sensor['id_sensor'] ?>"
                                                     class="btn btn-sm btn-outline-secondary me-1" title="Editar">
                                                     <i class="bi bi-pencil"></i></a>
@@ -100,6 +103,7 @@ try {
                                                     data-nome="<?= sensor_h($sensor['nome']) ?>"
                                                     data-leituras="<?= (int) $sensor['total_leituras'] ?>">
                                                     <i class="bi bi-trash"></i></button>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

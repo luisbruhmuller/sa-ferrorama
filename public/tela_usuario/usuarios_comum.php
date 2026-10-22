@@ -52,13 +52,17 @@ function validar_post() {
         exit('Formulário expirado. Volte à página e tente novamente.');
     }
 }
-function exigir_admin() {
-    if (empty($_SESSION['usuario_id'])) redirecionar('tela_login.php');
+function exigir_login($paginaLogin = '../tela_usuario/tela_login.php') {
+    if (empty($_SESSION['usuario_id'])) redirecionar($paginaLogin);
     $usuario = consulta('SELECT id, nome, funcao, status FROM usuarios WHERE id = ?', 'i', [$_SESSION['usuario_id']])->get_result()->fetch_assoc();
     if (!$usuario || $usuario['status'] !== 'ativo') {
         unset($_SESSION['usuario_id']);
-        redirecionar('tela_login.php');
+        redirecionar($paginaLogin);
     }
+    return $usuario;
+}
+function exigir_admin() {
+    $usuario = exigir_login('../tela_usuario/tela_login.php');
     if ($usuario['funcao'] !== 'adm') {
         http_response_code(403);
         exit('Acesso permitido somente a administradores.');

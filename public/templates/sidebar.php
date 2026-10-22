@@ -41,7 +41,7 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
 ?>
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
-      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/Tela%20Home/tela_geral_home.php">
+      <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/tela_home/tela_geral_home.php">
         <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
@@ -133,6 +133,10 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
           <div class="small text-white-50"><?= escapar($cargosSidebar[$usuarioSidebar['funcao']] ?? 'Não definido') ?></div>
         </div>
       </div>
+      <form action="../tela_usuario/sair.php" method="post" class="mt-3">
+        <?= token() ?>
+        <button type="submit" class="btn btn-outline-warning btn-sm w-100">Sair</button>
+      </form>
       <?php else: ?>
       <a class="text-warning text-decoration-none" href="../../public/tela_usuario/tela_login.php"><i class="bi bi-person-circle me-2"></i>Login</a>
       <?php endif; ?>

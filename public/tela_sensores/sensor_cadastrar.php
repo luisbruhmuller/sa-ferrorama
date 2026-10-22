@@ -1,6 +1,7 @@
 <?php
 /** Processa o cadastro (Create) e aplica o padrão Post/Redirect/Get. */
 require_once __DIR__ . '/sensor_funcoes.php';
+exigir_admin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sensor_redirecionar('tela_cadastro_sensores.php');

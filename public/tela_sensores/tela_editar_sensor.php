@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/sensor_funcoes.php';
+exigir_admin();
 include '../templates/sidebar.php';
 
 $idSensor = sensor_id_valido($_GET['id'] ?? null);
