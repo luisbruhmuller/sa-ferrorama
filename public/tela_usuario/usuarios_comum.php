@@ -9,9 +9,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
-    // Conexão do módulo com o MySQL usado pelo phpMyAdmin deste XAMPP.
-    $conexao = new mysqli('127.0.0.1', 'root', '', 'sa_ferrorama', 3306);
-    $conexao->set_charset('utf8mb4');
+    include __DIR__ . '/../../infra/conexao.php';
+    
 } catch (mysqli_sql_exception $e) {
     error_log($e->getMessage());
     http_response_code(503);
@@ -64,8 +63,7 @@ function exigir_login($paginaLogin = '../tela_usuario/tela_login.php') {
 function exigir_admin() {
     $usuario = exigir_login('../tela_usuario/tela_login.php');
     if ($usuario['funcao'] !== 'adm') {
-        http_response_code(403);
-        exit('Acesso permitido somente a administradores.');
+        redirecionar('tela_acesso_negado.php');
     }
     return $usuario;
 }
