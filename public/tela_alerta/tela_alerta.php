@@ -27,12 +27,13 @@ O destaque da página atual está fixo no HTML. -->
  
 
 
-<div class="py-4 px-3">
+<main id="conteudo" class="app-main">
+<div class="container-fluid py-4 px-3">
 
   
-  <section id="screen-alerts" class="mb-5">
+  <section id="screen-alerts" class="w-100 mb-5">
 
-    <div class="card shadow">
+    <div class="card w-100 shadow">
       <div class="card-header d-flex flex-wrap gap-2 align-items-center bg-dark text-white">
         <span class="fw-bold me-auto"><i class="bi bi-exclamation-triangle me-2 text-warning"></i>Central de Alertas</span>
         <button class="btn btn-sm btn-outline-light"><i class="bi bi-funnel me-1"></i>Filtrar</button>
@@ -147,7 +148,8 @@ Os botões das linhas ainda não executam alterações nos registros. -->
     </div>
   </section>
 
-</div><!-- /container -->
+</div><!-- /container-fluid -->
+</main>
 
 <!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
