@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
+            <a class="btn btn-outline-light btn-sm" href="../tela_landing/tela_landing.php"><i class="bi bi-arrow-left me-1"></i>Início</a>
 
         </div>
     </nav>

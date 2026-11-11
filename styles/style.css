@@ -120,3 +120,81 @@
 
 }
  
+/* ===== Landing page (public/tela_landing) ===== */
+html { scroll-behavior: smooth; }
+.landing-hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(var(--cor-primaria-rgb), 0.25), transparent 45%),
+    linear-gradient(135deg, #111418 0%, #212529 60%, #1b2a3f 100%);
+}
+.landing-destaque { color: var(--cor-primaria); }
+.landing-tag {
+  background: rgba(var(--cor-primaria-rgb), 0.15);
+  color: var(--cor-primaria);
+  border: 1px solid rgba(var(--cor-primaria-rgb), 0.35);
+  font-weight: 500;
+  padding: 0.5em 0.9em;
+}
+.landing-painel {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  backdrop-filter: blur(6px);
+}
+.landing-kpi {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+}
+.landing-kpi small { color: rgba(255, 255, 255, 0.6); }
+.landing-trilho {
+  position: relative;
+  height: 28px;
+  border-radius: 999px;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 4px, transparent 4px 18px);
+  border-top: 2px solid rgba(255,255,255,0.25);
+  border-bottom: 2px solid rgba(255,255,255,0.25);
+  overflow: hidden;
+}
+.landing-trilho i {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  transform: translateY(-50%);
+  color: var(--cor-primaria);
+  font-size: 1.25rem;
+  animation: landing-trem 6s linear infinite;
+}
+@keyframes landing-trem { to { left: 105%; } }
+@media (prefers-reduced-motion: reduce) {
+  .landing-trilho i { animation: none; left: 45%; }
+}
+.landing-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.landing-card:hover { transform: translateY(-4px); box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.08) !important; }
+.landing-icone {
+  width: 52px;
+  height: 52px;
+  border-radius: 0.75rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  color: var(--cor-primaria-escura);
+  background: rgba(var(--cor-primaria-rgb), 0.15);
+}
+.landing-passo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--cor-primaria);
+}
+.landing-cta { background: linear-gradient(135deg, #212529 0%, #1b2a3f 100%); }
+.landing-ok { color: #4ade80; }
+.landing-atencao { color: #fbbf24; }
+#recursos, #como-funciona { scroll-margin-top: 64px; }
