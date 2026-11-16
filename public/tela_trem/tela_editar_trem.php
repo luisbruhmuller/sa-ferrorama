@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/trem_funcoes.php';
+exigir_admin();
 include '../templates/sidebar.php';
 /**
  * Edição de trem (Update): carrega o registro pelo id e exibe o formulário preenchido.

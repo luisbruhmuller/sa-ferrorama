@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/rota_funcoes.php';
+exigir_admin();
 
 $form = rota_pegar_formulario();
 $dados = $form['dados'];

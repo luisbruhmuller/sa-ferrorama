@@ -63,7 +63,7 @@ function exigir_login($paginaLogin = '../tela_usuario/tela_login.php') {
 function exigir_admin() {
     $usuario = exigir_login('../tela_usuario/tela_login.php');
     if ($usuario['funcao'] !== 'adm') {
-        redirecionar('tela_acesso_negado.php');
+        redirecionar('../tela_usuario/tela_acesso_negado.php');
     }
     return $usuario;
 }

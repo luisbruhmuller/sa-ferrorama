@@ -3,6 +3,7 @@
  * Processa a edição de trem (Update). Recebe apenas POST e sempre termina com redirecionamento.
  */
 require_once __DIR__ . '/trem_funcoes.php';
+exigir_admin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     trem_redirecionar('tela_trem.php');

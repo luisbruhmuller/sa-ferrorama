@@ -71,8 +71,9 @@ try {
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h5 class="mb-0 text-secondary fw-normal">Lista de Trens Cadastrados</h5>
-                        <a href="tela_cadastro_trem.php" class="btn text-white" style="background-color: #0b3d91;">
+                        <?php if ($usuarioTrem['funcao'] === 'adm'): ?><a href="tela_cadastro_trem.php" class="btn text-white" style="background-color: #0b3d91;">
                             <i class="bi bi-plus-circle-fill me-2"></i>Novo Trem</a>
+                        <?php endif; ?>
                     </div>
 
                     <div class="card shadow-sm border-0 rounded-3">
@@ -119,6 +120,7 @@ try {
                                                     <?php endif; ?>
                                                 </td>
                                                 <td class="text-end pe-4">
+                                                    <?php if ($usuarioTrem['funcao'] === 'adm'): ?>
                                                     <a href="tela_editar_trem.php?id=<?= (int) $trem['id_trem'] ?>"
                                                         class="btn btn-sm btn-outline-secondary me-1" title="Editar">
                                                         <i class="bi bi-pencil"></i></a>
@@ -127,6 +129,7 @@ try {
                                                         data-id="<?= (int) $trem['id_trem'] ?>"
                                                         data-nome="<?= trem_h($trem['nome']) ?>">
                                                         <i class="bi bi-trash"></i></button>
+                                                    <?php else: ?><span class="text-muted small">Somente leitura</span><?php endif; ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

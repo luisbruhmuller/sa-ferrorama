@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
-exigir_login();
+$usuarioRota = exigir_login();
 
 require_once __DIR__ . '/../../infra/conexao.php';
 require_once __DIR__ . '/../../infra/validacao_rota.php';

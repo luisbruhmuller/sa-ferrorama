@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/trem_funcoes.php';
+exigir_admin();
 include '../templates/sidebar.php';
 /**
  * Cadastro de trem (Create): exibe o formulário; o envio é processado por trem_cadastrar.php.

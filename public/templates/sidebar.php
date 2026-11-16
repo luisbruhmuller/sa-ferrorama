@@ -113,12 +113,14 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       <i class="bi bi-cpu me-2"></i>Sensores IoT
     </a>
 
+    <?php if ($usuarioSidebar && $usuarioSidebar['funcao'] === 'adm'): ?>
     <a
       href="../../public/tela_usuario/tela_usuarios.php"
       <?php echo $atributosItemSidebar('usuarios'); ?>
     >
       <i class="bi bi-people me-2"></i>Gerenciar usuários
     </a>
+    <?php endif; ?>
 
     <a
       href="../../public/tela_faq/tela_faq.php"
