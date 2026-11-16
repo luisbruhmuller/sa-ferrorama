@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/rota_funcoes.php';
+exigir_admin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     rota_redirecionar('tela_rota.php');

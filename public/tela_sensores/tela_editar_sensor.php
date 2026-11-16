@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/sensor_funcoes.php';
 exigir_admin();
-include '../templates/sidebar.php';
 
 $idSensor = sensor_id_valido($_GET['id'] ?? null);
 $sensor = $idSensor !== null ? sensor_buscar($conexao, $idSensor) : null;
@@ -31,17 +30,18 @@ $textoBotao = 'Salvar Alterações';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Editar Sensor</title>
+    <title>Ferrorama — Editar Sensor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
 <body class="app-layout bg-light">
+<?php include __DIR__ . '/../templates/sidebar.php'; ?>
 <main id="conteudo" class="app-main">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2"
-                alt="Gordo Holding">GordoSensores</span>
+                alt="">Ferrorama</span>
         </div>
     </nav>
     <div class="container-fluid py-4 px-3">
@@ -51,7 +51,7 @@ $textoBotao = 'Salvar Alterações';
                     <div class="card-body p-4">
                         <div class="text-center mb-4">
                             <i class="bi bi-cpu display-4 text-warning"></i>
-                            <h4 class="fw-bold mt-2">GordoSensores</h4>
+                            <h4 class="fw-bold mt-2">Ferrorama</h4>
                             <p class="text-muted small">Editar Sensor #<?= (int) $sensor['id_sensor'] ?></p>
                         </div>
                         <?php if ($flash): ?>

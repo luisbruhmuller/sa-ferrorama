@@ -16,7 +16,7 @@ if (!isset($dados)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Cadastro de usuário</title>
+    <title>Ferrorama — Cadastro de usuário</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -35,7 +35,7 @@ if (!isset($dados)) {
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
                 <div class="container-fluid">
-                    <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
+                    <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="">Ferrorama</span>
 
                 </div>
             </nav>
@@ -51,8 +51,8 @@ if (!isset($dados)) {
                                 <div class="card shadow">
                                     <div class="card-body p-4 d-inline" id="conteiner-cadastro">
                                         <div class="text-center mb-4">
-                                            <img src="../../assets/images/logo.ico" class="brand-logo brand-logo-form" alt="Gordo Holding">
-                                            <h4 class="fw-bold mt-2">GordoSensores</h4>
+                                            <img src="../../assets/images/logo.ico" class="brand-logo brand-logo-form" alt="">
+                                            <h4 class="fw-bold mt-2">Ferrorama</h4>
                                             <p class="text-muted small"><?= $edicao ? 'Editar usuário' : 'Cadastrar novo usuário' ?></p>
                                         </div>
 

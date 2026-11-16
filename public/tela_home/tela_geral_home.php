@@ -37,8 +37,8 @@ $usuario = exigir_login();
               ['bi-train-front', 'Trens', 'Consulte e gerencie as composições cadastradas.', '../tela_trem/tela_trem.php'],
               ['bi-signpost-split', 'Rotas', 'Veja trajetos e itinerários da operação.', '../tela_rota/tela_rota.php'],
               ['bi-broadcast', 'Sensores', 'Acompanhe os sensores associados aos trens.', '../tela_sensores/tela_sensores.php'],
-              ['bi-exclamation-triangle', 'Alertas', 'Acesse os avisos da operação ferroviária.', '../tela_alerta/tela_alerta.php'],
-              ['bi-map', 'Mapa', 'Explore a visualização da malha ferroviária.', '../tela_mapa/tela_mapa.php'],
+              ['bi-exclamation-triangle', 'Sensores com falha', 'Consulte os sensores marcados com falha.', '../tela_alerta/tela_alerta.php'],
+              ['bi-map', 'Simulação do circuito', 'Explore o percurso animado ilustrativo.', '../tela_mapa/tela_mapa.php'],
               ['bi-geo-alt', 'Consultar CEP', 'Localize um endereço com preenchimento automático.', '../tela_cep/tela_cep.php'],
             ];
             foreach ($atalhos as [$icone, $titulo, $descricao, $url]):

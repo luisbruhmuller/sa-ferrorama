@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/sensor_funcoes.php';
-include '../templates/sidebar.php';
 
 $flash = sensor_flash_pegar();
 $sensores = [];
@@ -28,12 +27,13 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Sensores</title>
+    <title>Ferrorama — Sensores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles/style.css">
 </head>
 <body class="app-layout bg-light">
+<?php include __DIR__ . '/../templates/sidebar.php'; ?>
 <main id="conteudo" class="app-main">
     <div class="row g-0 border rounded shadow overflow-hidden" style="min-height:900px">
         <div class="col bg-light">

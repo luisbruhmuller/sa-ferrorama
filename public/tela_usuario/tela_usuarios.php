@@ -56,8 +56,6 @@ unset($_SESSION['mensagem']);
             <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
                 <h6 class="mb-0 fw-bold"><i class="bi bi-people-fill me-2 text-warning"></i>Usuários</h6>
                 <div class="d-flex align-items-center gap-3">
-                    <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:8px"></i>Sistema
-                        Online</span>
 
                     <a href="tela_usuarios.php" class="btn btn-sm btn-outline-secondary" aria-label="Atualizar"><i class="bi bi-arrow-clockwise"></i></a><form action="sair.php" method="post"><?= token() ?><button class="btn btn-sm btn-outline-secondary" type="submit">Sair</button></form>
                 </div>

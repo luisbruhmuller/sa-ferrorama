@@ -16,7 +16,7 @@
         <div class="card-body p-4 p-md-5 text-center">
             <img class="denied-image mb-3" src="../assets/acesso-negado.png" alt="Mascote segurando uma placa de acesso negado">
             <h1 class="h3 fw-bold">Acesso negado</h1>
-            <p class="text-secondary mb-4">Seu perfil não tem permissão para gerenciar usuários. Se precisar de acesso, fale com um administrador.</p>
+            <p class="text-secondary mb-4">Seu perfil não tem permissão para gerenciar estes registros. Se precisar de acesso, fale com um administrador.</p>
             <a class="btn btn-primary px-4" href="../tela_home/tela_geral_home.php">Voltar ao início</a>
         </div>
     </main>

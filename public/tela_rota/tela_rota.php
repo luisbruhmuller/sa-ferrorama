@@ -26,7 +26,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Rotas</title>
+    <title>Ferrorama — Rotas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles/style.css">
@@ -54,9 +54,10 @@ try {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0 text-secondary fw-normal">Rotas cadastradas</h5>
-            <a href="tela_cadastro_rota.php" class="btn text-white" style="background-color:#0b3d91">
+            <?php if ($usuarioRota['funcao'] === 'adm'): ?><a href="tela_cadastro_rota.php" class="btn text-white" style="background-color:#0b3d91">
                 <i class="bi bi-plus-circle-fill me-2"></i>Nova Rota
             </a>
+            <?php endif; ?>
         </div>
 
         <div class="card shadow-sm border-0 rounded-3">
@@ -102,6 +103,7 @@ try {
                                         <?php endforeach; ?>
                                     </td>
                                     <td class="text-end pe-4 text-nowrap">
+                                        <?php if ($usuarioRota['funcao'] === 'adm'): ?>
                                         <a href="tela_editar_rota.php?id=<?= (int) $rota['id'] ?>"
                                             class="btn btn-sm btn-outline-secondary me-1" title="Editar">
                                             <i class="bi bi-pencil"></i>
@@ -111,6 +113,7 @@ try {
                                             data-id="<?= (int) $rota['id'] ?>" data-nome="<?= rota_h($rota['nome']) ?>">
                                             <i class="bi bi-trash"></i>
                                         </button>
+                                        <?php else: ?><span class="text-muted small">Somente leitura</span><?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
