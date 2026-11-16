@@ -1,5 +1,27 @@
 #  Sistema de Gerenciamento Ferroviário
 
+## Executar localmente
+
+1. Instale PHP 8.1+ com as extensões `mysqli` e `mbstring`, Apache e MySQL/MariaDB (por exemplo, XAMPP).
+2. Coloque este repositório na pasta servida pelo Apache. Importe `database/db.sql` no MySQL.
+3. Confira usuário, senha, host e porta em `infra/conexao.php` para o seu ambiente.
+4. Inicie Apache e MySQL e abra `http://localhost/sa-ferrorama/` (ajuste o caminho conforme a pasta escolhida).
+5. Entre com um usuário ativo. A landing é pública; a home e a consulta de CEP exigem login. O arquivo SQL inclui um administrador de teste para ambiente local; troque suas credenciais antes de disponibilizar o sistema em outra rede.
+
+## Novas páginas e APIs
+
+- **Landing:** `public/tela_landing/tela_landing.php` apresenta o propósito e os recursos. O painel desenhado nela é uma ilustração, sem métricas reais.
+- **Home:** `public/tela_home/tela_geral_home.php` reúne atalhos e consulta o clima de **São Paulo, SP** na [Open-Meteo Forecast API](https://open-meteo.com/en/docs). A requisição usa latitude/longitude fixas, `current=temperature_2m,weather_code` e `timezone=America/Sao_Paulo`. Temperatura, condição traduzida do código WMO e horário dos dados retornados aparecem na tela. O botão permite atualizar; erro de rede, HTTP ou resposta incompleta aparece no cartão.
+- **Consultar CEP:** `public/tela_cep/tela_cep.php` usa o [ViaCEP](https://viacep.com.br/) para consultar um CEP digitado e preencher CEP, logradouro, bairro, cidade e UF. Aceita oito dígitos com ou sem hífen. Informa formato inválido, CEP inexistente e falha de comunicação. A consulta não grava endereço no banco.
+
+As duas consultas são feitas pelo navegador via HTTPS e precisam de acesso à internet. Os serviços não exigem chave nesta utilização. O clima é contexto da cidade escolhida, não telemetria da ferrovia. Alguns CEPs não têm logradouro ou bairro específico.
+
+## Verificação
+
+Execute `node --test tests/apis.test.js` para testar transformação de dados e tratamento de erros. Os registros de consultas reais estão em [doc/evidencias_apis.md](doc/evidencias_apis.md). O uso de IA está descrito em [docs/relatorio-uso-ia.md](docs/relatorio-uso-ia.md).
+
+---
+
 ## Sobre o Projeto
 
 Este repositório foi desenvolvido como parte da **Situação de Aprendizagem** do curso de **Desenvolvimento de Sistemas do SENAI**.
