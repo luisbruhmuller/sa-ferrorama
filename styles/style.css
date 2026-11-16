@@ -198,3 +198,24 @@ html { scroll-behavior: smooth; }
 .landing-ok { color: #4ade80; }
 .landing-atencao { color: #fbbf24; }
 #recursos, #como-funciona { scroll-margin-top: 64px; }
+
+/* Home e consulta de CEP */
+.home-page, .cep-page { background: #f4f7fb; min-height: 100vh; }
+.home-hero {
+  color: #fff;
+  background: linear-gradient(115deg, #14243b 0%, #224976 70%, #2f69ac 100%);
+  border-radius: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  box-shadow: 0 18px 40px rgba(20, 36, 59, .15);
+}
+.home-hero p { color: #d9e9fb; }
+.home-eyebrow { color: #9ac8fc; font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; }
+.home-link { border: 1px solid #e0e8f0; border-radius: 1rem; padding: 1.4rem; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.home-link:hover, .home-link:focus-visible { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(20, 36, 59, .11); border-color: #9ac8fc; }
+.home-icon { width: 48px; height: 48px; border-radius: .8rem; display: grid; place-items: center; color: #2460a5; background: #e5f1ff; font-size: 1.35rem; }
+.home-weather { color: #fff; background: linear-gradient(160deg, #183f69, #1f659f); border: 0; border-radius: 1rem; }
+.home-weather-value { font-size: clamp(3.5rem, 7vw, 5rem); line-height: 1; }
+.home-weather-footer { border-top: 1px solid rgba(255,255,255,.25); }
+.cep-page .card { border-radius: 1rem; }
+.cep-page input[readonly] { background: #f8fafc; }
+@media (prefers-reduced-motion: reduce) { .home-link { transition: none; } }

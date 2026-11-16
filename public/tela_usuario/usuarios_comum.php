@@ -23,8 +23,8 @@ function campo($nome) {
     return isset($_POST[$nome]) && is_string($_POST[$nome]) ? trim($_POST[$nome]) : '';
 }
 function consulta($sql, $tipos = '', $valores = []) {
-    global $conexao;
-    $stmt = $conexao->prepare($sql);
+    global $conn;
+    $stmt = $conn->prepare($sql);
     if ($tipos !== '') $stmt->bind_param($tipos, ...$valores);
     $stmt->execute();
     return $stmt;
