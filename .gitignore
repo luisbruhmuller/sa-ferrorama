@@ -1,0 +1,16 @@
+# Configuração e dados locais
+infra/config.local.php
+.env
+.env.*
+!.env.example
+*.log
+
+# Dependências e ferramentas
+node_modules/
+vendor/
+.idea/
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
