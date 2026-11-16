@@ -1,151 +1,53 @@
 <?php
-include '../templates/sidebar.php';
-/**
- * Perguntas e respostas fixas. A expansão das respostas depende do JavaScript do Bootstrap.
- */
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+exigir_login();
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<!-- Metadados, adaptação da página para dispositivos móveis e estilos. -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — FAQ</title>
-    <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Ícones fornecidos pelas classes bi e bi-*. -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <!-- Estilos próprios, incluindo posicionamento do menu e conteúdo. -->
-    <link rel="stylesheet" href="../../styles/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ferrorama — Ajuda</title>
+  <link rel="icon" href="../../assets/images/logo.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles/style.css">
 </head>
-
 <body class="app-layout bg-light">
-<!-- Menu lateral: links abrem telas; itens em span são informativos.
-O destaque da página atual está fixo no HTML. -->
+  <?php require __DIR__ . '/../templates/sidebar.php'; ?>
+  <main id="conteudo" class="app-main">
+    <div class="container-fluid px-3 px-lg-5 py-4 py-lg-5">
+      <p class="text-uppercase fw-semibold text-primary small mb-1">Orientação rápida</p>
+      <h1 class="h2 fw-bold mb-2">Como usar o Ferrorama</h1>
+      <p class="text-muted mb-4">Use o menu lateral para voltar ao início e abrir as funcionalidades disponíveis para seu perfil.</p>
 
-<!-- Área principal da tela, posicionada pela classe app-main. -->
-<main id="conteudo" class="app-main">
-
-    <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
-        <h6 class="mb-0 fw-bold"><i class="bi bi-question-circle-fill me-2 text-warning"></i>FAQ</h6>
-        <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:8px"></i>Sistema Online</span>
+      <div class="accordion shadow-sm" id="ajuda">
+        <?php
+        $perguntas = [
+          ['Como entrar e sair?', 'Entre com o e-mail e a senha fornecidos pelo administrador. Para encerrar a sessão, use “Sair” no rodapé do menu. Após cinco tentativas inválidas, aguarde 15 minutos.'],
+          ['O que cada perfil pode fazer?', 'Administradores gerenciam usuários, trens, rotas e sensores. Técnicos e funcionários consultam esses registros, os sensores com falha e a simulação do circuito.'],
+          ['Como cadastrar um trem?', 'Um administrador abre Trens → Novo Trem, informa nome, tipo, status, conjunto e usuário responsável, e salva. O responsável deve existir antes do cadastro.'],
+          ['Como cadastrar uma rota ou um sensor?', 'Em Rotas, o administrador vincula ao menos um trem ao trajeto. Em Sensores, seleciona um trem, o tipo de dado, local de instalação, subsistema e status.'],
+          ['De onde vêm clima e CEP?', 'A home consulta a Open-Meteo para São Paulo; o horário mostrado é o dos dados recebidos. Consultar CEP usa ViaCEP e preenche os campos de endereço sem salvá-los no banco. Ambas as consultas precisam de internet.'],
+          ['O mapa e as falhas são dados em tempo real?', 'O circuito é uma simulação animada. A tela Sensores com falha lista registros cujo status foi marcado como “Com falha”; ela não recebe telemetria nem gera alertas automáticos.'],
+        ];
+        foreach ($perguntas as $indice => [$pergunta, $resposta]):
+        ?>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button <?= $indice ? 'collapsed' : '' ?>" type="button" data-bs-toggle="collapse" data-bs-target="#ajuda-<?= $indice ?>" aria-expanded="<?= $indice ? 'false' : 'true' ?>" aria-controls="ajuda-<?= $indice ?>">
+                <?= escapar($pergunta) ?>
+              </button>
+            </h2>
+            <div id="ajuda-<?= $indice ?>" class="accordion-collapse collapse <?= $indice ? '' : 'show' ?>" data-bs-parent="#ajuda">
+              <div class="accordion-body"><?= escapar($resposta) ?></div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <p class="text-muted small mt-4">Se uma operação falhar, confira os campos informados. Persistindo o problema, avise a equipe responsável pela estação de demonstração.</p>
     </div>
-
-    <div class="p-4">
-        <h5 class="text-secondary fw-normal mb-4">Perguntas Frequentes</h5>
-
-<!-- data-bs-target liga cada botão ao ID da resposta.
-data-bs-parent agrupa as respostas; show deixa a primeira aberta inicialmente. -->
-        <div class="accordion shadow-sm" id="faq">
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta1">
-                        Aparece "Usuário ou senha inválidos!". O que faço?
-                    </button>
-                </h2>
-                <div id="pergunta1" class="accordion-collapse collapse show" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        Confira se o e-mail está escrito certo e se o Caps Lock está desligado. Se continuar dando erro, peça para o administrador verificar seu cadastro.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta2">
-                        Aparece "As senhas não coincidem!" no cadastro.
-                    </button>
-                </h2>
-                <div id="pergunta2" class="accordion-collapse collapse" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        Os campos "Senha" e "Repetir senha" estão diferentes. Digite a mesma senha nos dois.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta3">
-                        Não consigo cadastrar um sensor.
-                    </button>
-                </h2>
-                <div id="pergunta3" class="accordion-collapse collapse" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        Todos os campos são obrigatórios. Confira se escolheu o Tipo e o Subsistema e se o Limite Crítico é um número.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta4">
-                        A página não abre.
-                    </button>
-                </h2>
-                <div id="pergunta4" class="accordion-collapse collapse" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        Confira sua internet e o endereço digitado. Se o sistema estiver rodando no seu computador, veja se o Apache e o MySQL estão ligados no XAMPP.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta5">
-                        O que significa "Em breve" no menu?
-                    </button>
-                </h2>
-                <div id="pergunta5" class="accordion-collapse collapse" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        São funções que ainda estão sendo desenvolvidas e vão ser liberadas nas próximas versões.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta6">
-                        Um sensor aparece offline. O que fazer?
-                    </button>
-                </h2>
-                <div id="pergunta6" class="accordion-collapse collapse" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        Verifique se o sensor está bem instalado e conectado. Se continuar offline, avise a equipe técnica.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pergunta7">
-                        A tela aparece desconfigurada.
-                    </button>
-                </h2>
-                <div id="pergunta7" class="accordion-collapse collapse" data-bs-parent="#faq">
-                    <div class="accordion-body">
-                        Limpe o cache do navegador (Ctrl + Shift + Delete) e recarregue a página com Ctrl + F5.
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-<!-- Contato fixo de suporte para dúvidas não respondidas acima. -->
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-body text-center">
-                <h6 class="fw-bold">Não encontrou sua resposta?</h6>
-                <p class="text-muted mb-0">Entre em contato com o suporte: <strong>suporte@gordoholding.com.br</strong></p>
-            </div>
-        </div>
-    </div>
-
-</main>
-
-<!-- Habilita componentes interativos do Bootstrap, como modal e accordion. -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

@@ -85,12 +85,5 @@ CREATE TABLE rota_trens (
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-INSERT INTO usuarios (nome, email, senha, cpf, funcao, status)
-VALUES (
-    'Administrador Teste',
-    'admin@teste.com',
-    '$2y$10$FgMmorsNtep.CtAHNLjskOktOZpxRGlS0WWTglqRYuENvoOZmtMjq',
-    '52998224725',
-    'adm',
-    'ativo'
-);
+-- Contas de demonstração são criadas por scripts/preparar_demo.php.
+-- Nenhuma senha ou hash padrão é instalado pelo esquema.

@@ -1,21 +1,28 @@
+<?php
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+exigir_login();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
  
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Mapa</title>
+    <title>Ferrorama — Simulação do circuito</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <!-- filemtime força o navegador a recarregar o CSS sempre que ele for alterado -->
     <link rel="stylesheet" href="../../styles/style.css?v=<?= @filemtime(__DIR__ . '/../../styles/style.css') ?>">
 </head>
  
-<div class="mapaferrorama">
-<body>
+<body class="app-layout mapaferrorama">
     <?php include '../templates/sidebar.php'; ?>
  
-    <div class="conteudo-ferrovia">
+    <main id="conteudo" class="conteudo-ferrovia">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 text-white mb-2">
+            <h1 class="h5 mb-0">Simulação do circuito</h1>
+            <span class="small text-white-50">Percurso animado ilustrativo; não representa posição real dos trens.</span>
+        </div>
         <div class="pista">
  
             <svg id="ferrorama" viewBox="0 0 480 480" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ferrovia Ferrorama XP 500">
@@ -40,8 +47,6 @@
                     </g>
                 </defs>
  
-                <!-- Foto de referência (opcional, para calibrar os trilhos) -->
-                <image id="foto" href="../../img/ferrorama_xp500.png" x="0" y="0" width="480" height="480" opacity="0.35" style="display:none" />
  
                 <!-- Circuito cinza (direita) -->
                 <use href="#r2" fill="none" stroke="#555" stroke-width="10" />
@@ -77,7 +82,7 @@
  
             <div class="controles">
                 <button id="btn-pausa" class="btn btn-dark btn-sm">Pausar</button>
-                <select id="sel-rota" class="form-select form-select-sm">
+                <select id="sel-rota" class="form-select form-select-sm" aria-label="Selecionar circuito da simulação">
                     <option value="r1">Circuito externo</option>
                     <option value="r2">Circuito direito</option>
                     <option value="r3">Ramal interno (vai e volta)</option>
@@ -145,19 +150,15 @@
                         rodando = !rodando;
                         e.target.textContent = rodando ? 'Pausar' : 'Retomar';
                     };
-                    document.getElementById('btn-inverter').onclick = function () { sentido *= -1; };
                     document.getElementById('sel-rota').onchange = function (e) {
                         rota = rotas[e.target.value];
                         d = 0;
-                    };
-                    document.getElementById('chk-foto').onchange = function (e) {
-                        document.getElementById('foto').style.display = e.target.checked ? 'block' : 'none';
                     };
                 });
             </script>
  
         </div>
-    </div>
+    </main>
 </body>
  
 </html>

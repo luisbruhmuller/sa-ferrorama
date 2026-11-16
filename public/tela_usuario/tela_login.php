@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GordoSensores — Login</title>
+    <title>Ferrorama — Login</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores</span>
+            <span class="navbar-brand fw-bold"><img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="">Ferrorama</span>
             <a class="btn btn-outline-light btn-sm" href="../tela_landing/tela_landing.php"><i class="bi bi-arrow-left me-1"></i>Início</a>
 
         </div>
@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="card shadow">
                             <div class="card-body p-4">
                                 <div class="text-center mb-4">
-                                    <img src="../../assets/images/logo.ico" class="brand-logo brand-logo-form" alt="Gordo Holding">
-                                    <h4 class="fw-bold mt-2">GordoSensores</h4>
+                                    <img src="../../assets/images/logo.ico" class="brand-logo brand-logo-form" alt="">
+                                    <h4 class="fw-bold mt-2">Ferrorama</h4>
                                     <p class="text-muted small">Sistema de Monitoramento Ferroviário</p>
                                 </div>
 

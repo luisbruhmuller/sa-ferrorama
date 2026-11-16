@@ -22,13 +22,20 @@ $secoesPorPagina = [
     'tela_geral_home.php' => 'dashboard',
     'tela_cep.php' => 'cep',
     'tela_alerta.php' => 'alertas',
+    'tela_mapa.php' => 'mapa',
+    'tela_trem.php' => 'trens',
+    'tela_cadastro_trem.php' => 'trens',
+    'tela_editar_trem.php' => 'trens',
     'tela_sensores.php' => 'sensores',
     'tela_cadastro_sensores.php' => 'sensores',
+    'tela_editar_sensor.php' => 'sensores',
     'tela_usuarios.php' => 'usuarios',
     'tela_cadastro_usuarios.php' => 'usuarios',
+    'editar_usuarios.php' => 'usuarios',
     'tela_rota.php' => 'rotas',
     'tela_cadastro_rota.php' => 'rotas',
     'tela_editar_rota.php' => 'rotas',
+    'tela_faq.php' => 'ajuda',
 ];
 $secaoAtual = $secoesPorPagina[$paginaAtual] ?? '';
 
@@ -47,7 +54,6 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
     </div>
-<!-- Os itens Em breve não têm destino. Alguns links ainda usam nomes antigos de pastas. -->
 <nav
     class="nav flex-column p-2 gap-1 flex-grow-1"
     aria-label="Menu principal"
@@ -64,39 +70,25 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       <i class="bi bi-geo-alt me-2"></i>Consultar CEP
     </a>
 
-        <a
+    <a
       href="../../public/tela_mapa/tela_mapa.php"
-      class="nav-link text-white rounded px-3 py-2"
+      <?php echo $atributosItemSidebar('mapa'); ?>
     >
-      <i class="bi bi-cpu me-2"></i>Mapa
+      <i class="bi bi-map me-2"></i>Simulação do circuito
     </a>
-
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-graph-up me-2"></i>Métricas
-      <small class="d-block ms-4">Em breve</small>
-    </span>
 
     <a
       href="../../public/tela_alerta/tela_alerta.php"
       <?php echo $atributosItemSidebar('alertas'); ?>
     >
-      <i class="bi bi-speedometer2 me-2"></i>Alertas
+      <i class="bi bi-exclamation-triangle me-2"></i>Sensores com falha
     </a>
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-tools me-2"></i>Manutenção
-      <small class="d-block ms-4">Em breve</small>
-    </span>
-
-    <span class="nav-link text-white-50 px-3 py-2" aria-disabled="true">
-      <i class="bi bi-file-earmark-bar-graph me-2"></i>Relatórios
-      <small class="d-block ms-4">Em breve</small>
-    </span>
 
     <a
       href="../../public/tela_trem/tela_trem.php"
-      class="nav-link text-white rounded px-3 py-2"
+      <?php echo $atributosItemSidebar('trens'); ?>
     >
-      <i class="bi bi-cpu me-2"></i>Detalhes Trem
+      <i class="bi bi-train-front me-2"></i>Trens
     </a>
 
     <a
@@ -110,7 +102,7 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       href="../../public/tela_sensores/tela_sensores.php"
       <?php echo $atributosItemSidebar('sensores'); ?>
     >
-      <i class="bi bi-cpu me-2"></i>Sensores IoT
+      <i class="bi bi-broadcast me-2"></i>Sensores
     </a>
 
     <?php if ($usuarioSidebar && $usuarioSidebar['funcao'] === 'adm'): ?>
@@ -124,9 +116,9 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
 
     <a
       href="../../public/tela_faq/tela_faq.php"
-      class="nav-link text-white rounded px-3 py-2"
+      <?php echo $atributosItemSidebar('ajuda'); ?>
     >
-      <i class="bi bi-question-circle me-2"></i>FAQ
+      <i class="bi bi-question-circle me-2"></i>Ajuda
     </a>
 
 

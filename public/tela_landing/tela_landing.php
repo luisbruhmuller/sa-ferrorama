@@ -16,8 +16,8 @@ $recursos = [
     ['bi-train-front', 'Gestão de trens', 'Cadastre a frota, acompanhe o status de cada composição e mantenha tudo organizado em um só lugar.'],
     ['bi-broadcast', 'Sensores', 'Cadastre sensores associados aos trens e organize os pontos de coleta da operação.'],
     ['bi-signpost-split', 'Rotas e itinerários', 'Cadastre e consulte trajetos para planejar a operação de forma clara.'],
-    ['bi-exclamation-triangle', 'Central de alertas', 'Acesse avisos operacionais em uma área dedicada do sistema.'],
-    ['bi-map', 'Mapa da ferrovia', 'Explore a representação visual da malha ferroviária.'],
+    ['bi-exclamation-triangle', 'Sensores com falha', 'Veja os sensores cadastrados com status de falha em uma área dedicada.'],
+    ['bi-map', 'Simulação do circuito', 'Explore uma representação animada e ilustrativa do percurso.'],
     ['bi-shield-lock', 'Acesso seguro', 'Perfis de administrador, técnico e operador, com senhas criptografadas e controle de permissões.'],
 ];
 ?>
@@ -142,7 +142,7 @@ $recursos = [
                 <div class="col-md-4">
                     <div class="landing-passo mx-auto mb-3">3</div>
                     <h5 class="fw-bold">Ação</h5>
-                    <p class="text-muted">Acesse a área de alertas e as funcionalidades operacionais a partir da home.</p>
+                    <p class="text-muted">Acesse os sensores com falha e as funcionalidades operacionais a partir da home.</p>
                 </div>
             </div>
         </div>
@@ -153,7 +153,7 @@ $recursos = [
         <p class="text-uppercase fw-semibold text-primary small mb-2">Por que centralizar</p>
         <h2 id="beneficios-titulo" class="fw-bold mb-4">Mais contexto para cada decisão</h2>
         <div class="row g-4">
-          <div class="col-md-4"><h3 class="h5 fw-bold"><i class="bi bi-shield-check text-primary me-2"></i>Segurança</h3><p class="text-muted mb-0">Alertas e registros organizados ajudam a identificar pontos que exigem atenção.</p></div>
+          <div class="col-md-4"><h3 class="h5 fw-bold"><i class="bi bi-shield-check text-primary me-2"></i>Segurança</h3><p class="text-muted mb-0">Estados dos sensores e registros organizados ajudam a identificar pontos que exigem atenção.</p></div>
           <div class="col-md-4"><h3 class="h5 fw-bold"><i class="bi bi-lightning-charge text-primary me-2"></i>Eficiência</h3><p class="text-muted mb-0">A navegação direta reduz o tempo gasto procurando informações em telas diferentes.</p></div>
           <div class="col-md-4"><h3 class="h5 fw-bold"><i class="bi bi-clipboard-data text-primary me-2"></i>Acompanhamento</h3><p class="text-muted mb-0">Trens, rotas e sensores têm áreas próprias para consulta e atualização.</p></div>
         </div>

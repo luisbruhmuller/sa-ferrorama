@@ -79,4 +79,15 @@ if (!process.env.FERRORAMA_TEST_URL) {
     const lista = await (await requisitar('/public/tela_trem/tela_trem.php')).text();
     assert.match(lista, /Trem Integração/);
   });
+
+  test('central de falhas mostra somente sensores marcados com falha', async () => {
+    const requisitar = await entrar(contas.operador);
+    const resposta = await requisitar('/public/tela_alerta/tela_alerta.php');
+    assert.equal(resposta.status, 200);
+    const pagina = await resposta.text();
+    assert.match(pagina, /Sensor Falha CI/);
+    assert.doesNotMatch(pagina, /Sensor Ativo CI/);
+    assert.doesNotMatch(pagina, /#ALT-0/);
+    assert.doesNotMatch(pagina, /href="#"/);
+  });
 }

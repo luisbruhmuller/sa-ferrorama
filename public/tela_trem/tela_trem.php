@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/trem_funcoes.php';
-include '../templates/sidebar.php';
 /**
  * Listagem de trens (Read): consulta o banco, exibe as mensagens de retorno
  * e oferece os botões de edição e exclusão de cada registro.
@@ -32,7 +31,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GordoSensores — Trens</title>
+    <title>Ferrorama — Trens</title>
     <!-- Bootstrap: grade responsiva e aparência de tabelas, cards e botões. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Ícones fornecidos pelas classes bi e bi-*. -->
@@ -42,6 +41,7 @@ try {
 </head>
 
 <body class="app-layout bg-light">
+<?php include __DIR__ . '/../templates/sidebar.php'; ?>
 
     <main id="conteudo" class="app-main">
 
@@ -50,8 +50,6 @@ try {
                 <div class="d-flex align-items-center justify-content-between px-4 py-2 bg-white border-bottom shadow-sm">
                     <h6 class="mb-0 fw-bold"><i class="bi bi-train-front me-2" style="color: #0b3d91;"></i>Trens</h6>
                     <div class="d-flex align-items-center gap-3">
-                        <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:8px"></i>Sistema
-                            Online</span>
                         <a href="tela_trem.php" class="btn btn-sm btn-outline-secondary" title="Atualizar lista"><i
                                 class="bi bi-arrow-clockwise"></i></a>
                     </div>

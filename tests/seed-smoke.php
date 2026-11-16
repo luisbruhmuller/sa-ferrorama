@@ -15,4 +15,20 @@ foreach ([
     $stmt->close();
 }
 
+$stmt = $conn->prepare("INSERT INTO trens (nome, tipo, status, conjunto, id_responsavel) VALUES ('Trem Teste CI', 'Locomotiva', 'Ativo', 'Teste', ?)");
+$stmt->bind_param('i', $contas['admin']['id']);
+$stmt->execute();
+$idTrem = $conn->insert_id;
+$stmt->close();
+
+$stmt = $conn->prepare('INSERT INTO sensor (nome, localizacao, tipo_dado, id_trem, tipo, conjunto) VALUES (?, ?, ?, ?, ?, ?)');
+foreach ([
+    ['Sensor Falha CI', 'Motor', 'Vibração', 'Com falha', 'Motor'],
+    ['Sensor Ativo CI', 'Freios', 'Temperatura', 'Ativo', 'Freios'],
+] as [$nome, $local, $tipoDado, $status, $conjunto]) {
+    $stmt->bind_param('sssiss', $nome, $local, $tipoDado, $idTrem, $status, $conjunto);
+    $stmt->execute();
+}
+$stmt->close();
+
 echo json_encode($contas, JSON_THROW_ON_ERROR), PHP_EOL;
