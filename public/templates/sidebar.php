@@ -20,6 +20,7 @@ $paginaAtual = basename($_SERVER['SCRIPT_NAME'] ?? '');
 // Telas de cadastro mantêm o destaque da seção à qual pertencem.
 $secoesPorPagina = [
     'tela_geral_home.php' => 'dashboard',
+    'tela_cep.php' => 'cep',
     'tela_alerta.php' => 'alertas',
     'tela_sensores.php' => 'sensores',
     'tela_cadastro_sensores.php' => 'sensores',
@@ -42,7 +43,7 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
 <aside class="app-sidebar bg-dark text-white">
     <div class="p-3 border-bottom border-secondary">
       <a class="d-flex align-items-center text-white text-decoration-none fw-bold fs-5" href="../../public/tela_home/tela_geral_home.php">
-        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="Gordo Holding">GordoSensores
+        <img src="../../assets/images/logo.ico" class="brand-logo me-2" alt="">Ferrorama
       </a>
       <div class="small text-white-50">Monitoramento ferroviário</div>
     </div>
@@ -56,7 +57,11 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
       href="../../public/tela_home/tela_geral_home.php"
       <?php echo $atributosItemSidebar('dashboard'); ?>
     >
-      <i class="bi bi-people me-2"></i>Dashboard
+      <i class="bi bi-house me-2"></i>Início
+    </a>
+
+    <a href="../../public/tela_cep/tela_cep.php" <?php echo $atributosItemSidebar('cep'); ?>>
+      <i class="bi bi-geo-alt me-2"></i>Consultar CEP
     </a>
 
         <a
