@@ -34,3 +34,9 @@ O agente estruturou e alterou os arquivos acima. A revisão manual pelos integra
 ## Contribuições e limites
 
 A IA acelerou a leitura do projeto, a pesquisa das APIs e a criação de estados de sucesso e erro. Testes isolados e respostas HTTP não substituem a revisão humana da interface, dos dados operacionais e do fluxo autenticado. A equipe deve conferir o resultado em seu ambiente, entender o código e corrigir o que aparecer na demonstração.
+
+## Revisão final da entrega
+
+Em solicitação posterior, o Codex auditou a versão final, reproduziu no GitHub Actions a exposição de ações de trem ao operador, restringiu mutações de trens e rotas no backend, substituiu alertas fictícios por consulta de sensores com falha, corrigiu a simulação do circuito e revisou a ajuda. Produziu também `MANUAL.md`, `doc/entrega-final.md`, `scripts/preparar_demo.php`, CI com MySQL e o novo README. O teste de autorização falhou antes da correção; a validação após a correção depende do resultado do CI da branch `codex/final-review`.
+
+As instruções principais foram: “confere tudo ai e se vira mantem o padrão ai” e “preciso entregar assim ... encerre o repositorio e faça o que pede de entrega ... rapido”. A equipe ainda precisa executar a estação física, revisar o resultado, registrar as capturas reais e o teste com uma pessoa externa. Nenhuma dessas ações foi atribuída à IA como concluída.
