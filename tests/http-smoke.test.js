@@ -90,4 +90,35 @@ if (!process.env.FERRORAMA_TEST_URL) {
     assert.doesNotMatch(pagina, /#ALT-0/);
     assert.doesNotMatch(pagina, /href="#"/);
   });
+
+  test('login inválido bloqueia após cinco tentativas', async () => {
+    const requisitar = cliente();
+    const pagina = await (await requisitar('/public/tela_usuario/tela_login.php')).text();
+    const csrf = pagina.match(/name="csrf" value="([^"]+)"/);
+    assert.ok(csrf);
+    let ultima;
+    for (let i = 0; i < 6; i++) {
+      ultima = await requisitar('/public/tela_usuario/tela_login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ csrf: csrf[1], email: contas.operador.email, senha: 'incorreta' })
+      });
+    }
+    assert.match(await ultima.text(), /Aguarde 15 minutos/);
+  });
+
+  test('logout encerra acesso à home autenticada', async () => {
+    const requisitar = await entrar(contas.operador);
+    const pagina = await (await requisitar('/public/tela_home/tela_geral_home.php')).text();
+    const csrf = pagina.match(/name="csrf" value="([^"]+)"/);
+    assert.ok(csrf);
+    const saida = await requisitar('/public/tela_usuario/sair.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ csrf: csrf[1] })
+    });
+    assert.equal(saida.status, 303);
+    const acesso = await requisitar('/public/tela_home/tela_geral_home.php');
+    assert.match(acesso.headers.get('location') || '', /tela_login\.php/);
+  });
 }
