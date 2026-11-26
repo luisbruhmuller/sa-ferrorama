@@ -1,16 +1,16 @@
--- Arquivo legado mantido para compatibilidade com referências antigas.
--- Para criar contas fictícias de demonstração, execute:
--- php scripts/preparar_demo.php
-
 USE sa_ferrorama;
-
 
 INSERT INTO usuarios (nome, email, senha, cpf, funcao, status)
 VALUES (
-    'Administrador Teste',
-    'admin@teste.com',
-    '$2y$10$FgMmorsNtep.CtAHNLjskOktOZpxRGlS0WWTglqRYuENvoOZmtMjq',
-    '52998224725',
+    'Administrador',
+    'admin',
+    '$2y$10$byP7A2mL8Hy/T3inML1Ws.Q5J2FW5JiZjqIVGkBki1CizYlrP8mYm',
+    '00000000000',
     'adm',
     'ativo'
-);
+)
+ON DUPLICATE KEY UPDATE
+    nome = 'Administrador',
+    senha = VALUES(senha),
+    funcao = 'adm',
+    status = 'ativo';

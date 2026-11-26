@@ -1,29 +1,17 @@
 <?php
-require_once __DIR__ . '/sensor_funcoes.php';
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
-
-$idSensor = sensor_id_valido($_GET['id'] ?? null);
-$sensor = $idSensor !== null ? sensor_buscar($conexao, $idSensor) : null;
-if ($sensor === null) {
-    sensor_flash('danger', 'Sensor não encontrado.');
-    sensor_redirecionar('tela_sensores.php');
+$idSensor = (int) ($_GET['id'] ?? 0);
+$sensor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM sensor WHERE id_sensor = $idSensor"));
+if (!$sensor) {
+    redirecionar('tela_sensores.php');
 }
-
-$form = sensor_pegar_formulario();
-$dados = $form['dados'] ?: $sensor;
-$erros = $form['erros'];
-$flash = sensor_flash_pegar();
-$trens = [];
-
-try {
-    $trens = sensor_listar_trens($conexao);
-} catch (mysqli_sql_exception $ex) {
-    error_log('Erro ao listar trens na edição de sensor: ' . $ex->getMessage());
-    $flash = ['tipo' => 'danger', 'mensagem' => 'Não foi possível carregar os trens.'];
-}
-
-$acaoForm = 'sensor_editar.php';
-$textoBotao = 'Salvar Alterações';
+$trens = mysqli_query($conn, 'SELECT id_trem, nome, status FROM trens ORDER BY nome');
+$flash = $_SESSION['sensor_flash'] ?? null;
+unset($_SESSION['sensor_flash']);
+$tiposDado = ['Temperatura', 'Vibração', 'Consumo de Energia', 'Velocidade', 'Localização'];
+$conjuntos = ['Motor', 'Elétrico', 'Freios', 'Comunicação', 'Refrigeração', 'Câmeras'];
+$statusSensor = ['Ativo', 'Inativo', 'Com falha'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -55,10 +43,19 @@ $textoBotao = 'Salvar Alterações';
                             <p class="text-muted small">Editar Sensor #<?= (int) $sensor['id_sensor'] ?></p>
                         </div>
                         <?php if ($flash): ?>
-                            <div class="alert alert-<?= sensor_h($flash['tipo']) ?>" role="alert">
-                                <?= sensor_h($flash['mensagem']) ?></div>
+                            <div class="alert alert-<?= escapar($flash[1]) ?>" role="alert">
+                                <?= escapar($flash[0]) ?></div>
                         <?php endif; ?>
-                        <?php include __DIR__ . '/sensor_form.php'; ?>
+                        <form method="post" action="sensor_editar.php">
+                            <input type="hidden" name="id_sensor" value="<?= $idSensor ?>">
+                            <div class="mb-3"><label class="form-label fw-semibold" for="nome">Nome / Código do Sensor</label><div class="input-group"><span class="input-group-text"><i class="bi bi-tag"></i></span><input type="text" class="form-control" id="nome" name="nome" maxlength="100" required value="<?= escapar($sensor['nome']) ?>"></div></div>
+                            <div class="mb-3"><label class="form-label fw-semibold" for="tipo_dado">Tipo de Sensor</label><div class="input-group"><span class="input-group-text"><i class="bi bi-activity"></i></span><select class="form-select" id="tipo_dado" name="tipo_dado" required><?php foreach ($tiposDado as $opcao): ?><option value="<?= escapar($opcao) ?>" <?= $sensor['tipo_dado'] === $opcao ? 'selected' : '' ?>><?= escapar($opcao) ?></option><?php endforeach; ?></select></div></div>
+                            <div class="mb-3"><label class="form-label fw-semibold" for="id_trem">Trem Vinculado</label><div class="input-group"><span class="input-group-text"><i class="bi bi-train-front"></i></span><select class="form-select" id="id_trem" name="id_trem" required><?php while ($trem = mysqli_fetch_assoc($trens)): ?><option value="<?= (int) $trem['id_trem'] ?>" <?= (int) $sensor['id_trem'] === (int) $trem['id_trem'] ? 'selected' : '' ?>><?= escapar($trem['nome']) ?> (<?= escapar($trem['status']) ?>)</option><?php endwhile; ?></select></div></div>
+                            <div class="mb-3"><label class="form-label fw-semibold" for="conjunto">Subsistema Vinculado</label><div class="input-group"><span class="input-group-text"><i class="bi bi-diagram-3"></i></span><select class="form-select" id="conjunto" name="conjunto" required><?php foreach ($conjuntos as $opcao): ?><option value="<?= escapar($opcao) ?>" <?= $sensor['conjunto'] === $opcao ? 'selected' : '' ?>><?= escapar($opcao) ?></option><?php endforeach; ?></select></div></div>
+                            <div class="mb-3"><label class="form-label fw-semibold" for="localizacao">Local de Instalação</label><div class="input-group"><span class="input-group-text"><i class="bi bi-geo-alt"></i></span><input type="text" class="form-control" id="localizacao" name="localizacao" maxlength="100" required value="<?= escapar($sensor['localizacao']) ?>"></div></div>
+                            <div class="mb-4"><label class="form-label fw-semibold" for="tipo">Status</label><div class="input-group"><span class="input-group-text"><i class="bi bi-broadcast"></i></span><select class="form-select" id="tipo" name="tipo" required><?php foreach ($statusSensor as $opcao): ?><option value="<?= escapar($opcao) ?>" <?= $sensor['tipo'] === $opcao ? 'selected' : '' ?>><?= escapar($opcao) ?></option><?php endforeach; ?></select></div></div>
+                            <button class="btn btn-warning w-100 fw-semibold mb-3" type="submit"><i class="bi bi-check-circle-fill me-2"></i>Salvar Alterações</button>
+                        </form>
                     </div>
                 </div>
                 <div class="text-center mt-3">

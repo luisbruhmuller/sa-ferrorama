@@ -1,85 +1,51 @@
 <?php
-// Funções compartilhadas exclusivamente pelo módulo de usuários.
-require_once __DIR__ . '/../../infra/criptografia.php';
-require_once __DIR__ . '/../../infra/validacao_usuario.php';
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start(['cookie_httponly' => true, 'cookie_samesite' => 'Lax',
-        'cookie_secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off']);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-try {
-    include __DIR__ . '/../../infra/conexao.php';
-    
-} catch (mysqli_sql_exception $e) {
-    error_log($e->getMessage());
-    http_response_code(503);
-    exit('Não foi possível conectar ao banco de dados. Tente novamente mais tarde.');
+
+require_once __DIR__ . '/../../infra/conexao.php';
+
+function escapar($texto)
+{
+    return htmlspecialchars((string) $texto, ENT_QUOTES, 'UTF-8');
 }
-function escapar($valor) {
-    return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
-}
-function campo($nome) {
-    return isset($_POST[$nome]) && is_string($_POST[$nome]) ? trim($_POST[$nome]) : '';
-}
-function consulta($sql, $tipos = '', $valores = []) {
-    global $conn;
-    $stmt = $conn->prepare($sql);
-    if ($tipos !== '') $stmt->bind_param($tipos, ...$valores);
-    $stmt->execute();
-    return $stmt;
-}
-function redirecionar($destino) {
-    header('Location: ' . $destino, true, 303);
+
+function redirecionar($pagina)
+{
+    header('Location: ' . $pagina);
     exit;
 }
-function mensagem($texto, $tipo = 'success') {
-    $_SESSION['mensagem'] = [$texto, $tipo];
-}
-function token() {
-    if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32));
-    return '<input type="hidden" name="csrf" value="' . escapar($_SESSION['csrf']) . '">';
-}
-function validar_post() {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Allow: POST');
-        http_response_code(405);
-        exit('Método não permitido.');
+
+function exigir_login($pagina = '../tela_usuario/tela_login.php')
+{
+    global $conn;
+
+    if (empty($_SESSION['usuario_id'])) {
+        redirecionar($pagina);
     }
-    if (empty($_SESSION['csrf']) || !hash_equals($_SESSION['csrf'], campo('csrf'))) {
-        http_response_code(403);
-        exit('Formulário expirado. Volte à página e tente novamente.');
-    }
-}
-function exigir_login($paginaLogin = '../tela_usuario/tela_login.php') {
-    if (empty($_SESSION['usuario_id'])) redirecionar($paginaLogin);
-    $usuario = consulta('SELECT id, nome, funcao, status FROM usuarios WHERE id = ?', 'i', [$_SESSION['usuario_id']])->get_result()->fetch_assoc();
+
+    $id = (int) $_SESSION['usuario_id'];
+    $usuario = mysqli_fetch_assoc(mysqli_query(
+        $conn,
+        "SELECT id, nome, funcao, status FROM usuarios WHERE id = $id"
+    ));
+
     if (!$usuario || $usuario['status'] !== 'ativo') {
-        unset($_SESSION['usuario_id']);
-        redirecionar($paginaLogin);
+        session_destroy();
+        redirecionar($pagina);
     }
+
     return $usuario;
 }
-function exigir_admin() {
+
+function exigir_admin()
+{
     $usuario = exigir_login('../tela_usuario/tela_login.php');
+
     if ($usuario['funcao'] !== 'adm') {
         redirecionar('../tela_usuario/tela_acesso_negado.php');
     }
+
     return $usuario;
-}
-function id_usuario($valor) {
-    $id = is_scalar($valor) ? filter_var($valor, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : false;
-    if (!$id) { http_response_code(400); exit('Usuário inválido.'); }
-    return $id;
-}
-function buscar_usuario($id) {
-    $usuario = consulta('SELECT id, nome, email, cpf, funcao, status FROM usuarios WHERE id = ?', 'i', [$id])->get_result()->fetch_assoc();
-    if (!$usuario) { http_response_code(404); exit('Usuário não encontrado.'); }
-    return $usuario;
-}
-function validar_usuario($edicao = false) {
-    return validar_dados_usuario($_POST, $edicao);
-}
-function duplicado($dados, $id = 0) {
-    return consulta("SELECT id FROM usuarios WHERE id <> ? AND (email = ? OR REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', '') = ?) LIMIT 1", 'iss', [$id, $dados['email'], $dados['cpf']])->get_result()->num_rows > 0;
 }

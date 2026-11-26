@@ -1,27 +1,10 @@
 <?php
-require_once __DIR__ . '/trem_funcoes.php';
-/**
- * Listagem de trens (Read): consulta o banco, exibe as mensagens de retorno
- * e oferece os botões de edição e exclusão de cada registro.
- */
-$flash = trem_flash_pegar();
-$trens = [];
-$erroConsulta = false;
-
-try {
-    // Consulta fixa, sem dados vindos do usuário.
-    $resultado = $conexao->query(
-        'SELECT t.id_trem, t.nome, t.tipo, t.status, t.conjunto, t.id_responsavel,
-                u.nome AS responsavel_nome, u.email AS responsavel_email
-         FROM trens AS t
-         LEFT JOIN usuarios AS u ON u.id = t.id_responsavel
-         ORDER BY t.id_trem'
-    );
-    $trens = $resultado->fetch_all(MYSQLI_ASSOC);
-} catch (mysqli_sql_exception $ex) {
-    error_log('Erro ao listar trens: ' . $ex->getMessage());
-    $erroConsulta = true;
-}
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+$usuarioTrem = exigir_login();
+$resultado = mysqli_query($conn, 'SELECT t.*, u.nome AS responsavel_nome, u.email AS responsavel_email FROM trens t LEFT JOIN usuarios u ON u.id=t.id_responsavel ORDER BY t.id_trem');
+$trens = $resultado ? mysqli_fetch_all($resultado, MYSQLI_ASSOC) : [];
+$flash = $_SESSION['trem_flash'] ?? null;
+unset($_SESSION['trem_flash']);
 ?>
 
 <!DOCTYPE html>
@@ -57,14 +40,10 @@ try {
 
                 <div class="p-4 bg-light flex-grow-1">
                     <?php if ($flash): ?>
-                        <div class="alert alert-<?= trem_h($flash['tipo']) ?> alert-dismissible fade show" role="alert">
-                            <?= trem_h($flash['mensagem']) ?>
+                        <div class="alert alert-<?= escapar($flash[1]) ?> alert-dismissible fade show" role="alert">
+                            <?= escapar($flash[0]) ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                         </div>
-                    <?php endif; ?>
-
-                    <?php if ($erroConsulta): ?>
-                        <div class="alert alert-danger" role="alert">Não foi possível carregar a lista de trens.</div>
                     <?php endif; ?>
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -101,18 +80,18 @@ try {
 
                                         <?php foreach ($trens as $trem): ?>
                                             <tr>
-                                                <th scope="row" class="ps-4"><?= trem_h(str_pad($trem['id_trem'], 2, '0', STR_PAD_LEFT)) ?></th>
-                                                <td class="fw-medium"><?= trem_h($trem['nome']) ?></td>
-                                                <td><?= trem_h($trem['tipo']) ?></td>
+                                                <th scope="row" class="ps-4"><?= escapar(str_pad($trem['id_trem'], 2, '0', STR_PAD_LEFT)) ?></th>
+                                                <td class="fw-medium"><?= escapar($trem['nome']) ?></td>
+                                                <td><?= escapar($trem['tipo']) ?></td>
                                                 <td>
-                                                    <span class="badge <?= trem_classe_status($trem['status']) ?> bg-opacity-75 fw-normal px-2 py-1">
-                                                        <?= trem_h($trem['status']) ?></span>
+                                                    <span class="badge <?= $trem['status'] === 'Ativo' ? 'bg-success' : ($trem['status'] === 'Desativado' ? 'bg-danger' : 'bg-warning') ?> bg-opacity-75 fw-normal px-2 py-1">
+                                                        <?= escapar($trem['status']) ?></span>
                                                 </td>
-                                                <td class="text-muted"><?= trem_h($trem['conjunto']) ?></td>
+                                                <td class="text-muted"><?= escapar($trem['conjunto']) ?></td>
                                                 <td>
                                                     <?php if ($trem['responsavel_nome'] !== null): ?>
-                                                        <span class="fw-medium"><?= trem_h($trem['responsavel_nome']) ?></span>
-                                                        <small class="d-block text-muted"><?= trem_h($trem['responsavel_email']) ?></small>
+                                                        <span class="fw-medium"><?= escapar($trem['responsavel_nome']) ?></span>
+                                                        <small class="d-block text-muted"><?= escapar($trem['responsavel_email']) ?></small>
                                                     <?php else: ?>
                                                         <span class="badge bg-warning text-dark">Sem responsável</span>
                                                     <?php endif; ?>
@@ -125,7 +104,7 @@ try {
                                                     <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                                         data-bs-toggle="modal" data-bs-target="#modalExcluir"
                                                         data-id="<?= (int) $trem['id_trem'] ?>"
-                                                        data-nome="<?= trem_h($trem['nome']) ?>">
+                                                        data-nome="<?= escapar($trem['nome']) ?>">
                                                         <i class="bi bi-trash"></i></button>
                                                     <?php else: ?><span class="text-muted small">Somente leitura</span><?php endif; ?>
                                                 </td>
@@ -144,7 +123,6 @@ try {
         <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="tituloModalExcluir" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <form class="modal-content" method="post" action="trem_excluir.php">
-                    <input type="hidden" name="csrf_token" value="<?= trem_h(trem_csrf_token()) ?>">
                     <input type="hidden" name="id_trem" id="excluir_id" value="">
                     <div class="modal-header">
                         <h5 class="modal-title" id="tituloModalExcluir">Excluir trem</h5>

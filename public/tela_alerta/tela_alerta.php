@@ -2,21 +2,9 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_login();
 
-$falhas = [];
-$erroConsulta = false;
-try {
-    $falhas = consulta(
-        "SELECT s.id_sensor, s.nome, s.tipo_dado, s.localizacao, s.conjunto,
-                t.id_trem, t.nome AS trem_nome
-         FROM sensor AS s
-         INNER JOIN trens AS t ON t.id_trem = s.id_trem
-         WHERE s.tipo = 'Com falha'
-         ORDER BY s.id_sensor DESC"
-    )->get_result()->fetch_all(MYSQLI_ASSOC);
-} catch (mysqli_sql_exception $erro) {
-    error_log('Erro ao consultar sensores com falha: ' . $erro->getMessage());
-    $erroConsulta = true;
-}
+$resultado = mysqli_query($conn, "SELECT s.*, t.nome AS trem_nome FROM sensor s INNER JOIN trens t ON t.id_trem=s.id_trem WHERE s.tipo='Com falha' ORDER BY s.id_sensor DESC");
+$falhas = $resultado ? mysqli_fetch_all($resultado, MYSQLI_ASSOC) : [];
+$erroConsulta = !$resultado;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

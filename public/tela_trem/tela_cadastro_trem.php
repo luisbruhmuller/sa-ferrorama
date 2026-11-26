@@ -1,25 +1,11 @@
 <?php
-require_once __DIR__ . '/trem_funcoes.php';
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
-/**
- * Cadastro de trem (Create): exibe o formulário; o envio é processado por trem_cadastrar.php.
- * Se a validação falhar, os dados digitados e as mensagens de erro voltam pela sessão.
- */
-$form = trem_pegar_formulario();
-$dados = $form['dados'];
-$erros = $form['erros'];
-$flash = trem_flash_pegar();
-$responsaveis = [];
-
-try {
-    $responsaveis = trem_listar_responsaveis($conexao);
-} catch (mysqli_sql_exception $ex) {
-    error_log('Erro ao listar responsáveis: ' . $ex->getMessage());
-    $flash = ['tipo' => 'danger', 'mensagem' => 'Não foi possível carregar os usuários responsáveis.'];
-}
-
-$acaoForm = 'trem_cadastrar.php';
-$textoBotao = 'Cadastrar Trem';
+$responsaveis = mysqli_query($conn, 'SELECT id, nome, email, status FROM usuarios ORDER BY nome');
+$flash = $_SESSION['trem_flash'] ?? null;
+unset($_SESSION['trem_flash']);
+$tipos = ['Locomotiva', 'Vagão Gôndola', 'Vagão Hopper', 'Vagão Plataforma'];
+$statusTrem = ['Ativo', 'Desativado', 'Parado no Caminho'];
 ?>
 
 <!DOCTYPE html>
@@ -63,11 +49,33 @@ $textoBotao = 'Cadastrar Trem';
                             </div>
 
                             <?php if ($flash): ?>
-                                <div class="alert alert-<?= trem_h($flash['tipo']) ?>" role="alert">
-                                    <?= trem_h($flash['mensagem']) ?></div>
+                                <div class="alert alert-<?= escapar($flash[1]) ?>" role="alert">
+                                    <?= escapar($flash[0]) ?></div>
                             <?php endif; ?>
 
-                            <?php include __DIR__ . '/trem_form.php'; ?>
+                            <form method="post" action="trem_cadastrar.php">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="nome">Nome do Trem</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-tag"></i></span><input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Union Pacific" maxlength="100" required></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="tipo">Tipo de Trem</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-train-front"></i></span><select class="form-select" id="tipo" name="tipo" required><option value="">Selecione o tipo...</option><?php foreach ($tipos as $opcao): ?><option value="<?= escapar($opcao) ?>"><?= escapar($opcao) ?></option><?php endforeach; ?></select></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="status">Status</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-activity"></i></span><select class="form-select" id="status" name="status" required><option value="">Selecione o status...</option><?php foreach ($statusTrem as $opcao): ?><option value="<?= escapar($opcao) ?>"><?= escapar($opcao) ?></option><?php endforeach; ?></select></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold" for="conjunto">Conjunto</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-diagram-3"></i></span><input type="text" class="form-control" id="conjunto" name="conjunto" placeholder="Ex: TRN-04-group" maxlength="100" required></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold" for="id_responsavel">Usuário Responsável</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-person-badge"></i></span><select class="form-select" id="id_responsavel" name="id_responsavel" required><option value="">Selecione o responsável...</option><?php while ($responsavel = mysqli_fetch_assoc($responsaveis)): ?><option value="<?= (int) $responsavel['id'] ?>"><?= escapar($responsavel['nome']) ?> — <?= escapar($responsavel['email']) ?> (<?= escapar($responsavel['status']) ?>)</option><?php endwhile; ?></select></div>
+                                </div>
+                                <button class="btn btn-warning w-100 fw-semibold mb-3" type="submit"><i class="bi bi-check-circle-fill me-2"></i>Cadastrar Trem</button>
+                            </form>
                         </div>
                     </div>
                     <br>

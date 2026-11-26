@@ -5,28 +5,20 @@ $busca = isset($_GET['busca']) && is_string($_GET['busca']) ? trim($_GET['busca'
 $funcao = isset($_GET['funcao']) && is_string($_GET['funcao']) ? $_GET['funcao'] : '';
 $statusFiltro = isset($_GET['status']) && is_string($_GET['status']) ? $_GET['status'] : '';
 
-$sql = 'SELECT id, nome, email, funcao, status FROM usuarios WHERE 1 = 1';
-$tipos = '';
-$valores = [];
+$sql = 'SELECT id, nome, email, funcao, status FROM usuarios WHERE 1=1';
 
 if ($busca !== '') {
-    $sql .= ' AND (nome LIKE ? OR email LIKE ?)';
-    $tipos .= 'ss';
-    $valores[] = "%{$busca}%";
-    $valores[] = "%{$busca}%";
+    $texto = mysqli_real_escape_string($conn, $busca);
+    $sql .= " AND (nome LIKE '%$texto%' OR email LIKE '%$texto%')";
 }
 if (in_array($funcao, ['adm', 'tecnico', 'funcionario'], true)) {
-    $sql .= ' AND funcao = ?';
-    $tipos .= 's';
-    $valores[] = $funcao;
+    $sql .= " AND funcao = '$funcao'";
 }
 if (in_array($statusFiltro, ['ativo', 'inativo', 'pendente'], true)) {
-    $sql .= ' AND status = ?';
-    $tipos .= 's';
-    $valores[] = $statusFiltro;
+    $sql .= " AND status = '$statusFiltro'";
 }
 
-$usuarios = consulta($sql . ' ORDER BY nome, id', $tipos, $valores)->get_result();
+$usuarios = mysqli_query($conn, $sql . ' ORDER BY nome, id');
 $cargos = ['adm' => 'Administrador', 'tecnico' => 'Técnico', 'funcionario' => 'Funcionário / Operador'];
 $mensagem = $_SESSION['mensagem'] ?? null;
 unset($_SESSION['mensagem']);
@@ -57,7 +49,7 @@ unset($_SESSION['mensagem']);
                 <h6 class="mb-0 fw-bold"><i class="bi bi-people-fill me-2 text-warning"></i>Usuários</h6>
                 <div class="d-flex align-items-center gap-3">
 
-                    <a href="tela_usuarios.php" class="btn btn-sm btn-outline-secondary" aria-label="Atualizar"><i class="bi bi-arrow-clockwise"></i></a><form action="sair.php" method="post"><?= token() ?><button class="btn btn-sm btn-outline-secondary" type="submit">Sair</button></form>
+                    <a href="tela_usuarios.php" class="btn btn-sm btn-outline-secondary" aria-label="Atualizar"><i class="bi bi-arrow-clockwise"></i></a><form action="sair.php" method="post"><button class="btn btn-sm btn-outline-secondary" type="submit">Sair</button></form>
                 </div>
             </div>
 
@@ -115,7 +107,7 @@ unset($_SESSION['mensagem']);
                                 </thead>
 
                                 <tbody>
-    <?php if ($usuarios->num_rows === 0): ?>
+    <?php if (mysqli_num_rows($usuarios) === 0): ?>
         <tr><td colspan="6" class="text-center p-4">Nenhum usuário encontrado.</td></tr>
     <?php endif; ?>
     <?php foreach ($usuarios as $usuario): ?>
@@ -128,7 +120,6 @@ unset($_SESSION['mensagem']);
             <td class="text-end pe-4 text-nowrap">
                 <a href="tela_cadastro_usuarios.php?id=<?= (int) $usuario['id'] ?>" class="btn btn-sm btn-outline-secondary me-1" aria-label="Editar usuário"><i class="bi bi-pencil-square"></i></a>
                 <form action="deletar_usuarios.php?id=<?= (int) $usuario['id'] ?>" method="post" class="d-inline" onsubmit="return confirm('Confirma a exclusão deste usuário?');">
-                    <?= token() ?>
                     <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Excluir usuário"><i class="bi bi-trash"></i></button>
                 </form>
             </td>

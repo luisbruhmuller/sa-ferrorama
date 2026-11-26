@@ -1,0 +1,16 @@
+Situação de Aprendizagem Ferrorama – Parte 1
+
+Nesta primeira etapa da Situação de Aprendizagem Ferrorama, os alunos deverão iniciar a organização do projeto em equipe, estabelecendo as bases para o desenvolvimento do sistema.
+
+Cada equipe deverá criar um repositório (por exemplo, no GitHub ou similar), garantindo que todos os integrantes estejam devidamente vinculados e com acesso ao projeto.
+
+O repositório deve conter um arquivo README bem estruturado, apresentando a proposta do sistema, os objetivos do projeto, a identificação dos membros da equipe e uma breve descrição das funcionalidades previstas.
+Além disso, os alunos deverão definir e documentar a organização do projeto, incluindo a estrutura de pastas, padrão de nomenclatura e divisão inicial de responsabilidades entre os integrantes.
+
+Como parte prática do desenvolvimento, a equipe deverá iniciar a construção da interface do sistema, criando a tela de login e a tela de cadastro de usuários, utilizando boas práticas de organização de código e, preferencialmente, frameworks de apoio como Bootstrap.
+
+Complementando a atividade, o repositório deverá conter:
+
+Um estudo elaborado pela equipe sobre a identidade visual do sistema (cores, tipografia, estilo, referências visuais e proposta de layout);
+Espera-se que a equipe tenha um repositório organizado, documentado e com os primeiros elementos visuais e estruturais do sistema já definidos.
+Ao final, devem entregar tabém uma pesquisa sobre o conceito de CRUD em PHP, explicando suas operações (Create, Read, Update, Delete) e como elas serão aplicadas no contexto do projeto.

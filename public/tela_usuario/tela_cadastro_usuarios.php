@@ -1,13 +1,20 @@
 <?php
 require_once __DIR__ . '/usuarios_comum.php';
 exigir_admin();
-// O mesmo formulário serve para cadastrar e editar.
-if (!isset($dados)) {
-    $edicao = isset($_GET['id']);
-    $id = $edicao ? id_usuario($_GET['id']) : 0;
-    $dados = $edicao ? buscar_usuario($id) : ['nome' => '', 'email' => '', 'cpf' => '', 'funcao' => 'funcionario', 'status' => 'ativo'];
-    $erros = [];
+$edicao = !empty($_GET['id']);
+$id = $edicao ? (int) $_GET['id'] : 0;
+$dados = ['nome' => '', 'email' => '', 'cpf' => '', 'funcao' => 'funcionario', 'status' => 'ativo'];
+
+if ($edicao) {
+    $resultado = mysqli_query($conn, "SELECT nome, email, cpf, funcao, status FROM usuarios WHERE id = $id");
+    $dados = mysqli_fetch_assoc($resultado);
+    if (!$dados) {
+        redirecionar('tela_usuarios.php');
+    }
 }
+
+$mensagem = $_SESSION['mensagem'] ?? null;
+unset($_SESSION['mensagem']);
 ?>
 
 <!DOCTYPE html>
@@ -56,9 +63,8 @@ if (!isset($dados)) {
                                             <p class="text-muted small"><?= $edicao ? 'Editar usuário' : 'Cadastrar novo usuário' ?></p>
                                         </div>
 
-                                        <?php if ($erros): ?><div class="alert alert-danger" role="alert"><ul class="mb-0"><?php foreach ($erros as $erro): ?><li><?= escapar($erro) ?></li><?php endforeach; ?></ul></div><?php endif; ?>
+                                        <?php if ($mensagem): ?><div class="alert alert-<?= escapar($mensagem[1]) ?>" role="alert"><?= escapar($mensagem[0]) ?></div><?php endif; ?>
 <form method="post" action="<?= $edicao ? 'editar_usuarios.php?id=' . (int) $id : 'criar_usuarios.php' ?>">
-<?= token() ?>
 <div class="mb-3"><label class="form-label" for="nome">Nome completo</label><input class="form-control" id="nome" name="nome" maxlength="200" required value="<?= escapar($dados['nome']) ?>" autocomplete="name"></div>
 <div class="mb-3"><label class="form-label" for="email">E-mail</label><input class="form-control" type="email" id="email" name="email" maxlength="200" required value="<?= escapar($dados['email']) ?>" autocomplete="email"></div>
 <div class="mb-3"><label class="form-label" for="cpf">CPF</label><input class="form-control" id="cpf" name="cpf" maxlength="14" required value="<?= escapar($dados['cpf']) ?>" inputmode="numeric" placeholder="000.000.000-00"></div>

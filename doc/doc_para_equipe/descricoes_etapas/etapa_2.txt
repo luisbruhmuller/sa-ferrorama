@@ -1,0 +1,83 @@
+Situação de Aprendizagem Ferrorama – Parte 2: Início do Desenvolvimento e SCRUM
+
+Nesta segunda etapa da Situação de Aprendizagem Ferrorama, as equipes deverão dar continuidade ao desenvolvimento do sistema, evoluindo a estrutura inicial criada na primeira entrega e ampliando as funcionalidades da aplicação.
+
+O objetivo desta etapa é iniciar a construção das telas principais do sistema, fortalecer a organização do projeto e aproximar os estudantes das metodologias ágeis utilizadas no mercado de trabalho.
+
+Desenvolvimento das Telas
+Cada equipe deverá desenvolver:
+
+Uma tela HOME do sistema;
+Uma tela de visualização de usuários contendo uma tabela/listagem dos usuários cadastrados.
+
+A tela HOME deverá apresentar uma interface organizada e coerente com a identidade visual definida pela equipe na primeira entrega, podendo conter:
+
+Menu de navegação;
+Cards informativos;
+Área de boas-vindas;
+Estatísticas fictícias;
+Botões de acesso rápido;
+Estrutura visual do sistema.
+Já a tela de visualização de usuários deverá conter:
+
+Uma tabela organizada para exibição dos usuários;
+Colunas como nome, e-mail, telefone, tipo de usuário ou outras informações relevantes;
+Utilização de Bootstrap ou outro framework CSS para estilização;
+Organização visual e responsividade.
+As telas devem seguir boas práticas de desenvolvimento front-end, incluindo:
+
+Padronização visual;
+Organização de arquivos;
+Separação adequada entre HTML, CSS e JavaScript;
+Uso correto de commits no repositório.
+Pesquisa sobre SCRUM
+A equipe deverá realizar uma pesquisa sobre a metodologia ágil SCRUM, abordando:
+
+O que é SCRUM;
+Objetivo da metodologia;
+Principais papéis:
+Product Owner;
+Scrum Master;
+Development Team;
+Eventos do SCRUM:
+Sprint;
+Sprint Planning;
+Daily Scrum;
+Sprint Review;
+Sprint Retrospective;
+Benefícios do uso do SCRUM em projetos de software.
+A pesquisa deverá ser adicionada ao repositório em formato MD.
+
+Simulação de Daily Meeting
+
+Como atividade prática complementar, a equipe deverá gravar uma reunião simulando uma Daily Scrum (Daily Meeting).
+
+Requisitos da gravação:
+
+Duração aproximada de 4 minutos;
+Participação de todos os integrantes da equipe;
+Cada integrante deverá responder:
+O que fez no projeto;
+O que está desenvolvendo;
+Quais dificuldades encontrou;
+A reunião deve simular um ambiente profissional e organizado.
+O vídeo poderá ser enviado via link do Google Drive, YouTube não listado ou plataforma similar.
+
+Entregáveis Esperados
+
+Ao final desta etapa, o repositório deverá conter:
+
+Tela HOME desenvolvida;
+Tela de visualização de usuários com tabela;
+Organização e evolução do projeto;
+Pesquisa sobre SCRUM;
+Registro dos commits realizados pela equipe;
+Link da gravação da Daily Meeting.
+Será avaliado:
+
+Organização do projeto;
+Qualidade visual das interfaces;
+Estrutura do código;
+Participação da equipe;
+Clareza na documentação;
+Aplicação dos conceitos estudados.

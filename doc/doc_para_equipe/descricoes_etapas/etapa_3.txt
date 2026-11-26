@@ -1,0 +1,22 @@
+Nesta terceira etapa da Situação de Aprendizagem Ferrorama, os alunos deverão aprofundar os conhecimentos sobre ambientes de desenvolvimento web, realizando uma pesquisa sobre o XAMPP e sua utilização no desenvolvimento de aplicações PHP.
+
+Nesta terceira etapa da Situação de Aprendizagem Ferrorama, os alunos deverão aprofundar os conhecimentos sobre ambientes de desenvolvimento web, realizando uma pesquisa sobre o XAMPP e sua utilização no desenvolvimento de aplicações PHP.
+
+A pesquisa deverá abordar:
+
+O que é o XAMPP;
+Principais componentes do ambiente (Apache, MySQL/MariaDB, PHP e phpMyAdmin);
+Finalidade de cada componente;
+Como realizar a instalação e configuração básica;
+Importância do ambiente para desenvolvimento local.
+Além da pesquisa teórica, a equipe deverá continuar o desenvolvimento do sistema Ferrorama, implementando funcionalidades relacionadas ao gerenciamento de sensores.
+
+Os alunos deverão desenvolver:
+
+Uma tela de cadastro de novos sensores;
+Uma tela de visualização/listagem dos sensores cadastrados.
+As telas devem apresentar uma interface organizada e padronizada com a identidade visual definida anteriormente pela equipe. O cadastro deverá conter informações relevantes dos sensores, como nome, identificação, tipo, localização ou demais dados definidos pela equipe conforme a proposta do sistema.
+
+A tela de visualização deve permitir a exibição clara das informações cadastradas, utilizando tabelas, cards ou outros componentes visuais adequados.
+
+Todo o desenvolvimento deverá ser documentado e enviado no repositório da equipe, mantendo a organização do projeto e o versionamento das entregas.
