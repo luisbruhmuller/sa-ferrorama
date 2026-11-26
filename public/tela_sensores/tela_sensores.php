@@ -1,26 +1,12 @@
 <?php
-require_once __DIR__ . '/sensor_funcoes.php';
-
-$flash = sensor_flash_pegar();
-$sensores = [];
-$erroConsulta = false;
-
-try {
-    $resultado = $conexao->query(
-        'SELECT s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto,
-                t.id_trem, t.nome AS trem_nome, COUNT(ds.id_dado) AS total_leituras
-         FROM sensor AS s
-         INNER JOIN trens AS t ON t.id_trem = s.id_trem
-         LEFT JOIN dados_sensor AS ds ON ds.id_sensor = s.id_sensor
-         GROUP BY s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto,
-                  t.id_trem, t.nome
-         ORDER BY s.id_sensor'
-    );
-    $sensores = $resultado->fetch_all(MYSQLI_ASSOC);
-} catch (mysqli_sql_exception $ex) {
-    error_log('Erro ao listar sensores: ' . $ex->getMessage());
-    $erroConsulta = true;
-}
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
+$usuarioSensor = exigir_login();
+$sql = 'SELECT s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto, t.id_trem, t.nome AS trem_nome, COUNT(ds.id_dado) AS total_leituras FROM sensor s INNER JOIN trens t ON t.id_trem=s.id_trem LEFT JOIN dados_sensor ds ON ds.id_sensor=s.id_sensor GROUP BY s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto, t.id_trem, t.nome ORDER BY s.id_sensor';
+$resultado = mysqli_query($conn, $sql);
+$sensores = $resultado ? mysqli_fetch_all($resultado, MYSQLI_ASSOC) : [];
+$erroConsulta = !$resultado;
+$flash = $_SESSION['sensor_flash'] ?? null;
+unset($_SESSION['sensor_flash']);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -45,15 +31,12 @@ try {
 
             <div class="p-4 bg-light flex-grow-1">
                 <?php if ($flash): ?>
-                    <div class="alert alert-<?= sensor_h($flash['tipo']) ?> alert-dismissible fade show" role="alert">
-                        <?= sensor_h($flash['mensagem']) ?>
+                    <div class="alert alert-<?= escapar($flash[1]) ?> alert-dismissible fade show" role="alert">
+                        <?= escapar($flash[0]) ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                     </div>
                 <?php endif; ?>
-                <?php if ($erroConsulta): ?>
-                    <div class="alert alert-danger">Não foi possível carregar a lista de sensores.</div>
-                <?php endif; ?>
-
+                <?php if ($erroConsulta): ?><div class="alert alert-danger">Não foi possível carregar a lista de sensores.</div><?php endif; ?>
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="mb-0 text-secondary fw-normal">Lista de Sensores Cadastrados</h5>
                     <?php if ($usuarioSensor['funcao'] === 'adm'): ?>
@@ -84,13 +67,13 @@ try {
                                     <?php endif; ?>
                                     <?php foreach ($sensores as $sensor): ?>
                                         <tr>
-                                            <th scope="row" class="ps-4"><?= sensor_h(str_pad($sensor['id_sensor'], 2, '0', STR_PAD_LEFT)) ?></th>
-                                            <td class="fw-medium"><?= sensor_h($sensor['nome']) ?></td>
-                                            <td><?= sensor_h($sensor['tipo_dado']) ?></td>
-                                            <td><span class="badge <?= sensor_classe_status($sensor['tipo']) ?> bg-opacity-75">
-                                                <?= sensor_h($sensor['tipo']) ?></span></td>
-                                            <td><?= sensor_h($sensor['trem_nome']) ?> <small class="text-muted">#<?= (int) $sensor['id_trem'] ?></small></td>
-                                            <td><?= sensor_h($sensor['conjunto']) ?><small class="d-block text-muted"><?= sensor_h($sensor['localizacao']) ?></small></td>
+                                            <th scope="row" class="ps-4"><?= escapar(str_pad($sensor['id_sensor'], 2, '0', STR_PAD_LEFT)) ?></th>
+                                            <td class="fw-medium"><?= escapar($sensor['nome']) ?></td>
+                                            <td><?= escapar($sensor['tipo_dado']) ?></td>
+                                            <td><span class="badge <?= $sensor['tipo'] === 'Ativo' ? 'bg-success' : ($sensor['tipo'] === 'Com falha' ? 'bg-danger' : 'bg-secondary') ?> bg-opacity-75">
+                                                <?= escapar($sensor['tipo']) ?></span></td>
+                                            <td><?= escapar($sensor['trem_nome']) ?> <small class="text-muted">#<?= (int) $sensor['id_trem'] ?></small></td>
+                                            <td><?= escapar($sensor['conjunto']) ?><small class="d-block text-muted"><?= escapar($sensor['localizacao']) ?></small></td>
                                             <td class="text-center"><span class="badge bg-info text-dark"><?= (int) $sensor['total_leituras'] ?></span></td>
                                             <td class="text-end pe-4 text-nowrap">
                                                 <?php if ($usuarioSensor['funcao'] === 'adm'): ?>
@@ -100,7 +83,7 @@ try {
                                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                                     data-bs-toggle="modal" data-bs-target="#modalExcluir"
                                                     data-id="<?= (int) $sensor['id_sensor'] ?>"
-                                                    data-nome="<?= sensor_h($sensor['nome']) ?>"
+                                                    data-nome="<?= escapar($sensor['nome']) ?>"
                                                     data-leituras="<?= (int) $sensor['total_leituras'] ?>">
                                                     <i class="bi bi-trash"></i></button>
                                                 <?php endif; ?>
@@ -119,7 +102,6 @@ try {
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="tituloModalExcluir" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <form class="modal-content" method="post" action="excluir_sensores.php">
-                <input type="hidden" name="csrf_token" value="<?= sensor_h(sensor_csrf_token()) ?>">
                 <input type="hidden" name="id_sensor" id="excluir_id" value="">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tituloModalExcluir">Excluir sensor</h5>

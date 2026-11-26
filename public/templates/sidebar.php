@@ -3,11 +3,9 @@ require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 
 $usuarioSidebar = null;
 if (!empty($_SESSION['usuario_id'])) {
-    $usuarioSidebar = consulta(
-        "SELECT nome, funcao FROM usuarios WHERE id = ? AND status = 'ativo'",
-        'i',
-        [$_SESSION['usuario_id']]
-    )->get_result()->fetch_assoc();
+    $idSidebar = (int) $_SESSION['usuario_id'];
+    $resultadoSidebar = mysqli_query($conn, "SELECT nome, funcao FROM usuarios WHERE id = $idSidebar AND status = 'ativo'");
+    $usuarioSidebar = mysqli_fetch_assoc($resultadoSidebar);
 }
 $cargosSidebar = ['adm' => 'Administrador', 'tecnico' => 'Técnico', 'funcionario' => 'Funcionário / Operador'];
 
@@ -133,7 +131,6 @@ $atributosItemSidebar = static function ($secao) use ($secaoAtual) {
         </div>
       </div>
       <form action="../tela_usuario/sair.php" method="post" class="mt-3">
-        <?= token() ?>
         <button type="submit" class="btn btn-outline-warning btn-sm w-100">Sair</button>
       </form>
       <?php else: ?>

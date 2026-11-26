@@ -1,46 +1,13 @@
 <?php
-/**
- * Processa a exclusão de trem (Delete). Só aceita POST: excluir por link (GET) permitiria
- * que qualquer página externa apagasse registros apenas fazendo o usuário clicar em um endereço.
- */
-require_once __DIR__ . '/trem_funcoes.php';
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    trem_redirecionar('tela_trem.php');
+$id = (int) ($_POST['id_trem'] ?? 0);
+
+if ($id > 0 && mysqli_query($conn, "DELETE FROM trens WHERE id_trem = $id")) {
+    $_SESSION['trem_flash'] = ['Trem excluído com sucesso!', 'success'];
+} else {
+    $_SESSION['trem_flash'] = ['Não é possível excluir: este trem possui sensores ou rotas vinculados.', 'warning'];
 }
 
-if (!trem_csrf_valido($_POST['csrf_token'] ?? null)) {
-    trem_flash('danger', 'Sessão inválida. Recarregue a página e tente novamente.');
-    trem_redirecionar('tela_trem.php');
-}
-
-$idTrem = trem_id_valido($_POST['id_trem'] ?? null);
-if ($idTrem === null) {
-    trem_flash('danger', 'Trem inválido.');
-    trem_redirecionar('tela_trem.php');
-}
-
-try {
-    $stmt = $conexao->prepare('DELETE FROM trens WHERE id_trem = ?');
-    $stmt->bind_param('i', $idTrem);
-    $stmt->execute();
-    $removidos = $stmt->affected_rows;
-    $stmt->close();
-
-    if ($removidos > 0) {
-        trem_flash('success', 'Trem excluído com sucesso!');
-    } else {
-        trem_flash('danger', 'Trem não encontrado.');
-    }
-} catch (mysqli_sql_exception $ex) {
-    // Erro 1451: o trem ainda é referenciado por sensores ou rotas (chave estrangeira).
-    if ($ex->getCode() === 1451) {
-        trem_flash('warning', 'Não é possível excluir: este trem possui sensores ou rotas vinculados.');
-    } else {
-        error_log('Erro ao excluir trem: ' . $ex->getMessage());
-        trem_flash('danger', 'Não foi possível excluir o trem. Tente novamente.');
-    }
-}
-
-trem_redirecionar('tela_trem.php');
+redirecionar('tela_trem.php');

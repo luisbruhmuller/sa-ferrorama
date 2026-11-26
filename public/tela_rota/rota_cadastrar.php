@@ -1,52 +1,51 @@
 <?php
-
-require_once __DIR__ . '/rota_funcoes.php';
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    rota_redirecionar('tela_cadastro_rota.php');
+$nome = trim($_POST['nome'] ?? '');
+$origem = trim($_POST['origem'] ?? '');
+$destino = trim($_POST['destino'] ?? '');
+$distancia = (float) ($_POST['distancia'] ?? 0);
+$tempo = $_POST['tempo'] ?? '';
+$status = $_POST['status'] ?? 'disponível';
+$trens = $_POST['trens'] ?? [];
+
+if ($nome === '' || $origem === '' || $destino === '' || $distancia <= 0 || $tempo === '' || !$trens) {
+    $_SESSION['rota_flash'] = ['Preencha todos os campos e selecione um trem.', 'danger'];
+    redirecionar('tela_cadastro_rota.php');
 }
 
-if (!rota_csrf_valido($_POST['csrf_token'] ?? null)) {
-    rota_flash('danger', 'Sessão inválida. Recarregue a página e tente novamente.');
-    rota_redirecionar('tela_cadastro_rota.php');
+mysqli_begin_transaction($conn);
+$comando = mysqli_prepare($conn, 'INSERT INTO rotas (nome, distancia, tempo, origem, destino, status) VALUES (?, ?, ?, ?, ?, ?)');
+$ok = $comando !== false;
+
+if ($ok) {
+    mysqli_stmt_bind_param($comando, 'sdssss', $nome, $distancia, $tempo, $origem, $destino, $status);
+    $ok = mysqli_stmt_execute($comando);
 }
 
-[$dados, $erros] = rota_validar($_POST);
-if (!$erros && !rota_trens_existem($conexao, $dados['trens'])) {
-    $erros['trens'] = 'Um ou mais trens selecionados não existem.';
-}
-if ($erros) {
-    rota_guardar_formulario($dados, $erros);
-    rota_redirecionar('tela_cadastro_rota.php');
+if ($ok) {
+    $idRota = mysqli_insert_id($conn);
+    $vinculo = mysqli_prepare($conn, 'INSERT INTO rota_trens (id_rota, id_trem) VALUES (?, ?)');
+    $ok = $vinculo !== false;
+
+    foreach ($trens as $idTrem) {
+        $idTrem = (int) $idTrem;
+        if (!$ok || $idTrem < 1) {
+            $ok = false;
+            break;
+        }
+        mysqli_stmt_bind_param($vinculo, 'ii', $idRota, $idTrem);
+        $ok = mysqli_stmt_execute($vinculo);
+    }
 }
 
-try {
-    $conexao->begin_transaction();
-    $stmt = $conexao->prepare(
-        'INSERT INTO rotas (nome, distancia, tempo, origem, destino, status) VALUES (?, ?, ?, ?, ?, ?)'
-    );
-    $stmt->bind_param(
-        'sdssss',
-        $dados['nome'],
-        $dados['distancia'],
-        $dados['tempo'],
-        $dados['origem'],
-        $dados['destino'],
-        $dados['status']
-    );
-    $stmt->execute();
-    $idRota = $conexao->insert_id;
-    $stmt->close();
-
-    rota_sincronizar_trens($conexao, $idRota, $dados['trens']);
-    $conexao->commit();
-    rota_flash('success', 'Rota cadastrada com sucesso!');
-    rota_redirecionar('tela_rota.php');
-} catch (mysqli_sql_exception $ex) {
-    $conexao->rollback();
-    error_log('Erro ao cadastrar rota: ' . $ex->getMessage());
-    rota_guardar_formulario($dados, $erros);
-    rota_flash('danger', 'Não foi possível cadastrar a rota. Verifique os relacionamentos e tente novamente.');
-    rota_redirecionar('tela_cadastro_rota.php');
+if ($ok) {
+    mysqli_commit($conn);
+    $_SESSION['rota_flash'] = ['Rota cadastrada com sucesso!', 'success'];
+    redirecionar('tela_rota.php');
 }
+
+mysqli_rollback($conn);
+$_SESSION['rota_flash'] = ['Não foi possível cadastrar a rota.', 'danger'];
+redirecionar('tela_cadastro_rota.php');

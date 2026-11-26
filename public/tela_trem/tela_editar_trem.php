@@ -1,34 +1,16 @@
 <?php
-require_once __DIR__ . '/trem_funcoes.php';
+require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
-/**
- * Edição de trem (Update): carrega o registro pelo id e exibe o formulário preenchido.
- * O envio é processado por trem_editar.php.
- */
-$idTrem = trem_id_valido($_GET['id'] ?? null);
-$trem = $idTrem !== null ? trem_buscar($conexao, $idTrem) : null;
-
-if ($trem === null) {
-    trem_flash('danger', 'Trem não encontrado.');
-    trem_redirecionar('tela_trem.php');
+$idTrem = (int) ($_GET['id'] ?? 0);
+$trem = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM trens WHERE id_trem = $idTrem"));
+if (!$trem) {
+    redirecionar('tela_trem.php');
 }
-
-// Se a última tentativa de salvar falhou, mostra o que o usuário digitou no lugar dos dados do banco.
-$form = trem_pegar_formulario();
-$dados = $form['dados'] ?: $trem;
-$erros = $form['erros'];
-$flash = trem_flash_pegar();
-$responsaveis = [];
-
-try {
-    $responsaveis = trem_listar_responsaveis($conexao);
-} catch (mysqli_sql_exception $ex) {
-    error_log('Erro ao listar responsáveis: ' . $ex->getMessage());
-    $flash = ['tipo' => 'danger', 'mensagem' => 'Não foi possível carregar os usuários responsáveis.'];
-}
-
-$acaoForm = 'trem_editar.php';
-$textoBotao = 'Salvar Alterações';
+$responsaveis = mysqli_query($conn, 'SELECT id, nome, email, status FROM usuarios ORDER BY nome');
+$flash = $_SESSION['trem_flash'] ?? null;
+unset($_SESSION['trem_flash']);
+$tipos = ['Locomotiva', 'Vagão Gôndola', 'Vagão Hopper', 'Vagão Plataforma'];
+$statusTrem = ['Ativo', 'Desativado', 'Parado no Caminho'];
 ?>
 
 <!DOCTYPE html>
@@ -72,11 +54,34 @@ $textoBotao = 'Salvar Alterações';
                             </div>
 
                             <?php if ($flash): ?>
-                                <div class="alert alert-<?= trem_h($flash['tipo']) ?>" role="alert">
-                                    <?= trem_h($flash['mensagem']) ?></div>
+                                <div class="alert alert-<?= escapar($flash[1]) ?>" role="alert">
+                                    <?= escapar($flash[0]) ?></div>
                             <?php endif; ?>
 
-                            <?php include __DIR__ . '/trem_form.php'; ?>
+                            <form method="post" action="trem_editar.php">
+                                <input type="hidden" name="id_trem" value="<?= $idTrem ?>">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="nome">Nome do Trem</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-tag"></i></span><input type="text" class="form-control" id="nome" name="nome" maxlength="100" required value="<?= escapar($trem['nome']) ?>"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="tipo">Tipo de Trem</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-train-front"></i></span><select class="form-select" id="tipo" name="tipo" required><?php foreach ($tipos as $opcao): ?><option value="<?= escapar($opcao) ?>" <?= $trem['tipo'] === $opcao ? 'selected' : '' ?>><?= escapar($opcao) ?></option><?php endforeach; ?></select></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold" for="status">Status</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-activity"></i></span><select class="form-select" id="status" name="status" required><?php foreach ($statusTrem as $opcao): ?><option value="<?= escapar($opcao) ?>" <?= $trem['status'] === $opcao ? 'selected' : '' ?>><?= escapar($opcao) ?></option><?php endforeach; ?></select></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold" for="conjunto">Conjunto</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-diagram-3"></i></span><input type="text" class="form-control" id="conjunto" name="conjunto" maxlength="100" required value="<?= escapar($trem['conjunto']) ?>"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold" for="id_responsavel">Usuário Responsável</label>
+                                    <div class="input-group"><span class="input-group-text"><i class="bi bi-person-badge"></i></span><select class="form-select" id="id_responsavel" name="id_responsavel" required><option value="" <?= empty($trem['id_responsavel']) ? 'selected' : '' ?>>Selecione o responsável...</option><?php while ($responsavel = mysqli_fetch_assoc($responsaveis)): ?><option value="<?= (int) $responsavel['id'] ?>" <?= (int) $trem['id_responsavel'] === (int) $responsavel['id'] ? 'selected' : '' ?>><?= escapar($responsavel['nome']) ?> — <?= escapar($responsavel['email']) ?> (<?= escapar($responsavel['status']) ?>)</option><?php endwhile; ?></select></div>
+                                </div>
+                                <button class="btn btn-warning w-100 fw-semibold mb-3" type="submit"><i class="bi bi-check-circle-fill me-2"></i>Salvar Alterações</button>
+                            </form>
                         </div>
                     </div>
                     <br>

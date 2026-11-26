@@ -1,30 +1,34 @@
 <?php
 require __DIR__ . '/usuarios_comum.php';
 $erro = '';
+$email = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    validar_post();
     if (($_SESSION['login_bloqueado_ate'] ?? 0) > time()) {
         $erro = 'Muitas tentativas inválidas. Aguarde 15 minutos para tentar novamente.';
     } else {
-        if (isset($_SESSION['login_bloqueado_ate'])) unset($_SESSION['login_bloqueado_ate'], $_SESSION['login_tentativas']);
-        $email = normalizar_email_usuario(campo('email'));
-        $usuario = consulta('SELECT id, senha, funcao, status FROM usuarios WHERE email = ? LIMIT 1', 's', [$email])->get_result()->fetch_assoc();
-        $senha = isset($_POST['senha']) && is_string($_POST['senha']) ? $_POST['senha'] : '';
-        if ($usuario && $usuario['status'] === 'ativo' && verificar_senha($senha, $usuario['senha'])) {
-            if (senha_precisa_novo_hash($usuario['senha'])) {
-                consulta(
-                    'UPDATE usuarios SET senha = ? WHERE id = ?',
-                    'si',
-                    [gerar_hash_senha($senha), (int) $usuario['id']]
-                );
-            }
+        if (isset($_SESSION['login_bloqueado_ate'])) {
+            unset($_SESSION['login_bloqueado_ate'], $_SESSION['login_tentativas']);
+        }
+        $email = strtolower(trim($_POST['email'] ?? ''));
+        $senha = $_POST['senha'] ?? '';
+
+        $comando = mysqli_prepare($conn, 'SELECT id, senha, funcao, status FROM usuarios WHERE email = ?');
+        mysqli_stmt_bind_param($comando, 's', $email);
+        mysqli_stmt_execute($comando);
+        $usuario = mysqli_fetch_assoc(mysqli_stmt_get_result($comando));
+
+        if ($usuario && $usuario['status'] === 'ativo' && password_verify($senha, $usuario['senha'])) {
             session_regenerate_id(true);
             $_SESSION['usuario_id'] = (int) $usuario['id'];
-            unset($_SESSION['login_tentativas'], $_SESSION['login_bloqueado_ate'], $_SESSION['csrf']);
+            unset($_SESSION['login_tentativas'], $_SESSION['login_bloqueado_ate']);
             redirecionar($usuario['funcao'] === 'adm' ? 'tela_usuarios.php' : '../tela_home/tela_geral_home.php');
         }
+
         $_SESSION['login_tentativas'] = ($_SESSION['login_tentativas'] ?? 0) + 1;
-        if ($_SESSION['login_tentativas'] >= 5) $_SESSION['login_bloqueado_ate'] = time() + 900;
+        if ($_SESSION['login_tentativas'] >= 5) {
+            $_SESSION['login_bloqueado_ate'] = time() + 900;
+        }
         $erro = 'E-mail ou senha inválidos, ou usuário não está ativo.';
     }
 }
@@ -73,13 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <p class="text-muted small">Sistema de Monitoramento Ferroviário</p>
                                 </div>
 
-                                <form method="post" action="tela_login.php"><?= token() ?>
+                                <form method="post" action="tela_login.php">
 <div class="mb-3">
-                                    <label for="login-login" class="form-label fw-semibold">E-mail</label>
+                                    <label for="login-login" class="form-label fw-semibold">E-mail ou usuário</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" class="form-control" placeholder="usuario@empresa.com"
-                                            id="login-login" name="email" maxlength="200" autocomplete="username" value="<?= escapar(campo('email')) ?>" required />
+                                        <input type="text" class="form-control" placeholder="usuario@empresa.com"
+                                            id="login-login" name="email" maxlength="200" autocomplete="username" value="<?= escapar($email) ?>" required />
                                     </div>
                                 </div>
 
