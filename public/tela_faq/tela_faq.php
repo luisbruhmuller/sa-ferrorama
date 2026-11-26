@@ -23,6 +23,7 @@ exigir_login();
 
       <div class="accordion shadow-sm" id="ajuda">
         <?php
+        // Perguntas mostradas na página.
         $perguntas = [
           ['Como entrar e sair?', 'Entre com o e-mail e a senha fornecidos pelo administrador. Para encerrar a sessão, use “Sair” no rodapé do menu. Após cinco tentativas inválidas, aguarde 15 minutos.'],
           ['O que cada perfil pode fazer?', 'Administradores gerenciam usuários, trens, rotas e sensores. Técnicos e funcionários consultam esses registros, os sensores com falha e a simulação do circuito.'],

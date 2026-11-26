@@ -5,6 +5,7 @@ $edicao = !empty($_GET['id']);
 $id = $edicao ? (int) $_GET['id'] : 0;
 $dados = ['nome' => '', 'email' => '', 'cpf' => '', 'funcao' => 'funcionario', 'status' => 'ativo'];
 
+// Carrega os dados quando for uma edição.
 if ($edicao) {
     $resultado = mysqli_query($conn, "SELECT nome, email, cpf, funcao, status FROM usuarios WHERE id = $id");
     $dados = mysqli_fetch_assoc($resultado);
@@ -64,6 +65,7 @@ unset($_SESSION['mensagem']);
                                         </div>
 
                                         <?php if ($mensagem): ?><div class="alert alert-<?= escapar($mensagem[1]) ?>" role="alert"><?= escapar($mensagem[0]) ?></div><?php endif; ?>
+<!-- Formulário para criar ou editar usuários. -->
 <form method="post" action="<?= $edicao ? 'editar_usuarios.php?id=' . (int) $id : 'criar_usuarios.php' ?>">
 <div class="mb-3"><label class="form-label" for="nome">Nome completo</label><input class="form-control" id="nome" name="nome" maxlength="200" required value="<?= escapar($dados['nome']) ?>" autocomplete="name"></div>
 <div class="mb-3"><label class="form-label" for="email">E-mail</label><input class="form-control" type="email" id="email" name="email" maxlength="200" required value="<?= escapar($dados['email']) ?>" autocomplete="email"></div>

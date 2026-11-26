@@ -1,12 +1,14 @@
 (function (root) {
   'use strict';
 
+  // Confere e limpa o CEP digitado.
   function normalizarCep(valor) {
     const texto = String(valor).trim();
     if (!/^\d{5}-?\d{3}$/.test(texto)) throw new Error('Informe um CEP com 8 dígitos.');
     return texto.replace('-', '');
   }
 
+  // Busca o endereço no ViaCEP.
   async function consultarCep(entrada, fetchImpl = root.fetch.bind(root)) {
     const cep = normalizarCep(entrada);
     let resposta;
@@ -44,6 +46,7 @@
   const botao = form.querySelector('button[type="submit"]');
   const campos = ['cep', 'logradouro', 'bairro', 'cidade', 'uf'];
 
+  // Preenche os campos depois da consulta.
   form.addEventListener('submit', async (evento) => {
     evento.preventDefault();
     botao.disabled = true;

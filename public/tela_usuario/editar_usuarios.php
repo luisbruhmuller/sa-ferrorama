@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || $id < 1) {
     redirecionar('tela_usuarios.php');
 }
 
+// Pega os dados alterados no formulário.
 $nome = trim($_POST['nome'] ?? '');
 $email = strtolower(trim($_POST['email'] ?? ''));
 $cpf = preg_replace('/\D/', '', $_POST['cpf'] ?? '');
@@ -25,6 +26,7 @@ if ($nome === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($cpf) !
     redirecionar('tela_cadastro_usuarios.php?id=' . $id);
 }
 
+// Só troca a senha quando uma nova foi digitada.
 if ($senha !== '') {
     $hash = password_hash($senha, PASSWORD_DEFAULT);
     $comando = mysqli_prepare($conn, 'UPDATE usuarios SET nome=?, email=?, cpf=?, funcao=?, status=?, senha=? WHERE id=?');

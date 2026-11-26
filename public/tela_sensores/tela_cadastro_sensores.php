@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
+// Busca os trens para o formulário.
 $trens = mysqli_query($conn, 'SELECT id_trem, nome, status FROM trens ORDER BY nome');
 $flash = $_SESSION['sensor_flash'] ?? null;
 unset($_SESSION['sensor_flash']);
@@ -42,6 +43,7 @@ $statusSensor = ['Ativo', 'Inativo', 'Com falha'];
                                 <?= escapar($flash[0]) ?></div>
                         <?php endif; ?>
 
+                        <!-- Formulário do novo sensor. -->
                         <form method="post" action="sensor_cadastrar.php">
                             <div class="mb-3"><label class="form-label fw-semibold" for="nome">Nome / Código do Sensor</label><div class="input-group"><span class="input-group-text"><i class="bi bi-tag"></i></span><input type="text" class="form-control" id="nome" name="nome" maxlength="100" required placeholder="Ex: Sensor TMP-01"></div></div>
                             <div class="mb-3"><label class="form-label fw-semibold" for="tipo_dado">Tipo de Sensor</label><div class="input-group"><span class="input-group-text"><i class="bi bi-activity"></i></span><select class="form-select" id="tipo_dado" name="tipo_dado" required><option value="">Selecione o tipo...</option><?php foreach ($tiposDado as $opcao): ?><option value="<?= escapar($opcao) ?>"><?= escapar($opcao) ?></option><?php endforeach; ?></select></div></div>

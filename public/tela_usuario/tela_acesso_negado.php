@@ -12,6 +12,7 @@
     </style>
 </head>
 <body class="d-flex align-items-center justify-content-center p-3">
+    <!-- Aviso para quem não tem permissão. -->
     <main class="card denied-card shadow-sm w-100">
         <div class="card-body p-4 p-md-5 text-center">
             <img class="denied-image mb-3" src="../assets/acesso-negado.png" alt="Mascote segurando uma placa de acesso negado">

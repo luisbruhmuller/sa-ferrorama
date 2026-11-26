@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
+// Pega os novos dados da rota.
 $idRota = (int) ($_POST['id_rota'] ?? 0);
 $nome = trim($_POST['nome'] ?? '');
 $origem = trim($_POST['origem'] ?? '');
@@ -16,6 +17,7 @@ if ($idRota < 1 || $nome === '' || $origem === '' || $destino === '' || $distanc
     redirecionar('tela_editar_rota.php?id=' . $idRota);
 }
 
+// Atualiza tudo na mesma transação.
 mysqli_begin_transaction($conn);
 $comando = mysqli_prepare($conn, 'UPDATE rotas SET nome=?, distancia=?, tempo=?, origem=?, destino=?, status=? WHERE id=?');
 $ok = $comando !== false;

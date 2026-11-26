@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 $idSensor = (int) ($_GET['id'] ?? 0);
+// Busca o sensor que vai ser editado.
 $sensor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM sensor WHERE id_sensor = $idSensor"));
 if (!$sensor) {
     redirecionar('tela_sensores.php');
@@ -46,6 +47,7 @@ $statusSensor = ['Ativo', 'Inativo', 'Com falha'];
                             <div class="alert alert-<?= escapar($flash[1]) ?>" role="alert">
                                 <?= escapar($flash[0]) ?></div>
                         <?php endif; ?>
+                        <!-- Formulário de edição do sensor. -->
                         <form method="post" action="sensor_editar.php">
                             <input type="hidden" name="id_sensor" value="<?= $idSensor ?>">
                             <div class="mb-3"><label class="form-label fw-semibold" for="nome">Nome / Código do Sensor</label><div class="input-group"><span class="input-group-text"><i class="bi bi-tag"></i></span><input type="text" class="form-control" id="nome" name="nome" maxlength="100" required value="<?= escapar($sensor['nome']) ?>"></div></div>

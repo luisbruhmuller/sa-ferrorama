@@ -1,5 +1,6 @@
 USE sa_ferrorama;
 
+-- Cria o usuário administrador.
 INSERT INTO usuarios (nome, email, senha, cpf, funcao, status)
 VALUES (
     'Administrador',

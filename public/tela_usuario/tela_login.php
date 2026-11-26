@@ -3,6 +3,7 @@ require __DIR__ . '/usuarios_comum.php';
 $erro = '';
 $email = '';
 
+// Confere os dados enviados no login.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (($_SESSION['login_bloqueado_ate'] ?? 0) > time()) {
         $erro = 'Muitas tentativas inválidas. Aguarde 15 minutos para tentar novamente.';
@@ -77,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <p class="text-muted small">Sistema de Monitoramento Ferroviário</p>
                                 </div>
 
+                                <!-- Formulário de entrada. -->
                                 <form method="post" action="tela_login.php">
 <div class="mb-3">
                                     <label for="login-login" class="form-label fw-semibold">E-mail ou usuário</label>

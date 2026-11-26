@@ -6,17 +6,20 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../../infra/conexao.php';
 
+// Evita que textos virem código HTML.
 function escapar($texto)
 {
     return htmlspecialchars((string) $texto, ENT_QUOTES, 'UTF-8');
 }
 
+// Leva o usuário para outra página.
 function redirecionar($pagina)
 {
     header('Location: ' . $pagina);
     exit;
 }
 
+// Confere se existe um usuário conectado.
 function exigir_login($pagina = '../tela_usuario/tela_login.php')
 {
     global $conn;
@@ -39,6 +42,7 @@ function exigir_login($pagina = '../tela_usuario/tela_login.php')
     return $usuario;
 }
 
+// Deixa a página apenas para administradores.
 function exigir_admin()
 {
     $usuario = exigir_login('../tela_usuario/tela_login.php');

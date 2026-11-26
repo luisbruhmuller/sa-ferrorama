@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
+// Pega os dados do novo sensor.
 $nome = trim($_POST['nome'] ?? '');
 $local = trim($_POST['localizacao'] ?? '');
 $tipoDado = $_POST['tipo_dado'] ?? '';
@@ -14,6 +15,7 @@ if ($nome === '' || $local === '' || $tipoDado === '' || $idTrem < 1 || $conjunt
     redirecionar('tela_cadastro_sensores.php');
 }
 
+// Cadastra o sensor no banco.
 $comando = mysqli_prepare($conn, 'INSERT INTO sensor (nome, localizacao, tipo_dado, id_trem, tipo, conjunto) VALUES (?, ?, ?, ?, ?, ?)');
 mysqli_stmt_bind_param($comando, 'sssiss', $nome, $local, $tipoDado, $idTrem, $tipo, $conjunto);
 

@@ -3,6 +3,7 @@
 
   const URL_CLIMA = 'https://api.open-meteo.com/v1/forecast?latitude=-23.5505&longitude=-46.6333&current=temperature_2m%2Cweather_code&timezone=America%2FSao_Paulo';
 
+  // Transforma o código em uma descrição.
   function condicao(codigo) {
     if (codigo === 0) return 'Céu limpo';
     if ([1, 2].includes(codigo)) return 'Parcialmente nublado';
@@ -15,6 +16,7 @@
     return 'Condição não identificada';
   }
 
+  // Organiza os dados recebidos da API.
   function interpretarClima(resposta) {
     const atual = resposta && resposta.current;
     if (!atual || !Number.isFinite(atual.temperature_2m) || !Number.isInteger(atual.weather_code) ||
@@ -30,6 +32,7 @@
     };
   }
 
+  // Consulta o clima atual.
   async function consultarClima(fetchImpl = root.fetch.bind(root)) {
     let resposta;
     try {
@@ -56,6 +59,7 @@
   const botao = document.getElementById('clima-atualizar');
   if (!temperatura || !botao) return;
 
+  // Atualiza os dados mostrados na tela.
   async function atualizar() {
     botao.disabled = true;
     estado.textContent = 'Consultando Open-Meteo…';

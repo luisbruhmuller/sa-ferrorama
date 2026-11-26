@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 $usuarioRota = exigir_login();
 $sql = "SELECT r.id, r.nome, r.distancia, r.tempo, r.origem, r.destino, r.status, GROUP_CONCAT(t.nome ORDER BY t.nome SEPARATOR '||') AS nomes_trens FROM rotas r LEFT JOIN rota_trens rt ON rt.id_rota=r.id LEFT JOIN trens t ON t.id_trem=rt.id_trem GROUP BY r.id, r.nome, r.distancia, r.tempo, r.origem, r.destino, r.status ORDER BY r.id";
+// Busca as rotas e seus trens.
 $resultado = mysqli_query($conn, $sql);
 $rotas = $resultado ? mysqli_fetch_all($resultado, MYSQLI_ASSOC) : [];
 $erroConsulta = !$resultado;
@@ -47,6 +48,7 @@ unset($_SESSION['rota_flash']);
         <div class="card shadow-sm border-0 rounded-3">
             <div class="card-body p-0">
                 <div class="table-responsive">
+                    <!-- Tabela com as rotas cadastradas. -->
                     <table class="table table-hover table-striped mb-0 align-middle">
                         <thead class="table-dark">
                             <tr>

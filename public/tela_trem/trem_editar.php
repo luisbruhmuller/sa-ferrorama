@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
+// Pega os dados atualizados do trem.
 $id = (int) ($_POST['id_trem'] ?? 0);
 $nome = trim($_POST['nome'] ?? '');
 $tipo = $_POST['tipo'] ?? '';
@@ -14,6 +15,7 @@ if ($id < 1 || $nome === '' || $tipo === '' || $status === '' || $conjunto === '
     redirecionar('tela_editar_trem.php?id=' . $id);
 }
 
+// Atualiza o trem no banco.
 $comando = mysqli_prepare($conn, 'UPDATE trens SET nome=?, tipo=?, status=?, conjunto=?, id_responsavel=? WHERE id_trem=?');
 mysqli_stmt_bind_param($comando, 'ssssii', $nome, $tipo, $status, $conjunto, $responsavel, $id);
 
