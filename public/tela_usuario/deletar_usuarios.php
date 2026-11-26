@@ -3,6 +3,7 @@ require __DIR__ . '/usuarios_comum.php';
 $administrador = exigir_admin();
 $id = (int) ($_GET['id'] ?? 0);
 
+// Impede pedidos inválidos e a autoexclusão.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirecionar('tela_usuarios.php');
 } elseif ($id === (int) $administrador['id']) {

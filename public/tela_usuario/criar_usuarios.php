@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirecionar('tela_cadastro_usuarios.php');
 }
 
+// Pega os dados do novo usuário.
 $nome = trim($_POST['nome'] ?? '');
 $email = strtolower(trim($_POST['email'] ?? ''));
 $cpf = preg_replace('/\D/', '', $_POST['cpf'] ?? '');
@@ -19,6 +20,7 @@ if ($nome === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($cpf) !
     redirecionar('tela_cadastro_usuarios.php');
 }
 
+// Protege a senha antes de salvar.
 $hash = password_hash($senha, PASSWORD_DEFAULT);
 $comando = mysqli_prepare($conn, 'INSERT INTO usuarios (nome, email, senha, cpf, funcao, status) VALUES (?, ?, ?, ?, ?, ?)');
 mysqli_stmt_bind_param($comando, 'ssssss', $nome, $email, $hash, $cpf, $funcao, $status);

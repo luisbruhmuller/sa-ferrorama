@@ -27,6 +27,7 @@ exigir_login();
         <div class="col-lg-5">
           <div class="card shadow-sm border-0">
             <div class="card-body p-4">
+              <!-- Formulário para pesquisar o CEP. -->
               <form id="consulta-cep" novalidate>
                 <label class="form-label fw-semibold" for="cep-busca">CEP</label>
                 <div class="input-group">

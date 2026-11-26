@@ -33,6 +33,7 @@ $usuario = exigir_login();
           </div>
           <div class="row g-3">
             <?php
+            // Atalhos para as telas do sistema.
             $atalhos = [
               ['bi-train-front', 'Trens', 'Consulte e gerencie as composições cadastradas.', '../tela_trem/tela_trem.php'],
               ['bi-signpost-split', 'Rotas', 'Veja trajetos e itinerários da operação.', '../tela_rota/tela_rota.php'],

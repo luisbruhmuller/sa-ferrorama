@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_login();
 
+// Busca os sensores que estão com falha.
 $resultado = mysqli_query($conn, "SELECT s.*, t.nome AS trem_nome FROM sensor s INNER JOIN trens t ON t.id_trem=s.id_trem WHERE s.tipo='Com falha' ORDER BY s.id_sensor DESC");
 $falhas = $resultado ? mysqli_fetch_all($resultado, MYSQLI_ASSOC) : [];
 $erroConsulta = !$resultado;
@@ -43,6 +44,7 @@ $erroConsulta = !$resultado;
         <div class="card border-0 shadow-sm">
           <div class="card-body p-0">
             <div class="table-responsive">
+              <!-- Lista dos sensores encontrados. -->
               <table class="table table-hover align-middle mb-0">
                 <thead class="table-dark"><tr><th scope="col" class="ps-4">Sensor</th><th scope="col">Tipo de dado</th><th scope="col">Trem</th><th scope="col">Subsistema e local</th><th scope="col">Estado</th></tr></thead>
                 <tbody>

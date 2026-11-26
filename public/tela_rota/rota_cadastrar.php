@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
+// Pega os dados enviados pelo formulário.
 $nome = trim($_POST['nome'] ?? '');
 $origem = trim($_POST['origem'] ?? '');
 $destino = trim($_POST['destino'] ?? '');
@@ -15,6 +16,7 @@ if ($nome === '' || $origem === '' || $destino === '' || $distancia <= 0 || $tem
     redirecionar('tela_cadastro_rota.php');
 }
 
+// Salva a rota e os trens juntos.
 mysqli_begin_transaction($conn);
 $comando = mysqli_prepare($conn, 'INSERT INTO rotas (nome, distancia, tempo, origem, destino, status) VALUES (?, ?, ?, ?, ?, ?)');
 $ok = $comando !== false;

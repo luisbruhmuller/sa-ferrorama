@@ -4,6 +4,7 @@ exigir_admin();
 
 $id = (int) ($_POST['id_sensor'] ?? 0);
 
+// Tenta excluir o sensor escolhido.
 if ($id > 0 && mysqli_query($conn, "DELETE FROM sensor WHERE id_sensor = $id")) {
     $_SESSION['sensor_flash'] = ['Sensor excluído com sucesso!', 'success'];
 } else {

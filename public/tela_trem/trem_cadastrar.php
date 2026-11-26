@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 
+// Pega os dados do novo trem.
 $nome = trim($_POST['nome'] ?? '');
 $tipo = $_POST['tipo'] ?? '';
 $status = $_POST['status'] ?? '';
@@ -13,6 +14,7 @@ if ($nome === '' || $tipo === '' || $status === '' || $conjunto === '' || $respo
     redirecionar('tela_cadastro_trem.php');
 }
 
+// Cadastra o trem no banco.
 $comando = mysqli_prepare($conn, 'INSERT INTO trens (nome, tipo, status, conjunto, id_responsavel) VALUES (?, ?, ?, ?, ?)');
 mysqli_stmt_bind_param($comando, 'ssssi', $nome, $tipo, $status, $conjunto, $responsavel);
 

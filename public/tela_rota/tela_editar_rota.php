@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
 $idRota = (int) ($_GET['id'] ?? 0);
+// Busca a rota que vai ser editada.
 $rota = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM rotas WHERE id = $idRota"));
 if (!$rota) {
     redirecionar('tela_rota.php');
@@ -41,6 +42,7 @@ unset($_SESSION['rota_flash']);
                         <?php if ($flash): ?>
                             <div class="alert alert-<?= escapar($flash[1]) ?>"><?= escapar($flash[0]) ?></div>
                         <?php endif; ?>
+                        <!-- Formulário de edição da rota. -->
                         <form method="post" action="rota_editar.php">
                             <input type="hidden" name="id_rota" value="<?= $idRota ?>">
                             <div class="mb-3"><label class="form-label fw-semibold" for="nome">Nome da rota</label><input class="form-control" type="text" id="nome" name="nome" maxlength="200" required value="<?= escapar($rota['nome']) ?>"></div>

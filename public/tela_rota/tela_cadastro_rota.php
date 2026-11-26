@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 exigir_admin();
+// Busca os trens que podem entrar na rota.
 $trens = mysqli_query($conn, 'SELECT id_trem, nome, status FROM trens ORDER BY nome');
 $flash = $_SESSION['rota_flash'] ?? null;
 unset($_SESSION['rota_flash']);
@@ -31,6 +32,7 @@ unset($_SESSION['rota_flash']);
                         <?php if ($flash): ?>
                             <div class="alert alert-<?= escapar($flash[1]) ?>"><?= escapar($flash[0]) ?></div>
                         <?php endif; ?>
+                        <!-- Formulário de cadastro da rota. -->
                         <form method="post" action="rota_cadastrar.php">
                             <div class="mb-3"><label class="form-label fw-semibold" for="nome">Nome da rota</label><input class="form-control" type="text" id="nome" name="nome" maxlength="200" required placeholder="Ex: Serra Azul"></div>
                             <div class="row g-3 mb-3"><div class="col-md-6"><label class="form-label fw-semibold" for="origem">Origem</label><input class="form-control" type="text" id="origem" name="origem" maxlength="200" required></div><div class="col-md-6"><label class="form-label fw-semibold" for="destino">Destino</label><input class="form-control" type="text" id="destino" name="destino" maxlength="200" required></div></div>

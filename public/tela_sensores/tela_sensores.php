@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../tela_usuario/usuarios_comum.php';
 $usuarioSensor = exigir_login();
 $sql = 'SELECT s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto, t.id_trem, t.nome AS trem_nome, COUNT(ds.id_dado) AS total_leituras FROM sensor s INNER JOIN trens t ON t.id_trem=s.id_trem LEFT JOIN dados_sensor ds ON ds.id_sensor=s.id_sensor GROUP BY s.id_sensor, s.nome, s.localizacao, s.tipo_dado, s.tipo, s.conjunto, t.id_trem, t.nome ORDER BY s.id_sensor';
+// Busca os sensores e seus trens.
 $resultado = mysqli_query($conn, $sql);
 $sensores = $resultado ? mysqli_fetch_all($resultado, MYSQLI_ASSOC) : [];
 $erroConsulta = !$resultado;
@@ -48,6 +49,7 @@ unset($_SESSION['sensor_flash']);
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-body p-0">
                         <div class="table-responsive">
+                            <!-- Tabela com os sensores cadastrados. -->
                             <table class="table table-hover table-striped mb-0 align-middle">
                                 <thead class="table-dark">
                                     <tr>

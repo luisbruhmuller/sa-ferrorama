@@ -5,6 +5,7 @@ $busca = isset($_GET['busca']) && is_string($_GET['busca']) ? trim($_GET['busca'
 $funcao = isset($_GET['funcao']) && is_string($_GET['funcao']) ? $_GET['funcao'] : '';
 $statusFiltro = isset($_GET['status']) && is_string($_GET['status']) ? $_GET['status'] : '';
 
+// Monta a busca usando os filtros escolhidos.
 $sql = 'SELECT id, nome, email, funcao, status FROM usuarios WHERE 1=1';
 
 if ($busca !== '') {
@@ -93,6 +94,7 @@ unset($_SESSION['mensagem']);
                     <div class="card-body p-0">
 
                         <div class="table-responsive">
+                            <!-- Tabela com os usuários encontrados. -->
                             <table class="table table-hover table-striped mb-0 align-middle">
 
                                 <thead class="table-dark">
